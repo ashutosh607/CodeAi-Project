@@ -193,7 +193,8 @@ export default function ContactPage() {
                     </div>
                   </div>
                   <a
-                    className="px-5 py-2.5 bg-[#141310] text-[#FAF9F5] font-semibold text-[11px] uppercase tracking-wider hover:bg-[#635E52] transition-colors text-center whitespace-nowrap"
+                    style={{ color: '#FAF9F5' }}
+                    className="px-5 py-2.5 bg-[#141310] !text-[#FAF9F5] font-semibold text-[11px] uppercase tracking-wider hover:bg-[#635E52] hover:!text-[#FFFFFF] transition-colors text-center whitespace-nowrap shadow-sm"
                     href="https://wa.me/919322254315"
                     target="_blank"
                     rel="noreferrer"
@@ -543,7 +544,8 @@ export default function ContactPage() {
           </div>
           <div className="flex items-center gap-4">
             <a
-              className="px-6 py-3 bg-[#141310] text-[#FFFFFF] font-semibold text-[11px] uppercase tracking-wider hover:bg-[#635E52] transition-colors whitespace-nowrap"
+              style={{ color: '#FFFFFF' }}
+              className="px-6 py-3 bg-[#141310] !text-[#FFFFFF] font-semibold text-[11px] uppercase tracking-wider hover:bg-[#635E52] hover:!text-[#FFFFFF] transition-colors whitespace-nowrap shadow-sm"
               href="tel:+919322254315"
             >
               Call Studio Concierge

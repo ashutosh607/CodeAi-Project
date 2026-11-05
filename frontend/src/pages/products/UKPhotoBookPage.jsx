@@ -230,7 +230,8 @@ export default function UKPhotoBookPage() {
                 <button
                   type="button"
                   onClick={() => handleEnquire('50% Studio Sample Photo Book Voucher')}
-                  className="px-8 py-4 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest text-center hover:bg-[#292724] transition-colors"
+                  style={{ color: '#FAF9F5' }}
+                  className="px-8 py-4 bg-[#141310] !text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest text-center hover:bg-[#292724] hover:!text-[#FFFFFF] transition-colors shadow-sm"
                 >
                   Claim 50% Studio Sample Voucher
                 </button>
@@ -396,10 +397,11 @@ export default function UKPhotoBookPage() {
                   <button
                     type="button"
                     onClick={() => handleEnquire(fmt.name)}
-                    className="mt-3 w-full py-2.5 bg-[#141310] text-[#FAF9F5] text-center text-xs font-semibold uppercase tracking-wider hover:bg-[#292724] transition-colors flex items-center justify-center gap-1.5"
+                    style={{ color: '#FAF9F5' }}
+                    className="mt-3 w-full py-2.5 bg-[#141310] !text-[#FAF9F5] text-center text-xs font-semibold uppercase tracking-wider hover:bg-[#292724] hover:!text-[#FFFFFF] transition-colors flex items-center justify-center gap-1.5 shadow-sm"
                   >
-                    <span>Configure {fmt.name.split(' ')[0]}</span>
-                    <ArrowRight size={13} />
+                    <span style={{ color: '#FAF9F5' }}>Configure {fmt.name.split(' ')[0]}</span>
+                    <ArrowRight size={13} style={{ color: '#FAF9F5' }} />
                   </button>
                 </div>
               </div>
@@ -490,8 +492,9 @@ export default function UKPhotoBookPage() {
                 <button
                   type="button"
                   onClick={() => handleEnquire(`${tier.heading} (${tier.badge})`)}
-                  className={`mt-8 w-full py-3.5 text-xs font-semibold uppercase tracking-widest transition-colors ${
-                    tier.highlight ? 'bg-[#141310] text-[#FAF9F5] hover:bg-[#292724]' : 'bg-[#292724] text-[#FAF9F5] hover:bg-[#141310]'
+                  style={{ color: '#FAF9F5' }}
+                  className={`mt-8 w-full py-3.5 text-xs font-semibold uppercase tracking-widest transition-colors shadow-sm !text-[#FAF9F5] hover:!text-[#FFFFFF] ${
+                    tier.highlight ? 'bg-[#141310] hover:bg-[#292724]' : 'bg-[#292724] hover:bg-[#141310]'
                   }`}
                 >
                   Configure Companion Batch

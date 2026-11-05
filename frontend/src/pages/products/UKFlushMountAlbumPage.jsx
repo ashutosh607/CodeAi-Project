@@ -166,7 +166,8 @@ export default function UKFlushMountAlbumPage() {
                 <div className="flex flex-col gap-3">
                   <a
                     href="#swatch-box"
-                    className="px-8 py-3.5 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-[0.16em] hover:bg-[#292724] transition-colors text-center"
+                    style={{ color: '#FAF9F5' }}
+                    className="px-8 py-3.5 bg-[#141310] !text-[#FAF9F5] text-xs font-semibold uppercase tracking-[0.16em] hover:bg-[#292724] hover:!text-[#FFFFFF] transition-colors text-center shadow-sm"
                   >
                     Request UK Swatch Tome (£35 Rebated)
                   </a>
@@ -664,7 +665,8 @@ export default function UKFlushMountAlbumPage() {
 
                   <button
                     type="submit"
-                    className="w-full py-4 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-[0.16em] hover:bg-[#292724] transition-colors text-center"
+                    style={{ color: '#FAF9F5' }}
+                    className="w-full py-4 bg-[#141310] !text-[#FAF9F5] text-xs font-semibold uppercase tracking-[0.16em] hover:bg-[#292724] hover:!text-[#FFFFFF] transition-colors text-center shadow-sm"
                   >
                     Order UK Swatch Box to Studio (£35 Rebated)
                   </button>
@@ -835,7 +837,8 @@ export default function UKFlushMountAlbumPage() {
               </div>
               <Link
                 to="/resources/catalog"
-                className="px-6 py-3 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest shrink-0 hover:bg-[#292724] transition-colors"
+                style={{ color: '#FAF9F5' }}
+                className="px-6 py-3 bg-[#141310] !text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest shrink-0 hover:bg-[#292724] hover:!text-[#FFFFFF] transition-colors shadow-sm"
               >
                 Request Spec Dossier
               </Link>
@@ -895,10 +898,11 @@ export default function UKFlushMountAlbumPage() {
                   href="https://wa.me/919322254315"
                   target="_blank"
                   rel="noreferrer"
-                  className="px-6 py-3 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-wider hover:bg-[#292724] transition-colors inline-flex items-center gap-2"
+                  style={{ color: '#FAF9F5' }}
+                  className="px-6 py-3 bg-[#141310] !text-[#FAF9F5] text-xs font-semibold uppercase tracking-wider hover:bg-[#292724] hover:!text-[#FFFFFF] transition-colors inline-flex items-center gap-2 shadow-sm"
                 >
-                  <MessageSquare size={16} />
-                  <span>WhatsApp UK Liaison</span>
+                  <MessageSquare size={16} style={{ color: '#FAF9F5' }} />
+                  <span style={{ color: '#FAF9F5' }}>WhatsApp UK Liaison</span>
                 </a>
                 <a
                   href="tel:+919322254315"

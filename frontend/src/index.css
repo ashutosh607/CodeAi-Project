@@ -125,20 +125,70 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+@layer base {
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
 }
 
-button {
-  font-family: inherit;
-  cursor: pointer;
+/* ==========================================================================
+   Universal High-Contrast Rules for Dark Containers, Buttons & Badges
+   Ensures text inside black/dark elements is crisp, high-contrast, and never hidden
+   ========================================================================== */
+[class*="bg-[#141310]"],
+[class*="bg-[#201E1B]"],
+[class*="bg-[#292724]"],
+[class*="bg-[#181715]"],
+[class*="bg-[#191919]"],
+[class*="bg-black"],
+.btn-dark,
+.bg-dark-cta {
+  color: #FAF7F2 !important;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
+[class*="bg-[#141310]"] a,
+[class*="bg-[#201E1B]"] a,
+[class*="bg-[#292724]"] a,
+[class*="bg-[#181715]"] a,
+a[class*="bg-[#141310]"],
+a[class*="bg-[#201E1B]"],
+a[class*="bg-[#292724]"],
+a[class*="bg-[#181715]"],
+button[class*="bg-[#141310]"],
+button[class*="bg-[#201E1B]"],
+button[class*="bg-[#292724]"],
+button[class*="bg-[#181715]"],
+a[class*="bg-[#141310]"] *,
+button[class*="bg-[#141310]"] *,
+a[class*="bg-[#292724]"] *,
+button[class*="bg-[#292724]"] * {
+  color: #FAF7F2 !important;
+}
+
+[class*="bg-[#141310]"]:hover,
+[class*="bg-[#201E1B]"]:hover,
+[class*="bg-[#292724]"]:hover,
+a[class*="bg-[#141310]"]:hover,
+a[class*="bg-[#201E1B]"]:hover,
+a[class*="bg-[#292724]"]:hover,
+button[class*="bg-[#141310]"]:hover,
+button[class*="bg-[#201E1B]"]:hover,
+button[class*="bg-[#292724]"]:hover,
+a[class*="bg-[#141310]"]:hover *,
+button[class*="bg-[#141310]"]:hover * {
+  color: #FFFFFF !important;
 }
 
 /* ==========================================================================

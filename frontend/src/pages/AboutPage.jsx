@@ -985,102 +985,6 @@ export default function AboutPage() {
                           {/* Pin Ground Shadow */}
                           <span className="w-2.5 h-0.5 bg-black/30 rounded-full blur-[0.6px] -mt-0.5" />
                         </div>
-
-                        {/* Interactive Floating Hover Tooltip Card (High-Contrast Luxury Ivory) */}
-                        <div
-                          style={{
-                            left: loc.x < 25 ? '0%' : loc.x > 75 ? '100%' : '50%',
-                            transform: loc.x < 25
-                              ? (isActive ? 'translate(0%, 0)' : 'translate(0%, 4px)')
-                              : loc.x > 75
-                              ? (isActive ? 'translate(-100%, 0)' : 'translate(-100%, 4px)')
-                              : (isActive ? 'translate(-50%, 0)' : 'translate(-50%, 4px)')
-                          }}
-                          className={`absolute bottom-full mb-3 w-56 sm:w-64 p-3.5 bg-white text-[#201E1B] rounded-xl shadow-[0_20px_48px_-8px_rgba(20,19,16,0.28)] border-2 border-[#B99A69]/70 transition-all duration-200 pointer-events-none text-left z-50 ${
-                            isActive
-                              ? 'opacity-100 visible'
-                              : 'opacity-0 invisible group-hover:opacity-100 group-hover:visible'
-                          }`}
-                        >
-                          {/* Top Meta: Country + Status Badge */}
-                          <div className="flex items-center justify-between gap-1.5 pb-1 mb-1.5 border-b border-[#F2ECE3]">
-                            <span
-                              className="text-[10px] uppercase font-bold tracking-[0.2em]"
-                              style={{ color: '#9E7D4B' }}
-                            >
-                              {loc.country}
-                            </span>
-                            {loc.isHQ ? (
-                              <span
-                                className="text-[8.5px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full"
-                                style={{ backgroundColor: '#B99A69', color: '#FAF7F2' }}
-                              >
-                                GLOBAL HQ
-                              </span>
-                            ) : (
-                              <span
-                                className="text-[8.5px] uppercase font-bold tracking-wider px-2 py-0.2 rounded-full"
-                                style={{ backgroundColor: '#EAE2D2', color: '#635E52' }}
-                              >
-                                {loc.hubCategory === 'hub' ? 'PRIMARY HUB' : 'PARTNER STUDIO'}
-                              </span>
-                            )}
-                          </div>
-
-                          {/* High-Contrast Clear Studio Title */}
-                          <h5
-                            className="font-serif text-[15px] sm:text-[16px] font-semibold leading-tight mb-1 !text-[#141310]"
-                            style={{ color: '#141310' }}
-                          >
-                            {loc.name}
-                          </h5>
-
-                          {/* Clear High-Contrast Role Description */}
-                          <p
-                            className="font-sans text-[11.5px] leading-snug mb-2 font-normal !text-[#4A463F]"
-                            style={{ color: '#4A463F' }}
-                          >
-                            {loc.role}
-                          </p>
-
-                          {/* Address / Location Line */}
-                          <p
-                            className="font-sans text-[10.5px] leading-snug mb-2 flex items-center gap-1.5 font-normal !text-[#777066]"
-                            style={{ color: '#777066' }}
-                          >
-                            <span style={{ color: '#B99A69' }}>📍</span>
-                            <span>{loc.address}</span>
-                          </p>
-
-                          {/* Transit SLA Footer */}
-                          <div
-                            className="pt-2 border-t flex items-center justify-between text-[10.5px]"
-                            style={{ borderColor: '#EAE3D6' }}
-                          >
-                            <span
-                              className="flex items-center gap-1 font-sans font-medium !text-[#9E7D4B]"
-                              style={{ color: '#9E7D4B' }}
-                            >
-                              <Clock size={11} />
-                              <span>{loc.sla}</span>
-                            </span>
-                            <span
-                              className="text-[9.5px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full !text-[#15803D]"
-                              style={{ backgroundColor: '#DCFCE7', color: '#15803D' }}
-                            >
-                              ● Direct Flight
-                            </span>
-                          </div>
-
-                          {/* Downward Pointer Triangle */}
-                          <span
-                            className="absolute -bottom-1.5 w-3 h-3 bg-white border-r-2 border-b-2 border-[#B99A69]/70 rotate-45 pointer-events-none"
-                            style={{
-                              left: loc.x < 25 ? '16px' : loc.x > 75 ? 'calc(100% - 24px)' : '50%',
-                              transform: loc.x < 25 || loc.x > 75 ? 'rotate(45deg)' : 'translateX(-50%) rotate(45deg)'
-                            }}
-                          />
-                        </div>
                       </div>
                     );
                   })}
@@ -1281,7 +1185,8 @@ export default function AboutPage() {
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
                   <Link
                     to="/enquire"
-                    className="px-8 py-4 bg-[#141310] text-[#FAF9F5] font-semibold text-[11px] uppercase tracking-widest hover:bg-[#292724] text-center transition-colors duration-200"
+                    style={{ color: '#FAF9F5' }}
+                    className="px-8 py-4 bg-[#141310] !text-[#FAF9F5] font-semibold text-[11px] uppercase tracking-widest hover:bg-[#292724] hover:!text-[#FFFFFF] text-center transition-colors duration-200 shadow-sm"
                   >
                     Book Private Consultation
                   </Link>

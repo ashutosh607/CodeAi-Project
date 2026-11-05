@@ -225,7 +225,8 @@ export default function UKWeddingPhotographyPage() {
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4">
                 <a
                   href="#inquire-commission"
-                  className="px-8 py-4 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest text-center hover:bg-[#292724] transition-colors"
+                  style={{ color: '#FAF9F5' }}
+                  className="px-8 py-4 bg-[#141310] !text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest text-center hover:bg-[#292724] hover:!text-[#FFFFFF] transition-colors shadow-sm"
                 >
                   Check 2026/2027 UK Date Availability
                 </a>
@@ -720,7 +721,8 @@ export default function UKWeddingPhotographyPage() {
 
                     <button
                       type="submit"
-                      className="w-full sm:w-auto px-10 py-4 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest hover:bg-[#292724] transition-colors"
+                      style={{ color: '#FAF9F5' }}
+                      className="w-full sm:w-auto px-10 py-4 bg-[#141310] !text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest hover:bg-[#292724] hover:!text-[#FFFFFF] transition-colors shadow-sm"
                     >
                       Submit Commission Dossier
                     </button>

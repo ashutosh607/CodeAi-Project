@@ -107,10 +107,11 @@ export default function UKLuxuryHeirloomPage() {
                   <button
                     type="button"
                     onClick={() => handleCommission('Sovereign Master')}
-                    className="px-7 py-3 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest hover:bg-[#292724] transition-colors inline-flex items-center gap-2"
+                    style={{ color: '#FAF9F5' }}
+                    className="px-7 py-3 bg-[#141310] !text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest hover:bg-[#292724] hover:!text-[#FFFFFF] transition-colors inline-flex items-center gap-2 shadow-sm"
                   >
-                    <span>Commission A Tome</span>
-                    <ArrowRight size={14} />
+                    <span style={{ color: '#FAF9F5' }}>Commission A Tome</span>
+                    <ArrowRight size={14} style={{ color: '#FAF9F5' }} />
                   </button>
                   <a
                     href="#specifications"
@@ -417,7 +418,8 @@ export default function UKLuxuryHeirloomPage() {
                 <button
                   type="button"
                   onClick={() => handleCommission('14x18 Cathedral Folio')}
-                  className="w-full py-3 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest text-center hover:bg-[#292724] transition-colors"
+                  style={{ color: '#FAF9F5' }}
+                  className="w-full py-3 bg-[#141310] !text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest text-center hover:bg-[#292724] hover:!text-[#FFFFFF] transition-colors shadow-sm"
                 >
                   Specify Royal Tome
                 </button>

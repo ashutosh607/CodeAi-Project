@@ -179,7 +179,8 @@ export default function UKImageEditingPage() {
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto">
                 <a
                   href="#test-calibration"
-                  className="px-8 py-4 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest hover:bg-[#292724] text-center transition-colors"
+                  style={{ color: '#FAF9F5' }}
+                  className="px-8 py-4 bg-[#141310] !text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest hover:bg-[#292724] hover:!text-[#FFFFFF] text-center transition-colors shadow-sm"
                 >
                   Submit 5 Free RAW Test Images
                 </a>
@@ -914,7 +915,8 @@ export default function UKImageEditingPage() {
 
                       <button
                         type="submit"
-                        className="w-full py-4 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest hover:bg-[#292724] transition-colors mt-2"
+                        style={{ color: '#FAF9F5' }}
+                        className="w-full py-4 bg-[#141310] !text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest hover:bg-[#292724] hover:!text-[#FFFFFF] transition-colors mt-2 shadow-sm"
                       >
                         Transmit 5 RAWs for Complimentary Calibration
                       </button>

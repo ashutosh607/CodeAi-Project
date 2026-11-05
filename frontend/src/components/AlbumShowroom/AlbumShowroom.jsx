@@ -47,9 +47,12 @@ export default function AlbumShowroom({ onSelectProduct }) {
   const currentTrackRef = useRef(null);
   const incomingTrackRef = useRef(null);
   const spotlightRef = useRef(null);
+  const stageCardRef = useRef(null);
+  const toolbarTitleRef = useRef(null);
 
   // Animation Lock & Timeline Refs
   const isAnimatingRef = useRef(false);
+  const isStageAnimatingRef = useRef(false);
   const activeTimelineRef = useRef(null);
   const touchStartXRef = useRef(null);
 
@@ -280,7 +283,169 @@ export default function AlbumShowroom({ onSelectProduct }) {
     }
   }, [activeAlbumId]);
 
-  // 6. Navigation to dedicated album page
+  // 6. LUXURY BLUR-FADE SPOTLIGHT SWITCHING (Incoming from Down, Outgoing goes Up & Blurs)
+  const handleSwitchSpotlightAlbum = useCallback((targetAlbumId) => {
+    if (isStageAnimatingRef.current || targetAlbumId === activeAlbumId) return;
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced || !stageCardRef.current) {
+      setActiveAlbumId(targetAlbumId);
+      return;
+    }
+
+    isStageAnimatingRef.current = true;
+
+    // Outgoing animation: moves UP, blurs, and fades out ("other before going up and blurr and it is gone")
+    const targets = [stageCardRef.current];
+    if (toolbarTitleRef.current) targets.push(toolbarTitleRef.current);
+
+    gsap.to(targets, {
+      y: -36,
+      filter: 'blur(16px)',
+      opacity: 0,
+      duration: 0.36,
+      ease: 'power2.in',
+      onComplete: () => {
+        setActiveAlbumId(targetAlbumId);
+
+        // Next animation frame: Incoming animates from DOWN, clearing blur ("coming from down")
+        requestAnimationFrame(() => {
+          if (!stageCardRef.current) {
+            isStageAnimatingRef.current = false;
+            return;
+          }
+
+          const enterTargets = [stageCardRef.current];
+          if (toolbarTitleRef.current) enterTargets.push(toolbarTitleRef.current);
+
+          gsap.fromTo(
+            enterTargets,
+            {
+              y: 44,
+              filter: 'blur(16px)',
+              opacity: 0
+            },
+            {
+              y: 0,
+              filter: 'blur(0px)',
+              opacity: 1,
+              duration: 0.58,
+              ease: 'power3.out',
+              clearProps: 'filter,transform,opacity',
+              onComplete: () => {
+                isStageAnimatingRef.current = false;
+              }
+            }
+          );
+        });
+      }
+    });
+  }, [activeAlbumId]);
+
+  // Open Spotlight: 4-book grid goes UP with blur and is gone -> Spotlight comes from DOWN with un-blur
+  const handleOpenSpotlight = useCallback((targetAlbumId) => {
+    if (isStageAnimatingRef.current) return;
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced || !carouselStageRef.current) {
+      setActiveAlbumId(targetAlbumId);
+      return;
+    }
+
+    isStageAnimatingRef.current = true;
+
+    gsap.to(carouselStageRef.current, {
+      y: -36,
+      filter: 'blur(16px)',
+      opacity: 0,
+      duration: 0.34,
+      ease: 'power2.in',
+      onComplete: () => {
+        setActiveAlbumId(targetAlbumId);
+
+        requestAnimationFrame(() => {
+          if (spotlightRef.current) {
+            gsap.fromTo(
+              spotlightRef.current,
+              {
+                y: 44,
+                filter: 'blur(16px)',
+                opacity: 0
+              },
+              {
+                y: 0,
+                filter: 'blur(0px)',
+                opacity: 1,
+                duration: 0.58,
+                ease: 'power3.out',
+                clearProps: 'filter,transform,opacity',
+                onComplete: () => {
+                  isStageAnimatingRef.current = false;
+                  if (carouselStageRef.current) {
+                    gsap.set(carouselStageRef.current, { clearProps: 'all' });
+                  }
+                }
+              }
+            );
+          } else {
+            isStageAnimatingRef.current = false;
+          }
+        });
+      }
+    });
+  }, []);
+
+  // Close Spotlight: Spotlight goes UP with blur and is gone -> 4-book grid comes from DOWN with un-blur
+  const handleCloseSpotlight = useCallback(() => {
+    if (isStageAnimatingRef.current) return;
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced || !spotlightRef.current) {
+      setActiveAlbumId(null);
+      return;
+    }
+
+    isStageAnimatingRef.current = true;
+
+    gsap.to(spotlightRef.current, {
+      y: -36,
+      filter: 'blur(16px)',
+      opacity: 0,
+      duration: 0.34,
+      ease: 'power2.in',
+      onComplete: () => {
+        setActiveAlbumId(null);
+
+        requestAnimationFrame(() => {
+          if (carouselStageRef.current) {
+            gsap.fromTo(
+              carouselStageRef.current,
+              {
+                y: 44,
+                filter: 'blur(16px)',
+                opacity: 0
+              },
+              {
+                y: 0,
+                filter: 'blur(0px)',
+                opacity: 1,
+                duration: 0.58,
+                ease: 'power3.out',
+                clearProps: 'filter,transform,opacity',
+                onComplete: () => {
+                  isStageAnimatingRef.current = false;
+                }
+              }
+            );
+          } else {
+            isStageAnimatingRef.current = false;
+          }
+        });
+      }
+    });
+  }, []);
+
+  // 7. Navigation to dedicated album page
   const handleNavigateToAlbumPage = useCallback((slug) => {
     navigate(`/products/${slug}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -389,7 +554,7 @@ export default function AlbumShowroom({ onSelectProduct }) {
                     key={album.id}
                     album={album}
                     index={index}
-                    onOpenViewer={(alb) => setActiveAlbumId(alb.id)}
+                    onOpenViewer={(alb) => handleOpenSpotlight(alb.id)}
                   />
                 ))}
               </div>
@@ -405,7 +570,7 @@ export default function AlbumShowroom({ onSelectProduct }) {
                       key={album.id}
                       album={album}
                       index={index}
-                      onOpenViewer={(alb) => setActiveAlbumId(alb.id)}
+                      onOpenViewer={(alb) => handleOpenSpotlight(alb.id)}
                     />
                   ))}
                 </div>
@@ -447,21 +612,21 @@ export default function AlbumShowroom({ onSelectProduct }) {
             - Direct button to navigate to respective album page
             ========================================================================= */}
         {activeAlbum && (
-          <div ref={spotlightRef} className="w-full flex flex-col gap-10 animate-fadeIn">
+          <div ref={spotlightRef} className="w-full flex flex-col gap-10">
             
             {/* Top Toolbar: Active Indicator + Close/Back Button */}
             <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#DED5C9]/80">
               <div className="flex items-center gap-3">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#B99A69] animate-pulse" />
                 <span className="font-sans text-[11px] sm:text-[12px] uppercase font-semibold tracking-[0.2em] text-[#201E1B]">
-                  Spotlight Viewing: <span className="font-serif italic font-normal text-[15px] sm:text-[16px] lowercase tracking-normal text-[#B99A69]">{activeAlbum.name}</span>
+                  Spotlight Viewing: <span ref={toolbarTitleRef} className="inline-block font-serif italic font-normal text-[15px] sm:text-[16px] lowercase tracking-normal text-[#B99A69]">{activeAlbum.name}</span>
                 </span>
               </div>
 
               {/* Reset to 4-book view button */}
               <button
                 type="button"
-                onClick={() => setActiveAlbumId(null)}
+                onClick={handleCloseSpotlight}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#FAF7F2] border border-[#DED5C9] text-[11px] font-sans font-medium uppercase tracking-[0.16em] text-[#777066] hover:text-[#201E1B] hover:border-[#201E1B] transition-all cursor-pointer shadow-xs"
               >
                 <X size={13} />
@@ -470,7 +635,10 @@ export default function AlbumShowroom({ onSelectProduct }) {
             </div>
 
             {/* Main Stage Grid: 3D Open Book on Left + Editorial Specifications on Right */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center bg-[#FAF7F2] border border-[#DED5C9] rounded-2xl p-6 sm:p-10 shadow-[0_24px_64px_-16px_rgba(32,30,27,0.12)]">
+            <div
+              ref={stageCardRef}
+              className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center bg-[#FAF7F2] border border-[#DED5C9] rounded-2xl p-6 sm:p-10 shadow-[0_24px_64px_-16px_rgba(32,30,27,0.12)] will-change-transform"
+            >
               
               {/* Left Column: Authentic 3D Open Heirloom Book Stage with Smooth Hinge Physics */}
               <div className="lg:col-span-7 flex flex-col items-center justify-center relative select-none w-full">
@@ -478,7 +646,7 @@ export default function AlbumShowroom({ onSelectProduct }) {
                   key={activeAlbum.id}
                   album={activeAlbum}
                   initiallyOpen={true}
-                  onClose={() => setActiveAlbumId(null)}
+                  onClose={handleCloseSpotlight}
                 />
               </div>
 
@@ -579,9 +747,9 @@ export default function AlbumShowroom({ onSelectProduct }) {
                   <div
                     key={album.id}
                     onClick={() => {
-                      setActiveAlbumId(album.id);
+                      handleSwitchSpotlightAlbum(album.id);
                       if (spotlightRef.current) {
-                        spotlightRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        spotlightRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                       }
                     }}
                     className="shrink-0 w-[150px] sm:w-auto snap-start group relative bg-[#FAF7F2] hover:bg-white border border-[#DED5C9] hover:border-[#B99A69] rounded-xl p-3 transition-all duration-300 cursor-pointer shadow-2xs hover:shadow-md flex flex-col justify-between items-start text-left min-h-[140px]"

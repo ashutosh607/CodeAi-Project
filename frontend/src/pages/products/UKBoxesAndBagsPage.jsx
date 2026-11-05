@@ -171,10 +171,11 @@ export default function UKBoxesAndBagsPage() {
               <div className="flex flex-wrap items-center gap-4">
                 <a
                   href="#order-swatch-kit"
-                  className="px-8 py-3.5 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-[0.16em] hover:bg-[#292724] transition-colors inline-flex items-center gap-2"
+                  style={{ color: '#FAF9F5' }}
+                  className="px-8 py-3.5 bg-[#141310] !text-[#FAF9F5] text-xs font-semibold uppercase tracking-[0.16em] hover:bg-[#292724] hover:!text-[#FFFFFF] transition-colors inline-flex items-center gap-2 shadow-sm"
                 >
-                  <span>Order UK Studio Sample Kit</span>
-                  <ArrowRight size={14} />
+                  <span style={{ color: '#FAF9F5' }}>Order UK Studio Sample Kit</span>
+                  <ArrowRight size={14} style={{ color: '#FAF9F5' }} />
                 </a>
                 <a
                   href="#archetypes"

@@ -115,7 +115,8 @@ export default function UKPage() {
               <div className="flex flex-wrap items-center gap-4">
                 <button
                   type="button"
-                  className="px-8 py-3.5 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest hover:bg-[#292724] transition-colors"
+                  style={{ color: '#FAF9F5' }}
+                  className="px-8 py-3.5 bg-[#141310] !text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest hover:bg-[#292724] hover:!text-[#FFFFFF] transition-colors shadow-sm"
                   onClick={() => handleEnquire(activeItem ? activeItem.name : 'UK Studio Wholesale')}
                 >
                   REQUEST UK WHOLESALE PRICE LIST
@@ -163,7 +164,8 @@ export default function UKPage() {
                 <div className="pt-2">
                   <button
                     type="button"
-                    className="px-6 py-3 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest hover:bg-[#292724] transition-colors"
+                    style={{ color: '#FAF9F5' }}
+                    className="px-6 py-3 bg-[#141310] !text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest hover:bg-[#292724] hover:!text-[#FFFFFF] transition-colors shadow-sm"
                     onClick={() => handleEnquire(activeItem.name)}
                   >
                     ENQUIRE ABOUT {activeItem.name.toUpperCase()}
@@ -255,7 +257,8 @@ export default function UKPage() {
                   </div>
                   <button
                     type="button"
-                    className="px-5 py-2.5 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-wider hover:bg-[#B99A69] transition-colors self-start cursor-pointer"
+                    style={{ color: '#FAF9F5' }}
+                    className="px-5 py-2.5 bg-[#141310] !text-[#FAF9F5] text-xs font-semibold uppercase tracking-wider hover:bg-[#B99A69] hover:!text-[#FFFFFF] transition-colors self-start cursor-pointer shadow-sm"
                     onClick={() => handleEnquire(item.name)}
                   >
                     COMMISSION THIS SERVICE
@@ -322,7 +325,8 @@ export default function UKPage() {
                 <p className="text-xs text-[#4A463F] mt-1 mb-4">Receive authentic leather, linen, and foil samples delivered to your UK address within 5 business days.</p>
                 <button
                   type="button"
-                  className="w-full py-3 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-wider hover:bg-[#292724] transition-colors"
+                  style={{ color: '#FAF9F5' }}
+                  className="w-full py-3 bg-[#141310] !text-[#FAF9F5] text-xs font-semibold uppercase tracking-wider hover:bg-[#292724] hover:!text-[#FFFFFF] transition-colors shadow-sm"
                   onClick={() => handleEnquire('UK Studio Swatch Ring Kit')}
                 >
                   ORDER SWATCH RING (£25 REFUNDABLE)

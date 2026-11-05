@@ -176,7 +176,8 @@ export default function UKSlipInAlbumsPage() {
               <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
                 <a
                   href="#sample-pack"
-                  className="px-8 py-4 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest text-center hover:bg-[#292724] transition-colors"
+                  style={{ color: '#FAF9F5' }}
+                  className="px-8 py-4 bg-[#141310] !text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest text-center hover:bg-[#292724] hover:!text-[#FFFFFF] transition-colors shadow-sm"
                 >
                   Order UK Studio Sample Folio (£35)
                 </a>
@@ -336,10 +337,11 @@ export default function UKSlipInAlbumsPage() {
                   <button
                     type="button"
                     onClick={() => handleEnquire(fmt.name)}
-                    className="mt-3 w-full py-2.5 bg-[#141310] text-[#FAF9F5] text-center text-xs font-semibold uppercase tracking-wider hover:bg-[#292724] transition-colors flex items-center justify-center gap-1.5"
+                    style={{ color: '#FAF9F5' }}
+                    className="mt-3 w-full py-2.5 bg-[#141310] !text-[#FAF9F5] text-center text-xs font-semibold uppercase tracking-wider hover:bg-[#292724] hover:!text-[#FFFFFF] transition-colors flex items-center justify-center gap-1.5 shadow-sm"
                   >
-                    <span>Configure {fmt.name.split(' ')[0]}</span>
-                    <ArrowRight size={13} />
+                    <span style={{ color: '#FAF9F5' }}>Configure {fmt.name.split(' ')[0]}</span>
+                    <ArrowRight size={13} style={{ color: '#FAF9F5' }} />
                   </button>
                 </div>
               </div>
@@ -534,7 +536,8 @@ export default function UKSlipInAlbumsPage() {
               <button
                 type="button"
                 onClick={() => handleEnquire('UK Studio Trial Pack (£135)')}
-                className="mt-8 w-full py-3.5 bg-[#292724] text-[#FAF9F5] text-xs font-semibold uppercase tracking-wider hover:bg-[#141310] transition-colors"
+                style={{ color: '#FAF9F5' }}
+                className="mt-8 w-full py-3.5 bg-[#292724] !text-[#FAF9F5] text-xs font-semibold uppercase tracking-wider hover:bg-[#141310] hover:!text-[#FFFFFF] transition-colors"
               >
                 Order Trial Pack (£135)
               </button>
@@ -542,7 +545,10 @@ export default function UKSlipInAlbumsPage() {
 
             {/* Bundle 2 (Featured) */}
             <div className="bg-[#EFEEEA] p-8 flex flex-col justify-between relative shadow-md border-2 border-[#141310]">
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#141310] text-[#FAF9F5] px-4 py-1 text-[10px] font-semibold uppercase tracking-widest">
+              <div
+                style={{ color: '#FAF9F5' }}
+                className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#141310] !text-[#FAF9F5] px-4 py-1 text-[10px] font-semibold uppercase tracking-widest shadow-sm"
+              >
                 Most Popular For UK Studios
               </div>
               <div>
@@ -574,7 +580,8 @@ export default function UKSlipInAlbumsPage() {
               <button
                 type="button"
                 onClick={() => handleEnquire('Seasonal Portrait Bundle 10-Pack (£380)')}
-                className="mt-8 w-full py-3.5 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-wider hover:bg-[#292724] transition-colors shadow-sm"
+                style={{ color: '#FAF9F5' }}
+                className="mt-8 w-full py-3.5 bg-[#141310] !text-[#FAF9F5] text-xs font-semibold uppercase tracking-wider hover:bg-[#292724] hover:!text-[#FFFFFF] transition-colors shadow-sm"
               >
                 Claim 10-Unit Studio Pack (£380)
               </button>
@@ -611,7 +618,8 @@ export default function UKSlipInAlbumsPage() {
               <button
                 type="button"
                 onClick={() => handleEnquire('Commercial Portrait Enterprise 25-Pack (£850)')}
-                className="mt-8 w-full py-3.5 bg-[#292724] text-[#FAF9F5] text-xs font-semibold uppercase tracking-wider hover:bg-[#141310] transition-colors"
+                style={{ color: '#FAF9F5' }}
+                className="mt-8 w-full py-3.5 bg-[#292724] !text-[#FAF9F5] text-xs font-semibold uppercase tracking-wider hover:bg-[#141310] hover:!text-[#FFFFFF] transition-colors"
               >
                 Order Commercial Tier (£850)
               </button>
@@ -683,10 +691,11 @@ export default function UKSlipInAlbumsPage() {
                   href="https://wa.me/919322254315"
                   target="_blank"
                   rel="noreferrer"
-                  className="px-8 py-4 bg-transparent border border-[#FAF9F5]/30 text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest text-center hover:bg-[#FAF9F5]/10 transition-colors flex items-center justify-center gap-2"
+                  style={{ color: '#FAF9F5' }}
+                  className="px-8 py-4 bg-transparent border border-[#FAF9F5]/30 !text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest text-center hover:bg-[#FAF9F5]/10 hover:!text-[#FFFFFF] transition-colors flex items-center justify-center gap-2"
                 >
-                  <MessageSquare size={14} />
-                  <span>Speak to UK Concierge</span>
+                  <MessageSquare size={14} style={{ color: '#FAF9F5' }} />
+                  <span style={{ color: '#FAF9F5' }}>Speak to UK Concierge</span>
                 </a>
               </div>
             </div>
