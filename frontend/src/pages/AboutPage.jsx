@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import RevealOnScroll from '../components/motion/RevealOnScroll';
 import TextReveal from '../components/motion/TextReveal';
 import StaggerBoxes from '../components/motion/StaggerBoxes';
+import TiltCard from '../components/motion/TiltCard';
 import {
   ShieldCheck,
   Award,
@@ -375,111 +376,125 @@ export default function AboutPage() {
             </div>
           </RevealOnScroll>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <StaggerBoxes
+            direction="alternate"
+            distance={48}
+            stagger={0.12}
+            duration={0.9}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch"
+          >
             {/* Pillar 1 */}
-            <div className="bg-[#F4F4F0] p-8 flex flex-col justify-between border border-[#EAE6DF] hover:bg-[#EFEEEA] transition-colors duration-300">
-              <div>
-                <div className="w-full h-48 mb-6 overflow-hidden bg-[#EFEEEA]">
-                  <img
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                    alt="Darkroom laboratory continuous laser exposure printer head on Fuji Crystal Archive paper"
-                    src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80"
-                  />
+            <TiltCard maxTilt={6} scale={1.02} glare={true} className="h-full flex flex-col">
+              <div className="h-full bg-[#F4F4F0] hover:bg-[#FFFFFF] p-8 flex flex-col justify-between border border-[#EAE6DF] hover:border-[#B99A69]/70 rounded-2xl shadow-sm hover:shadow-[0_16px_36px_-8px_rgba(185,154,105,0.2)] transition-all duration-300">
+                <div>
+                  <div className="w-full h-48 mb-6 overflow-hidden rounded-xl bg-[#EFEEEA]">
+                    <img
+                      className="w-full h-full object-cover hover:scale-108 transition-transform duration-700"
+                      alt="Darkroom laboratory continuous laser exposure printer head on Fuji Crystal Archive paper"
+                      src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80"
+                    />
+                  </div>
+                  <span className="font-semibold text-[#635E52] text-[10px] tracking-widest uppercase block mb-2">
+                    Pillar 01 • Substrate
+                  </span>
+                  <h3 className="font-serif text-[20px] text-[#141310] mb-3 font-normal">
+                    Archival Silver Halide Exposure
+                  </h3>
+                  <p className="text-[13px] text-[#4A463F] leading-relaxed mb-6 font-normal">
+                    True chemical exposure on Fuji Crystal Archive and German fine art rag substrates. Guarantees 100+ years of laboratory certified chromatic stability without pigment breakdown.
+                  </p>
                 </div>
-                <span className="font-semibold text-[#635E52] text-[10px] tracking-widest uppercase block mb-2">
-                  Pillar 01 • Substrate
-                </span>
-                <h3 className="font-serif text-[20px] text-[#141310] mb-3 font-normal">
-                  Archival Silver Halide Exposure
-                </h3>
-                <p className="text-[13px] text-[#4A463F] leading-relaxed mb-6">
-                  True chemical exposure on Fuji Crystal Archive and German fine art rag substrates. Guarantees 100+ years of laboratory certified chromatic stability without pigment breakdown.
-                </p>
+                <div className="pt-3 bg-[#FFFFFF] px-4 py-2.5 rounded-xl flex items-center justify-between border border-[#EAE6DF]">
+                  <span className="font-semibold uppercase text-[#4A463F] text-[10px]">Fade Metric</span>
+                  <span className="font-bold text-[#141310] text-[11px]">ISO 18924 Rated</span>
+                </div>
               </div>
-              <div className="pt-4 bg-[#FFFFFF] px-4 py-2 flex items-center justify-between border border-[#EAE6DF]">
-                <span className="font-semibold uppercase text-[#4A463F] text-[10px]">Fade Metric</span>
-                <span className="font-bold text-[#141310] text-[11px]">ISO 18924 Rated</span>
-              </div>
-            </div>
+            </TiltCard>
 
             {/* Pillar 2 */}
-            <div className="bg-[#F4F4F0] p-8 flex flex-col justify-between border border-[#EAE6DF] hover:bg-[#EFEEEA] transition-colors duration-300">
-              <div>
-                <div className="w-full h-48 mb-6 overflow-hidden bg-[#EFEEEA]">
-                  <img
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                    alt="Wide macro photography of open 180 degree layflat wedding photo book demonstrating completely seamless panoramic fold"
-                    src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80"
-                  />
+            <TiltCard maxTilt={6} scale={1.02} glare={true} className="h-full flex flex-col">
+              <div className="h-full bg-[#F4F4F0] hover:bg-[#FFFFFF] p-8 flex flex-col justify-between border border-[#EAE6DF] hover:border-[#B99A69]/70 rounded-2xl shadow-sm hover:shadow-[0_16px_36px_-8px_rgba(185,154,105,0.2)] transition-all duration-300">
+                <div>
+                  <div className="w-full h-48 mb-6 overflow-hidden rounded-xl bg-[#EFEEEA]">
+                    <img
+                      className="w-full h-full object-cover hover:scale-108 transition-transform duration-700"
+                      alt="Wide macro photography of open 180 degree layflat wedding photo book demonstrating completely seamless panoramic fold"
+                      src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80"
+                    />
+                  </div>
+                  <span className="font-semibold text-[#635E52] text-[10px] tracking-widest uppercase block mb-2">
+                    Pillar 02 • Binding
+                  </span>
+                  <h3 className="font-serif text-[20px] text-[#141310] mb-3 font-normal">
+                    180° Seamless Layflat Panoramic
+                  </h3>
+                  <p className="text-[13px] text-[#4A463F] leading-relaxed mb-6 font-normal">
+                    Engineered with specialized German spine hinging and solid archival boards. Sweeping destination photography traverses the gutter with complete continuity and zero visual cut.
+                  </p>
                 </div>
-                <span className="font-semibold text-[#635E52] text-[10px] tracking-widest uppercase block mb-2">
-                  Pillar 02 • Binding
-                </span>
-                <h3 className="font-serif text-[20px] text-[#141310] mb-3 font-normal">
-                  180° Seamless Layflat Panoramic
-                </h3>
-                <p className="text-[13px] text-[#4A463F] leading-relaxed mb-6">
-                  Engineered with specialized German spine hinging and solid archival boards. Sweeping destination photography traverses the gutter with complete continuity and zero visual cut.
-                </p>
+                <div className="pt-3 bg-[#FFFFFF] px-4 py-2.5 rounded-xl flex items-center justify-between border border-[#EAE6DF]">
+                  <span className="font-semibold uppercase text-[#4A463F] text-[10px]">Crease Integrity</span>
+                  <span className="font-bold text-[#141310] text-[11px]">Zero Image Loss</span>
+                </div>
               </div>
-              <div className="pt-4 bg-[#FFFFFF] px-4 py-2 flex items-center justify-between border border-[#EAE6DF]">
-                <span className="font-semibold uppercase text-[#4A463F] text-[10px]">Crease Integrity</span>
-                <span className="font-bold text-[#141310] text-[11px]">Zero Image Loss</span>
-              </div>
-            </div>
+            </TiltCard>
 
             {/* Pillar 3 */}
-            <div className="bg-[#F4F4F0] p-8 flex flex-col justify-between border border-[#EAE6DF] hover:bg-[#EFEEEA] transition-colors duration-300">
-              <div>
-                <div className="w-full h-48 mb-6 overflow-hidden bg-[#EFEEEA]">
-                  <img
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                    alt="Full grain Italian vegetable tanned leather, French silk velvet, and organic Belgian linen rolls"
-                    src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80"
-                  />
+            <TiltCard maxTilt={6} scale={1.02} glare={true} className="h-full flex flex-col">
+              <div className="h-full bg-[#F4F4F0] hover:bg-[#FFFFFF] p-8 flex flex-col justify-between border border-[#EAE6DF] hover:border-[#B99A69]/70 rounded-2xl shadow-sm hover:shadow-[0_16px_36px_-8px_rgba(185,154,105,0.2)] transition-all duration-300">
+                <div>
+                  <div className="w-full h-48 mb-6 overflow-hidden rounded-xl bg-[#EFEEEA]">
+                    <img
+                      className="w-full h-full object-cover hover:scale-108 transition-transform duration-700"
+                      alt="Full grain Italian vegetable tanned leather, French silk velvet, and organic Belgian linen rolls"
+                      src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80"
+                    />
+                  </div>
+                  <span className="font-semibold text-[#635E52] text-[10px] tracking-widest uppercase block mb-2">
+                    Pillar 03 • Materiality
+                  </span>
+                  <h3 className="font-serif text-[20px] text-[#141310] mb-3 font-normal">
+                    Hand-Embossed Italian Leathers
+                  </h3>
+                  <p className="text-[13px] text-[#4A463F] leading-relaxed mb-6 font-normal">
+                    Sourced from ethical European tanneries in Tuscany and Milan. Finished with heated magnesium die debossing, blind monogram stamps, and hand-wrapped French silk velvets.
+                  </p>
                 </div>
-                <span className="font-semibold text-[#635E52] text-[10px] tracking-widest uppercase block mb-2">
-                  Pillar 03 • Materiality
-                </span>
-                <h3 className="font-serif text-[20px] text-[#141310] mb-3 font-normal">
-                  Hand-Embossed Italian Leathers
-                </h3>
-                <p className="text-[13px] text-[#4A463F] leading-relaxed mb-6">
-                  Sourced from ethical European tanneries in Tuscany and Milan. Finished with heated magnesium die debossing, blind monogram stamps, and hand-wrapped French silk velvets.
-                </p>
+                <div className="pt-3 bg-[#FFFFFF] px-4 py-2.5 rounded-xl flex items-center justify-between border border-[#EAE6DF]">
+                  <span className="font-semibold uppercase text-[#4A463F] text-[10px]">Provenance</span>
+                  <span className="font-bold text-[#141310] text-[11px]">Tuscan Leather Guild</span>
+                </div>
               </div>
-              <div className="pt-4 bg-[#FFFFFF] px-4 py-2 flex items-center justify-between border border-[#EAE6DF]">
-                <span className="font-semibold uppercase text-[#4A463F] text-[10px]">Provenance</span>
-                <span className="font-bold text-[#141310] text-[11px]">Tuscan Leather Guild</span>
-              </div>
-            </div>
+            </TiltCard>
 
             {/* Pillar 4 */}
-            <div className="bg-[#F4F4F0] p-8 flex flex-col justify-between border border-[#EAE6DF] hover:bg-[#EFEEEA] transition-colors duration-300">
-              <div>
-                <div className="w-full h-48 mb-6 overflow-hidden bg-[#EFEEEA]">
-                  <img
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                    alt="Book curator wearing pure white cotton gloves delicately examining corners and spine edge under task lamp"
-                    src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80"
-                  />
+            <TiltCard maxTilt={6} scale={1.02} glare={true} className="h-full flex flex-col">
+              <div className="h-full bg-[#F4F4F0] hover:bg-[#FFFFFF] p-8 flex flex-col justify-between border border-[#EAE6DF] hover:border-[#B99A69]/70 rounded-2xl shadow-sm hover:shadow-[0_16px_36px_-8px_rgba(185,154,105,0.2)] transition-all duration-300">
+                <div>
+                  <div className="w-full h-48 mb-6 overflow-hidden rounded-xl bg-[#EFEEEA]">
+                    <img
+                      className="w-full h-full object-cover hover:scale-108 transition-transform duration-700"
+                      alt="Book curator wearing pure white cotton gloves delicately examining corners and spine edge under task lamp"
+                      src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80"
+                    />
+                  </div>
+                  <span className="font-semibold text-[#635E52] text-[10px] tracking-widest uppercase block mb-2">
+                    Pillar 04 • Assurance
+                  </span>
+                  <h3 className="font-serif text-[20px] text-[#141310] mb-3 font-normal">
+                    5-Stage White Glove Inspection
+                  </h3>
+                  <p className="text-[13px] text-[#4A463F] leading-relaxed mb-6 font-normal">
+                    Every millimeter of the print block, spine elasticity, and corner debossing undergoes 5 rigorous pass checkpoints prior to being nested in archival bespoke velvet encasements.
+                  </p>
                 </div>
-                <span className="font-semibold text-[#635E52] text-[10px] tracking-widest uppercase block mb-2">
-                  Pillar 04 • Assurance
-                </span>
-                <h3 className="font-serif text-[20px] text-[#141310] mb-3 font-normal">
-                  5-Stage White Glove Inspection
-                </h3>
-                <p className="text-[13px] text-[#4A463F] leading-relaxed mb-6">
-                  Every millimeter of the print block, spine elasticity, and corner debossing undergoes 5 rigorous pass checkpoints prior to being nested in archival bespoke velvet encasements.
-                </p>
+                <div className="pt-3 bg-[#FFFFFF] px-4 py-2.5 rounded-xl flex items-center justify-between border border-[#EAE6DF]">
+                  <span className="font-semibold uppercase text-[#4A463F] text-[10px]">Tolerances</span>
+                  <span className="font-bold text-[#141310] text-[11px]">± 0.25 mm Strict</span>
+                </div>
               </div>
-              <div className="pt-4 bg-[#FFFFFF] px-4 py-2 flex items-center justify-between border border-[#EAE6DF]">
-                <span className="font-semibold uppercase text-[#4A463F] text-[10px]">Tolerances</span>
-                <span className="font-bold text-[#141310] text-[11px]">± 0.25 mm Strict</span>
-              </div>
-            </div>
-          </div>
+            </TiltCard>
+          </StaggerBoxes>
         </div>
       </section>
 
@@ -519,162 +534,168 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <StaggerBoxes className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 relative" stagger={0.12}>
+          <StaggerBoxes direction="alternate" distance={48} stagger={0.14} duration={0.9} className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 relative">
             {/* Step 1 */}
-            <div
-              className="rounded-2xl p-6 sm:p-8 md:p-10 flex flex-col justify-between relative shadow-[0_16px_40px_-12px_rgba(0,0,0,0.35)] border border-[#3E3A33] transition-all duration-300 hover:border-[#B99A69]/60 hover:-translate-y-1 group"
-              style={{ backgroundColor: '#24211D' }}
-            >
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  <span className="font-serif text-[38px] md:text-[42px] leading-none" style={{ color: '#B99A69', opacity: 0.55 }}>
-                    01
+            <TiltCard maxTilt={6} scale={1.02} glare={true} className="h-full flex flex-col">
+              <div
+                className="rounded-2xl p-6 sm:p-8 md:p-10 flex flex-col justify-between relative shadow-[0_16px_40px_-12px_rgba(0,0,0,0.35)] border border-[#3E3A33] transition-all duration-300 hover:border-[#B99A69]/60 hover:-translate-y-1 group h-full"
+                style={{ backgroundColor: '#24211D' }}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="font-serif text-[38px] md:text-[42px] leading-none" style={{ color: '#B99A69', opacity: 0.55 }}>
+                      01
+                    </span>
+                    <div className="w-10 h-10 rounded-full border border-[#B99A69]/30 flex items-center justify-center bg-[#1A1815]">
+                      <BookOpen size={20} className="text-[#B99A69]" />
+                    </div>
+                  </div>
+
+                  <span
+                    className="inline-block px-2.5 py-0.5 rounded-full border border-[#B99A69]/30 text-[9.5px] font-sans font-semibold uppercase tracking-[0.2em] mb-2.5"
+                    style={{ color: '#D4AF37', backgroundColor: 'rgba(185, 154, 105, 0.1)' }}
+                  >
+                    Stage 01
                   </span>
-                  <div className="w-10 h-10 rounded-full border border-[#B99A69]/30 flex items-center justify-center bg-[#1A1815]">
-                    <BookOpen size={20} className="text-[#B99A69]" />
+
+                  <h3
+                    className="font-serif text-[22px] sm:text-[24px] font-normal leading-snug mb-3.5 group-hover:text-[#B99A69] transition-colors !text-[#FAF7F2]"
+                    style={{ color: '#FAF7F2' }}
+                  >
+                    Transfer &amp; Layout Curating
+                  </h3>
+
+                  <p
+                    className="font-sans text-[14px] sm:text-[14.5px] leading-[1.7] mb-6 font-normal !text-[#D5CDBF]"
+                    style={{ color: '#D5CDBF' }}
+                  >
+                    Studio raw imagery is curated into bespoke architectural spreads. We provide high-resolution interactive digital soft proofs, pacing each sequence to reflect the genuine emotional cadence of the celebration.
+                  </p>
+                </div>
+
+                <div
+                  className="space-y-2.5 pt-5 p-4 rounded-xl border border-[#3E3A33]"
+                  style={{ backgroundColor: '#1A1815' }}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Check size={14} className="text-[#B99A69] shrink-0" />
+                    <span className="text-[12.5px] font-sans font-medium !text-[#FAF7F2]" style={{ color: '#FAF7F2' }}>Multi-revision client proofing app</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Check size={14} className="text-[#B99A69] shrink-0" />
+                    <span className="text-[12.5px] font-sans font-medium !text-[#FAF7F2]" style={{ color: '#FAF7F2' }}>Architectural negative whitespace balance</span>
                   </div>
                 </div>
-
-                <span
-                  className="inline-block px-2.5 py-0.5 rounded-full border border-[#B99A69]/30 text-[9.5px] font-sans font-semibold uppercase tracking-[0.2em] mb-2.5"
-                  style={{ color: '#D4AF37', backgroundColor: 'rgba(185, 154, 105, 0.1)' }}
-                >
-                  Stage 01
-                </span>
-
-                <h3
-                  className="font-serif text-[22px] sm:text-[24px] font-normal leading-snug mb-3.5 group-hover:text-[#B99A69] transition-colors !text-[#FAF7F2]"
-                  style={{ color: '#FAF7F2' }}
-                >
-                  Transfer &amp; Layout Curating
-                </h3>
-
-                <p
-                  className="font-sans text-[14px] sm:text-[14.5px] leading-[1.7] mb-6 font-normal !text-[#D5CDBF]"
-                  style={{ color: '#D5CDBF' }}
-                >
-                  Studio raw imagery is curated into bespoke architectural spreads. We provide high-resolution interactive digital soft proofs, pacing each sequence to reflect the genuine emotional cadence of the celebration.
-                </p>
               </div>
-
-              <div
-                className="space-y-2.5 pt-5 p-4 rounded-xl border border-[#3E3A33]"
-                style={{ backgroundColor: '#1A1815' }}
-              >
-                <div className="flex items-center gap-2.5">
-                  <Check size={14} className="text-[#B99A69] shrink-0" />
-                  <span className="text-[12.5px] font-sans font-medium !text-[#FAF7F2]" style={{ color: '#FAF7F2' }}>Multi-revision client proofing app</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <Check size={14} className="text-[#B99A69] shrink-0" />
-                  <span className="text-[12.5px] font-sans font-medium !text-[#FAF7F2]" style={{ color: '#FAF7F2' }}>Architectural negative whitespace balance</span>
-                </div>
-              </div>
-            </div>
+            </TiltCard>
 
             {/* Step 2 */}
-            <div
-              className="rounded-2xl p-6 sm:p-8 md:p-10 flex flex-col justify-between relative shadow-[0_16px_40px_-12px_rgba(0,0,0,0.35)] border border-[#3E3A33] transition-all duration-300 hover:border-[#B99A69]/60 hover:-translate-y-1 group"
-              style={{ backgroundColor: '#24211D' }}
-            >
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  <span className="font-serif text-[38px] md:text-[42px] leading-none" style={{ color: '#B99A69', opacity: 0.55 }}>
-                    02
+            <TiltCard maxTilt={6} scale={1.02} glare={true} className="h-full flex flex-col">
+              <div
+                className="rounded-2xl p-6 sm:p-8 md:p-10 flex flex-col justify-between relative shadow-[0_16px_40px_-12px_rgba(0,0,0,0.35)] border border-[#3E3A33] transition-all duration-300 hover:border-[#B99A69]/60 hover:-translate-y-1 group h-full"
+                style={{ backgroundColor: '#24211D' }}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="font-serif text-[38px] md:text-[42px] leading-none" style={{ color: '#B99A69', opacity: 0.55 }}>
+                      02
+                    </span>
+                    <div className="w-10 h-10 rounded-full border border-[#B99A69]/30 flex items-center justify-center bg-[#1A1815]">
+                      <Layers size={20} className="text-[#B99A69]" />
+                    </div>
+                  </div>
+
+                  <span
+                    className="inline-block px-2.5 py-0.5 rounded-full border border-[#B99A69]/30 text-[9.5px] font-sans font-semibold uppercase tracking-[0.2em] mb-2.5"
+                    style={{ color: '#D4AF37', backgroundColor: 'rgba(185, 154, 105, 0.1)' }}
+                  >
+                    Stage 02
                   </span>
-                  <div className="w-10 h-10 rounded-full border border-[#B99A69]/30 flex items-center justify-center bg-[#1A1815]">
-                    <Layers size={20} className="text-[#B99A69]" />
+
+                  <h3
+                    className="font-serif text-[22px] sm:text-[24px] font-normal leading-snug mb-3.5 group-hover:text-[#B99A69] transition-colors !text-[#FAF7F2]"
+                    style={{ color: '#FAF7F2' }}
+                  >
+                    Precision Printing &amp; Hand Binding
+                  </h3>
+
+                  <p
+                    className="font-sans text-[14px] sm:text-[14.5px] leading-[1.7] mb-6 font-normal !text-[#D5CDBF]"
+                    style={{ color: '#D5CDBF' }}
+                  >
+                    High-definition continuous tone exposure coupled with German binding presses. Core boards are reinforced with climate-controlled, humidity-resistant non-bending archival substrates before leather covers are trimmed by hand.
+                  </p>
+                </div>
+
+                <div
+                  className="space-y-2.5 pt-5 p-4 rounded-xl border border-[#3E3A33]"
+                  style={{ backgroundColor: '#1A1815' }}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Check size={14} className="text-[#B99A69] shrink-0" />
+                    <span className="text-[12.5px] font-sans font-medium !text-[#FAF7F2]" style={{ color: '#FAF7F2' }}>Anti-warp composite core formulation</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Check size={14} className="text-[#B99A69] shrink-0" />
+                    <span className="text-[12.5px] font-sans font-medium !text-[#FAF7F2]" style={{ color: '#FAF7F2' }}>Individual hydraulic spine conditioning</span>
                   </div>
                 </div>
-
-                <span
-                  className="inline-block px-2.5 py-0.5 rounded-full border border-[#B99A69]/30 text-[9.5px] font-sans font-semibold uppercase tracking-[0.2em] mb-2.5"
-                  style={{ color: '#D4AF37', backgroundColor: 'rgba(185, 154, 105, 0.1)' }}
-                >
-                  Stage 02
-                </span>
-
-                <h3
-                  className="font-serif text-[22px] sm:text-[24px] font-normal leading-snug mb-3.5 group-hover:text-[#B99A69] transition-colors !text-[#FAF7F2]"
-                  style={{ color: '#FAF7F2' }}
-                >
-                  Precision Printing &amp; Hand Binding
-                </h3>
-
-                <p
-                  className="font-sans text-[14px] sm:text-[14.5px] leading-[1.7] mb-6 font-normal !text-[#D5CDBF]"
-                  style={{ color: '#D5CDBF' }}
-                >
-                  High-definition continuous tone exposure coupled with German binding presses. Core boards are reinforced with climate-controlled, humidity-resistant non-bending archival substrates before leather covers are trimmed by hand.
-                </p>
               </div>
-
-              <div
-                className="space-y-2.5 pt-5 p-4 rounded-xl border border-[#3E3A33]"
-                style={{ backgroundColor: '#1A1815' }}
-              >
-                <div className="flex items-center gap-2.5">
-                  <Check size={14} className="text-[#B99A69] shrink-0" />
-                  <span className="text-[12.5px] font-sans font-medium !text-[#FAF7F2]" style={{ color: '#FAF7F2' }}>Anti-warp composite core formulation</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <Check size={14} className="text-[#B99A69] shrink-0" />
-                  <span className="text-[12.5px] font-sans font-medium !text-[#FAF7F2]" style={{ color: '#FAF7F2' }}>Individual hydraulic spine conditioning</span>
-                </div>
-              </div>
-            </div>
+            </TiltCard>
 
             {/* Step 3 */}
-            <div
-              className="rounded-2xl p-6 sm:p-8 md:p-10 flex flex-col justify-between relative shadow-[0_16px_40px_-12px_rgba(0,0,0,0.35)] border border-[#3E3A33] transition-all duration-300 hover:border-[#B99A69]/60 hover:-translate-y-1 group"
-              style={{ backgroundColor: '#24211D' }}
-            >
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  <span className="font-serif text-[38px] md:text-[42px] leading-none" style={{ color: '#B99A69', opacity: 0.55 }}>
-                    03
+            <TiltCard maxTilt={6} scale={1.02} glare={true} className="h-full flex flex-col">
+              <div
+                className="rounded-2xl p-6 sm:p-8 md:p-10 flex flex-col justify-between relative shadow-[0_16px_40px_-12px_rgba(0,0,0,0.35)] border border-[#3E3A33] transition-all duration-300 hover:border-[#B99A69]/60 hover:-translate-y-1 group h-full"
+                style={{ backgroundColor: '#24211D' }}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="font-serif text-[38px] md:text-[42px] leading-none" style={{ color: '#B99A69', opacity: 0.55 }}>
+                      03
+                    </span>
+                    <div className="w-10 h-10 rounded-full border border-[#B99A69]/30 flex items-center justify-center bg-[#1A1815]">
+                      <Plane size={20} className="text-[#B99A69]" />
+                    </div>
+                  </div>
+
+                  <span
+                    className="inline-block px-2.5 py-0.5 rounded-full border border-[#B99A69]/30 text-[9.5px] font-sans font-semibold uppercase tracking-[0.2em] mb-2.5"
+                    style={{ color: '#D4AF37', backgroundColor: 'rgba(185, 154, 105, 0.1)' }}
+                  >
+                    Stage 03
                   </span>
-                  <div className="w-10 h-10 rounded-full border border-[#B99A69]/30 flex items-center justify-center bg-[#1A1815]">
-                    <Plane size={20} className="text-[#B99A69]" />
+
+                  <h3
+                    className="font-serif text-[22px] sm:text-[24px] font-normal leading-snug mb-3.5 group-hover:text-[#B99A69] transition-colors !text-[#FAF7F2]"
+                    style={{ color: '#FAF7F2' }}
+                  >
+                    Global White-Glove Dispatch
+                  </h3>
+
+                  <p
+                    className="font-sans text-[14px] sm:text-[14.5px] leading-[1.7] mb-6 font-normal !text-[#D5CDBF]"
+                    style={{ color: '#D5CDBF' }}
+                  >
+                    Tightly wrapped in custom anti-humidity velvet sleeves and double-walled impact-absorbing presentation cartons. Priority tracked air transit departs Mumbai daily, landing in London or New York within 72 hours.
+                  </p>
+                </div>
+
+                <div
+                  className="space-y-2.5 pt-5 p-4 rounded-xl border border-[#3E3A33]"
+                  style={{ backgroundColor: '#1A1815' }}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Check size={14} className="text-[#B99A69] shrink-0" />
+                    <span className="text-[12.5px] font-sans font-medium !text-[#FAF7F2]" style={{ color: '#FAF7F2' }}>Full customs clearance &amp; duty pre-paid</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Check size={14} className="text-[#B99A69] shrink-0" />
+                    <span className="text-[12.5px] font-sans font-medium !text-[#FAF7F2]" style={{ color: '#FAF7F2' }}>Doorstep white-glove unboxing presentation</span>
                   </div>
                 </div>
-
-                <span
-                  className="inline-block px-2.5 py-0.5 rounded-full border border-[#B99A69]/30 text-[9.5px] font-sans font-semibold uppercase tracking-[0.2em] mb-2.5"
-                  style={{ color: '#D4AF37', backgroundColor: 'rgba(185, 154, 105, 0.1)' }}
-                >
-                  Stage 03
-                </span>
-
-                <h3
-                  className="font-serif text-[22px] sm:text-[24px] font-normal leading-snug mb-3.5 group-hover:text-[#B99A69] transition-colors !text-[#FAF7F2]"
-                  style={{ color: '#FAF7F2' }}
-                >
-                  Global White-Glove Dispatch
-                </h3>
-
-                <p
-                  className="font-sans text-[14px] sm:text-[14.5px] leading-[1.7] mb-6 font-normal !text-[#D5CDBF]"
-                  style={{ color: '#D5CDBF' }}
-                >
-                  Tightly wrapped in custom anti-humidity velvet sleeves and double-walled impact-absorbing presentation cartons. Priority tracked air transit departs Mumbai daily, landing in London or New York within 72 hours.
-                </p>
               </div>
-
-              <div
-                className="space-y-2.5 pt-5 p-4 rounded-xl border border-[#3E3A33]"
-                style={{ backgroundColor: '#1A1815' }}
-              >
-                <div className="flex items-center gap-2.5">
-                  <Check size={14} className="text-[#B99A69] shrink-0" />
-                  <span className="text-[12.5px] font-sans font-medium !text-[#FAF7F2]" style={{ color: '#FAF7F2' }}>Full customs clearance &amp; duty pre-paid</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <Check size={14} className="text-[#B99A69] shrink-0" />
-                  <span className="text-[12.5px] font-sans font-medium !text-[#FAF7F2]" style={{ color: '#FAF7F2' }}>Doorstep white-glove unboxing presentation</span>
-                </div>
-              </div>
-            </div>
+            </TiltCard>
           </StaggerBoxes>
         </div>
       </section>
@@ -1120,107 +1141,121 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <StaggerBoxes
+            direction="alternate"
+            distance={46}
+            stagger={0.12}
+            duration={0.9}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch"
+          >
             {/* Artisan 1 */}
-            <div className="bg-[#FFFFFF] p-6 shadow-sm flex flex-col justify-between border border-[#EAE6DF]">
-              <div>
-                <div className="w-full h-72 mb-6 overflow-hidden bg-[#EFEEEA]">
-                  <img
-                    className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-300"
-                    alt="Portrait of senior craftsman Ramesh Varma standing inside workshop"
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80"
-                  />
+            <TiltCard maxTilt={6} scale={1.02} glare={true} className="h-full flex flex-col">
+              <div className="bg-[#FFFFFF] p-6 rounded-2xl shadow-sm hover:shadow-[0_16px_36px_-8px_rgba(185,154,105,0.2)] flex flex-col justify-between border border-[#EAE6DF] hover:border-[#B99A69]/70 transition-all duration-300 h-full">
+                <div>
+                  <div className="w-full h-72 mb-6 overflow-hidden rounded-xl bg-[#EFEEEA]">
+                    <img
+                      className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-500 hover:scale-106"
+                      alt="Portrait of senior craftsman Ramesh Varma standing inside workshop"
+                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80"
+                    />
+                  </div>
+                  <span className="font-semibold text-[#635E52] uppercase tracking-widest block text-[10px] mb-1">
+                    Guild Member • 18 Yrs
+                  </span>
+                  <h3 className="font-serif text-[20px] text-[#141310] font-normal">Ramesh Varma</h3>
+                  <p className="text-[13px] text-[#4A463F] font-medium mt-1 mb-3">Master Bookbinder &amp; Spine Engineer</p>
+                  <p className="text-[13px] text-[#4A463F] leading-relaxed font-normal">
+                    Trained in classical Florentine and Japanese bookbinding techniques. Ramesh personally verifies the spine tension and hinge calibration of every grand-format volume.
+                  </p>
                 </div>
-                <span className="font-semibold text-[#635E52] uppercase tracking-widest block text-[10px] mb-1">
-                  Guild Member • 18 Yrs
-                </span>
-                <h3 className="font-serif text-[20px] text-[#141310] font-normal">Ramesh Varma</h3>
-                <p className="text-[13px] text-[#4A463F] font-medium mt-1 mb-3">Master Bookbinder &amp; Spine Engineer</p>
-                <p className="text-[13px] text-[#4A463F] leading-relaxed">
-                  Trained in classical Florentine and Japanese bookbinding techniques. Ramesh personally verifies the spine tension and hinge calibration of every grand-format volume.
-                </p>
+                <div className="mt-6 pt-4 bg-[#F4F4F0] p-3 rounded-xl flex items-center justify-between text-[#4A463F] border border-[#EAE6DF]">
+                  <span className="font-semibold uppercase text-[10px]">Specialism</span>
+                  <span className="font-bold text-[#141310] text-[10px]">Layflat Hinges</span>
+                </div>
               </div>
-              <div className="mt-6 pt-4 bg-[#F4F4F0] p-3 flex items-center justify-between text-[#4A463F] border border-[#EAE6DF]">
-                <span className="font-semibold uppercase text-[10px]">Specialism</span>
-                <span className="font-bold text-[#141310] text-[10px]">Layflat Hinges</span>
-              </div>
-            </div>
+            </TiltCard>
 
             {/* Artisan 2 */}
-            <div className="bg-[#FFFFFF] p-6 shadow-sm flex flex-col justify-between border border-[#EAE6DF]">
-              <div>
-                <div className="w-full h-72 mb-6 overflow-hidden bg-[#EFEEEA]">
-                  <img
-                    className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-300"
-                    alt="Portrait of woman color technician Kavita Iyer calibrating monitor"
-                    src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80"
-                  />
+            <TiltCard maxTilt={6} scale={1.02} glare={true} className="h-full flex flex-col">
+              <div className="bg-[#FFFFFF] p-6 rounded-2xl shadow-sm hover:shadow-[0_16px_36px_-8px_rgba(185,154,105,0.2)] flex flex-col justify-between border border-[#EAE6DF] hover:border-[#B99A69]/70 transition-all duration-300 h-full">
+                <div>
+                  <div className="w-full h-72 mb-6 overflow-hidden rounded-xl bg-[#EFEEEA]">
+                    <img
+                      className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-500 hover:scale-106"
+                      alt="Portrait of woman color technician Kavita Iyer calibrating monitor"
+                      src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80"
+                    />
+                  </div>
+                  <span className="font-semibold text-[#635E52] uppercase tracking-widest block text-[10px] mb-1">
+                    Lab Director • 14 Yrs
+                  </span>
+                  <h3 className="font-serif text-[20px] text-[#141310] font-normal">Kavita Iyer</h3>
+                  <p className="text-[13px] text-[#4A463F] font-medium mt-1 mb-3">Head of Master Color Grading</p>
+                  <p className="text-[13px] text-[#4A463F] leading-relaxed font-normal">
+                    Certified X-Rite color scientist. Kavita supervises continuous spectrometer profiling and ICC profiles matching Fuji Crystal Archive emulsions with diverse camera raw profiles.
+                  </p>
                 </div>
-                <span className="font-semibold text-[#635E52] uppercase tracking-widest block text-[10px] mb-1">
-                  Lab Director • 14 Yrs
-                </span>
-                <h3 className="font-serif text-[20px] text-[#141310] font-normal">Kavita Iyer</h3>
-                <p className="text-[13px] text-[#4A463F] font-medium mt-1 mb-3">Head of Master Color Grading</p>
-                <p className="text-[13px] text-[#4A463F] leading-relaxed">
-                  Certified X-Rite color scientist. Kavita supervises continuous spectrometer profiling and ICC profiles matching Fuji Crystal Archive emulsions with diverse camera raw profiles.
-                </p>
+                <div className="mt-6 pt-4 bg-[#F4F4F0] p-3 rounded-xl flex items-center justify-between text-[#4A463F] border border-[#EAE6DF]">
+                  <span className="font-semibold uppercase text-[10px]">Specialism</span>
+                  <span className="font-bold text-[#141310] text-[10px]">Skin Tone Gamut</span>
+                </div>
               </div>
-              <div className="mt-6 pt-4 bg-[#F4F4F0] p-3 flex items-center justify-between text-[#4A463F] border border-[#EAE6DF]">
-                <span className="font-semibold uppercase text-[10px]">Specialism</span>
-                <span className="font-bold text-[#141310] text-[10px]">Skin Tone Gamut</span>
-              </div>
-            </div>
+            </TiltCard>
 
             {/* Artisan 3 */}
-            <div className="bg-[#FFFFFF] p-6 shadow-sm flex flex-col justify-between border border-[#EAE6DF]">
-              <div>
-                <div className="w-full h-72 mb-6 overflow-hidden bg-[#EFEEEA]">
-                  <img
-                    className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-300"
-                    alt="Editorial portrait of creative design specialist Arjun Mehta reviewing proofs"
-                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80"
-                  />
+            <TiltCard maxTilt={6} scale={1.02} glare={true} className="h-full flex flex-col">
+              <div className="bg-[#FFFFFF] p-6 rounded-2xl shadow-sm hover:shadow-[0_16px_36px_-8px_rgba(185,154,105,0.2)] flex flex-col justify-between border border-[#EAE6DF] hover:border-[#B99A69]/70 transition-all duration-300 h-full">
+                <div>
+                  <div className="w-full h-72 mb-6 overflow-hidden rounded-xl bg-[#EFEEEA]">
+                    <img
+                      className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-500 hover:scale-106"
+                      alt="Editorial portrait of creative design specialist Arjun Mehta reviewing proofs"
+                      src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80"
+                    />
+                  </div>
+                  <span className="font-semibold text-[#635E52] uppercase tracking-widest block text-[10px] mb-1">
+                    Curation Lead • 10 Yrs
+                  </span>
+                  <h3 className="font-serif text-[20px] text-[#141310] font-normal">Arjun Mehta</h3>
+                  <p className="text-[13px] text-[#4A463F] font-medium mt-1 mb-3">Senior Album Layout Curator</p>
+                  <p className="text-[13px] text-[#4A463F] leading-relaxed font-normal">
+                    Educated in Swiss editorial typography. Arjun works directly with international photographers to design contemplative, cinematic pacing across wide panoramic double-page spreads.
+                  </p>
                 </div>
-                <span className="font-semibold text-[#635E52] uppercase tracking-widest block text-[10px] mb-1">
-                  Curation Lead • 10 Yrs
-                </span>
-                <h3 className="font-serif text-[20px] text-[#141310] font-normal">Arjun Mehta</h3>
-                <p className="text-[13px] text-[#4A463F] font-medium mt-1 mb-3">Senior Album Layout Curator</p>
-                <p className="text-[13px] text-[#4A463F] leading-relaxed">
-                  Educated in Swiss editorial typography. Arjun works directly with international photographers to design contemplative, cinematic pacing across wide panoramic double-page spreads.
-                </p>
+                <div className="mt-6 pt-4 bg-[#F4F4F0] p-3 rounded-xl flex items-center justify-between text-[#4A463F] border border-[#EAE6DF]">
+                  <span className="font-semibold uppercase text-[10px]">Specialism</span>
+                  <span className="font-bold text-[#141310] text-[10px]">Editorial Pacing</span>
+                </div>
               </div>
-              <div className="mt-6 pt-4 bg-[#F4F4F0] p-3 flex items-center justify-between text-[#4A463F] border border-[#EAE6DF]">
-                <span className="font-semibold uppercase text-[10px]">Specialism</span>
-                <span className="font-bold text-[#141310] text-[10px]">Editorial Pacing</span>
-              </div>
-            </div>
+            </TiltCard>
 
             {/* Artisan 4 */}
-            <div className="bg-[#FFFFFF] p-6 shadow-sm flex flex-col justify-between border border-[#EAE6DF]">
-              <div>
-                <div className="w-full h-72 mb-6 overflow-hidden bg-[#EFEEEA]">
-                  <img
-                    className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-300"
-                    alt="Portrait of luxury concierge representative Eleanor Vance consulting swatch ring"
-                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80"
-                  />
+            <TiltCard maxTilt={6} scale={1.02} glare={true} className="h-full flex flex-col">
+              <div className="bg-[#FFFFFF] p-6 rounded-2xl shadow-sm hover:shadow-[0_16px_36px_-8px_rgba(185,154,105,0.2)] flex flex-col justify-between border border-[#EAE6DF] hover:border-[#B99A69]/70 transition-all duration-300 h-full">
+                <div>
+                  <div className="w-full h-72 mb-6 overflow-hidden rounded-xl bg-[#EFEEEA]">
+                    <img
+                      className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-500 hover:scale-106"
+                      alt="Portrait of luxury concierge representative Eleanor Vance consulting swatch ring"
+                      src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80"
+                    />
+                  </div>
+                  <span className="font-semibold text-[#635E52] uppercase tracking-widest block text-[10px] mb-1">
+                    Client Services • 8 Yrs
+                  </span>
+                  <h3 className="font-serif text-[20px] text-[#141310] font-normal">Eleanor Vance</h3>
+                  <p className="text-[13px] text-[#4A463F] font-medium mt-1 mb-3">Global Concierge Lead (UK &amp; GCC)</p>
+                  <p className="text-[13px] text-[#4A463F] leading-relaxed font-normal">
+                    Based between Mumbai and London, Eleanor orchestrates studio accounts, swatch kit logistics, and rapid white-glove courier routing for high-profile commissions.
+                  </p>
                 </div>
-                <span className="font-semibold text-[#635E52] uppercase tracking-widest block text-[10px] mb-1">
-                  Client Services • 8 Yrs
-                </span>
-                <h3 className="font-serif text-[20px] text-[#141310] font-normal">Eleanor Vance</h3>
-                <p className="text-[13px] text-[#4A463F] font-medium mt-1 mb-3">Global Concierge Lead (UK &amp; GCC)</p>
-                <p className="text-[13px] text-[#4A463F] leading-relaxed">
-                  Based between Mumbai and London, Eleanor orchestrates studio accounts, swatch kit logistics, and rapid white-glove courier routing for high-profile commissions.
-                </p>
+                <div className="mt-6 pt-4 bg-[#F4F4F0] p-3 rounded-xl flex items-center justify-between text-[#4A463F] border border-[#EAE6DF]">
+                  <span className="font-semibold uppercase text-[10px]">Specialism</span>
+                  <span className="font-bold text-[#141310] text-[10px]">International Liaison</span>
+                </div>
               </div>
-              <div className="mt-6 pt-4 bg-[#F4F4F0] p-3 flex items-center justify-between text-[#4A463F] border border-[#EAE6DF]">
-                <span className="font-semibold uppercase text-[10px]">Specialism</span>
-                <span className="font-bold text-[#141310] text-[10px]">International Liaison</span>
-              </div>
-            </div>
-          </div>
+            </TiltCard>
+          </StaggerBoxes>
         </div>
       </section>
 

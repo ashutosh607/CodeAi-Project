@@ -197,6 +197,11 @@ html.lenis, html.lenis body {
   animation: luxuryTickerLoop 36s linear infinite;
 }
 
+.luxury-announcement-ticker:hover .ticker-track,
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ticker-track {
     animation: none;

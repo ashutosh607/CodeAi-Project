@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import RevealOnScroll from '../../components/motion/RevealOnScroll';
 import TextReveal from '../../components/motion/TextReveal';
+import StaggerBoxes from '../../components/motion/StaggerBoxes';
+import TiltCard from '../../components/motion/TiltCard';
 import {
   ChevronRight,
   CheckCircle,
@@ -298,77 +300,90 @@ export default function WeddingPhotoAlbumsPage() {
             </div>
           </div>
 
-          {/* Case Studies Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+          {/* Case Studies Grid: Alternating Left / Right Entrances */}
+          <StaggerBoxes
+            direction="alternate"
+            distance={48}
+            stagger={0.12}
+            duration={0.9}
+            className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 items-stretch"
+          >
             {filteredCases.map((study) => (
-              <div
+              <TiltCard
                 key={study.id}
-                className="bg-white border border-[#EAE6DF] shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between group"
+                maxTilt={6}
+                scale={1.02}
+                glare={true}
+                className="h-full flex flex-col"
               >
-                <div>
-                  <div className="relative aspect-[16/10] bg-[#141310] overflow-hidden">
-                    <img
-                      src={study.imgSrc}
-                      alt={study.alt}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                    />
-                    <div className="absolute top-3 left-3 bg-[#141310]/85 text-white text-[10px] uppercase font-semibold px-2.5 py-1 tracking-wider">
-                      {study.location}
+                <div
+                  className="h-full bg-white border border-[#EAE6DF] hover:border-[#B99A69]/70 rounded-2xl shadow-sm hover:shadow-[0_16px_36px_-8px_rgba(185,154,105,0.2)] transition-all duration-300 flex flex-col justify-between group overflow-hidden"
+                >
+                  <div>
+                    <div className="relative aspect-[16/10] bg-[#141310] overflow-hidden">
+                      <img
+                        src={study.imgSrc}
+                        alt={study.alt}
+                        className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700 ease-out"
+                      />
+                      <div className="absolute top-3 left-3 bg-[#141310]/85 backdrop-blur-md text-white text-[10px] uppercase font-semibold px-2.5 py-1 tracking-wider rounded-sm">
+                        {study.location}
+                      </div>
+                    </div>
+
+                    <div className="p-6 md:p-8 space-y-4">
+                      <div className="space-y-1">
+                        <span className="text-[10px] uppercase tracking-[0.14em] font-semibold text-[#635E52]">
+                          Commission Specimen // {study.dimensions}
+                        </span>
+                        <h3 className="font-serif text-[24px] text-[#141310] leading-snug group-hover:text-[#9E7D4B] transition-colors">
+                          {study.title}
+                        </h3>
+                        <p className="text-[13px] text-[#4A463F] leading-relaxed pt-1 font-normal">
+                          {study.description}
+                        </p>
+                      </div>
+
+                      {/* Specification Dossier Matrix */}
+                      <div className="bg-[#F4F4F0] p-4.5 rounded-xl border border-[#EAE6DF] space-y-2 text-[12px] text-[#4A463F]">
+                        <div className="flex justify-between py-1 border-b border-[#EAE6DF]/60">
+                          <span className="text-[#635E52]">Cover Textile:</span>
+                          <span className="font-medium text-[#141310] text-right">{study.cover}</span>
+                        </div>
+                        <div className="flex justify-between py-1 border-b border-[#EAE6DF]/60">
+                          <span className="text-[#635E52]">Personalization:</span>
+                          <span className="font-medium text-[#141310] text-right">{study.foil}</span>
+                        </div>
+                        <div className="flex justify-between py-1 border-b border-[#EAE6DF]/60">
+                          <span className="text-[#635E52]">Photographic Substrate:</span>
+                          <span className="font-medium text-[#141310] text-right">{study.paper}</span>
+                        </div>
+                        <div className="flex justify-between py-1 border-b border-[#EAE6DF]/60">
+                          <span className="text-[#635E52]">Spreads &amp; Pages:</span>
+                          <span className="font-medium text-[#141310] text-right">{study.spreads}</span>
+                        </div>
+                        <div className="flex justify-between py-1">
+                          <span className="text-[#635E52]">Enclosure Box:</span>
+                          <span className="font-medium text-[#141310] text-right">{study.enclosure}</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="p-6 md:p-8 space-y-4">
-                    <div className="space-y-1">
-                      <span className="text-[10px] uppercase tracking-[0.14em] font-semibold text-[#635E52]">
-                        Commission Specimen // {study.dimensions}
-                      </span>
-                      <h3 className="font-serif text-[24px] text-[#141310] leading-snug group-hover:text-[#635E52] transition-colors">
-                        {study.title}
-                      </h3>
-                      <p className="text-[13px] text-[#4A463F] leading-relaxed pt-1">
-                        {study.description}
-                      </p>
-                    </div>
-
-                    {/* Specification Dossier Matrix */}
-                    <div className="bg-[#F4F4F0] p-4 border border-[#EAE6DF] space-y-2 text-[12px] text-[#4A463F]">
-                      <div className="flex justify-between py-1 border-b border-[#EAE6DF]/60">
-                        <span className="text-[#635E52]">Cover Textile:</span>
-                        <span className="font-medium text-[#141310] text-right">{study.cover}</span>
-                      </div>
-                      <div className="flex justify-between py-1 border-b border-[#EAE6DF]/60">
-                        <span className="text-[#635E52]">Personalization:</span>
-                        <span className="font-medium text-[#141310] text-right">{study.foil}</span>
-                      </div>
-                      <div className="flex justify-between py-1 border-b border-[#EAE6DF]/60">
-                        <span className="text-[#635E52]">Photographic Substrate:</span>
-                        <span className="font-medium text-[#141310] text-right">{study.paper}</span>
-                      </div>
-                      <div className="flex justify-between py-1 border-b border-[#EAE6DF]/60">
-                        <span className="text-[#635E52]">Spreads &amp; Pages:</span>
-                        <span className="font-medium text-[#141310] text-right">{study.spreads}</span>
-                      </div>
-                      <div className="flex justify-between py-1">
-                        <span className="text-[#635E52]">Enclosure Box:</span>
-                        <span className="font-medium text-[#141310] text-right">{study.enclosure}</span>
-                      </div>
-                    </div>
+                  <div className="p-6 md:p-8 pt-4 flex items-center justify-between border-t border-[#EAE6DF] bg-[#FAF9F5]">
+                    <span className="text-[11px] text-[#635E52] font-mono">{study.curingTime}</span>
+                    <Link
+                      to={`/enquire?product=Flush Mount Album&case=${encodeURIComponent(study.title)}`}
+                      className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-widest font-semibold text-[#141310] hover:text-[#9E7D4B] transition-colors"
+                    >
+                      <span>Request Similar Commission</span>
+                      <ArrowRight size={13} />
+                    </Link>
                   </div>
                 </div>
-
-                <div className="p-6 md:p-8 pt-0 flex items-center justify-between border-t border-[#EAE6DF]">
-                  <span className="text-[11px] text-[#635E52] font-mono">{study.curingTime}</span>
-                  <Link
-                    to={`/enquire?product=Flush Mount Album&case=${encodeURIComponent(study.title)}`}
-                    className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-widest font-semibold text-[#141310] hover:text-[#635E52] transition-colors"
-                  >
-                    <span>Request Similar Commission</span>
-                    <ArrowRight size={13} />
-                  </Link>
-                </div>
-              </div>
+              </TiltCard>
             ))}
-          </div>
+          </StaggerBoxes>
         </div>
       </section>
 

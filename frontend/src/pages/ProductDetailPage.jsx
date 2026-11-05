@@ -8,6 +8,7 @@ import { ArrowRight, ChevronRight } from 'lucide-react';
 import RevealOnScroll from '../components/motion/RevealOnScroll';
 import TextReveal from '../components/motion/TextReveal';
 import StaggerBoxes from '../components/motion/StaggerBoxes';
+import TiltCard from '../components/motion/TiltCard';
 import { PRODUCTS_CATALOG } from '../data/catalogData';
 
 // 6 Dedicated Stitch Product Pages
@@ -105,73 +106,85 @@ export default function ProductDetailPage() {
           </RevealOnScroll>
         </div>
 
-        {/* 6 Stitch Product Cards Grid */}
-        <StaggerBoxes style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))', gap: '2.5rem' }} stagger={0.1}>
+        {/* 6 Stitch Product Cards Grid: Alternating Left / Right Entrances */}
+        <StaggerBoxes
+          direction="alternate"
+          distance={48}
+          stagger={0.12}
+          duration={0.9}
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))', gap: '2.5rem' }}
+        >
           {collectionArchive.map((prod) => (
-            <div key={prod.slug} style={{ background: '#FFFFFF', border: '1px solid #EAE6DF', display: 'flex', flexDirection: 'column' }}>
-              <div style={{ aspectRatio: '16/10', background: '#EFEEEA', overflow: 'hidden' }}>
-                <img
-                  src={prod.img}
-                  alt={prod.name}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  loading="lazy"
-                  onError={(e) => {
-                    const fallback = PRODUCTS_CATALOG.find(p => p.slug === prod.slug)?.image || 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1000&q=85';
-                    if (e.currentTarget.src !== fallback) e.currentTarget.src = fallback;
-                  }}
-                />
-              </div>
-              <div style={{ padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <div>
-                  <span style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#635E52', display: 'block', marginBottom: '0.35rem' }}>
-                    {prod.category}
-                  </span>
-                  <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.5rem', color: '#141310', margin: '0 0 0.5rem 0', fontWeight: 500 }}>
-                    {prod.name}
-                  </h2>
-                  <p style={{ fontSize: '0.85rem', fontWeight: 600, color: '#635E52', margin: '0 0 0.75rem 0', lineHeight: 1.4 }}>
-                    {prod.subtitle}
-                  </p>
-                  <p style={{ fontSize: '0.88rem', color: '#4A463F', lineHeight: 1.6, margin: 0 }}>
-                    {prod.desc}
-                  </p>
-                </div>
-
-                <div style={{ marginTop: '2rem', paddingTop: '1.25rem', borderTop: '1px solid #EAE6DF', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Link
-                    to={`/products/${prod.slug}`}
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      fontSize: '0.75rem',
-                      fontWeight: 600,
-                      letterSpacing: '0.14em',
-                      textTransform: 'uppercase',
-                      color: '#141310',
-                      textDecoration: 'none'
+            <TiltCard key={prod.slug} maxTilt={6} scale={1.02} glare={true} className="h-full flex flex-col">
+              <div
+                className="group rounded-2xl overflow-hidden hover:border-[#B99A69]/70 hover:shadow-[0_16px_36px_-8px_rgba(185,154,105,0.2)] transition-all duration-300"
+                style={{ background: '#FFFFFF', border: '1px solid #EAE6DF', display: 'flex', flexDirection: 'column', height: '100%' }}
+              >
+                <div style={{ aspectRatio: '16/10', background: '#EFEEEA', overflow: 'hidden' }}>
+                  <img
+                    src={prod.img}
+                    alt={prod.name}
+                    className="group-hover:scale-106 transition-transform duration-700 ease-out"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    loading="lazy"
+                    onError={(e) => {
+                      const fallback = PRODUCTS_CATALOG.find(p => p.slug === prod.slug)?.image || 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1000&q=85';
+                      if (e.currentTarget.src !== fallback) e.currentTarget.src = fallback;
                     }}
-                  >
-                    <span>Explore Specifications</span>
-                    <ArrowRight size={14} />
-                  </Link>
+                  />
+                </div>
+                <div style={{ padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <div>
+                    <span style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#9E7D4B', display: 'block', marginBottom: '0.35rem' }}>
+                      {prod.category}
+                    </span>
+                    <h2 className="group-hover:text-[#9E7D4B] transition-colors" style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.5rem', color: '#141310', margin: '0 0 0.5rem 0', fontWeight: 500 }}>
+                      {prod.name}
+                    </h2>
+                    <p style={{ fontSize: '0.85rem', fontWeight: 600, color: '#635E52', margin: '0 0 0.75rem 0', lineHeight: 1.4 }}>
+                      {prod.subtitle}
+                    </p>
+                    <p style={{ fontSize: '0.88rem', color: '#4A463F', lineHeight: 1.6, margin: 0 }}>
+                      {prod.desc}
+                    </p>
+                  </div>
 
-                  <Link
-                    to={`/enquire?product=${encodeURIComponent(prod.name)}`}
-                    style={{
-                      fontSize: '0.72rem',
-                      fontWeight: 600,
-                      letterSpacing: '0.1em',
-                      textTransform: 'uppercase',
-                      color: '#635E52',
-                      textDecoration: 'none'
-                    }}
-                  >
-                    Enquire →
-                  </Link>
+                  <div style={{ marginTop: '2rem', paddingTop: '1.25rem', borderTop: '1px solid #EAE6DF', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Link
+                      to={`/products/${prod.slug}`}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        fontSize: '0.75rem',
+                        fontWeight: 600,
+                        letterSpacing: '0.14em',
+                        textTransform: 'uppercase',
+                        color: '#141310',
+                        textDecoration: 'none'
+                      }}
+                    >
+                      <span>Explore Specifications</span>
+                      <ArrowRight size={14} className="text-[#9E7D4B] group-hover:translate-x-1 transition-transform" />
+                    </Link>
+
+                    <Link
+                      to={`/enquire?product=${encodeURIComponent(prod.name)}`}
+                      style={{
+                        fontSize: '0.72rem',
+                        fontWeight: 600,
+                        letterSpacing: '0.1em',
+                        textTransform: 'uppercase',
+                        color: '#9E7D4B',
+                        textDecoration: 'none'
+                      }}
+                    >
+                      Enquire →
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
+            </TiltCard>
           ))}
         </StaggerBoxes>
       </div>

@@ -1,4 +1,4 @@
-import { useEffect, useEffectEvent, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BookOpen, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import BookPage from './BookPage';
 import AlbumInteriorPage from '../AlbumShowroom/AlbumInteriorPage';
@@ -59,7 +59,7 @@ const LUXURY_SPREADS = [
   }
 ];
 
-export default function HeroBook({ album, material, initiallyOpen = false }) {
+export default function HeroBook({ album, material, initiallyOpen = false, onClose }) {
   const spreads = album?.spreads || LUXURY_SPREADS;
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
@@ -68,6 +68,7 @@ export default function HeroBook({ album, material, initiallyOpen = false }) {
   const gesture = useRef(null);
   const toggle = useRef(null);
   const duration = 1040;
+
   useEffect(() => () => clearTimeout(timer.current), []);
 
   function move(action) {
@@ -88,11 +89,12 @@ export default function HeroBook({ album, material, initiallyOpen = false }) {
     }
   }
 
-  const openPreview = useEffectEvent(() => move('open'));
   useEffect(() => {
     if (!initiallyOpen) return;
-    const frame = requestAnimationFrame(() => openPreview());
-    return () => cancelAnimationFrame(frame);
+    const t = setTimeout(() => {
+      move('open');
+    }, 60);
+    return () => clearTimeout(t);
   }, [initiallyOpen]);
 
   function onKeyDown(event) {
@@ -105,7 +107,8 @@ export default function HeroBook({ album, material, initiallyOpen = false }) {
   }
 
   function page(spread, side) {
-    const props = {pageData: spreads[spread][side], side, pageNumber: spread * 2 + (side === 'left' ? 1 : 2)};
+    const pageData = spreads[spread]?.[side];
+    const props = { pageData, side, pageNumber: spread * 2 + (side === 'left' ? 1 : 2) };
     return album ? <AlbumInteriorPage {...props} albumType={album.slug} /> : <BookPage {...props} />;
   }
 
@@ -115,37 +118,116 @@ export default function HeroBook({ album, material, initiallyOpen = false }) {
   const visibleRight = motion === 'next' ? index + 1 : index;
   const expanded = motion === 'open' || (open && motion !== 'close');
   const showPages = open || motion === 'open';
+
+  const clothColor = material?.hex || album?.coverColor || '#EDE5DA';
+  const foilColor = material?.accent || album?.accentColor || '#B99A69';
+  const textureClass = material?.type || album?.coverTexture || 'linen';
+
   return (
-    <div className="physical-album" role="group" aria-label={album?.name || 'Heirloom wedding album'} onKeyDown={onKeyDown}
-      style={{'--cloth': material?.hex || album.coverColor, '--foil': material?.accent || album.accentColor, '--turn-time': duration + 'ms'}}>
-      <div className="album-stage" onTouchStart={e => {gesture.current = [e.touches[0].clientX, e.touches[0].clientY];}}
+    <div
+      className="physical-album"
+      role="group"
+      aria-label={album?.name || 'Heirloom wedding album'}
+      onKeyDown={onKeyDown}
+      style={{
+        '--cloth': clothColor,
+        '--foil': foilColor,
+        '--turn-time': duration + 'ms'
+      }}
+    >
+      <div
+        className="album-stage"
+        onTouchStart={e => {
+          gesture.current = [e.touches[0].clientX, e.touches[0].clientY];
+        }}
         onTouchEnd={e => {
           if (!open || !gesture.current) return;
           const dx = e.changedTouches[0].clientX - gesture.current[0];
           const dy = e.changedTouches[0].clientY - gesture.current[1];
           gesture.current = null;
           if (Math.abs(dx) > 44 && Math.abs(dx) > Math.abs(dy) * 1.5) move(dx < 0 ? 'next' : 'prev');
-        }}>
+        }}
+      >
         <div className={'bound-volume' + (expanded ? ' is-open' : '')}>
-          {open && motion !== 'close' && <div className="bound-page bound-left" aria-hidden={!open}>{page(visibleLeft, 'left')}</div>}
-          <div className="bound-page bound-right">{showPages && page(visibleRight, 'right')}</div>
-          {turning && <div className={'bound-leaf turn-' + motion} aria-hidden="true">
-            <div className="sheet-face">{page(turningFrom, 'right')}</div>
-            <div className="sheet-face sheet-back">{page(turningFrom + 1, 'left')}</div>
-          </div>}
-          <div className={'bound-cover' + (open && motion !== 'close' ? ' parked' : '')}>
-            <div className={'sheet-face cloth-cover ' + (material?.type || album.coverTexture)} onClick={() => {if (!open) {toggle.current?.focus({preventScroll:true}); move('open');}}}>
-              <div className="cover-stamp"><span aria-hidden="true">✧</span><b>{album?.frontTitle || 'Ultraa Albums'}</b><i>{album?.frontSubtitle || 'Heirloom Wedding'}</i></div>
+          {open && motion !== 'close' && (
+            <div className="bound-page bound-left" aria-hidden={!open}>
+              {page(visibleLeft, 'left')}
             </div>
-            <div className="sheet-face sheet-back">{showPages && page(index, 'left')}</div>
+          )}
+          <div className="bound-page bound-right">
+            {showPages && page(visibleRight, 'right')}
+          </div>
+          {turning && (
+            <div className={'bound-leaf turn-' + motion} aria-hidden="true">
+              <div className="sheet-face">{page(turningFrom, 'right')}</div>
+              <div className="sheet-face sheet-back">{page(turningFrom + 1, 'left')}</div>
+            </div>
+          )}
+          <div className={'bound-cover' + (open && motion !== 'close' ? ' parked' : '')}>
+            <div
+              className={'sheet-face cloth-cover ' + textureClass}
+              onClick={() => {
+                if (!open) {
+                  toggle.current?.focus({ preventScroll: true });
+                  move('open');
+                }
+              }}
+            >
+              <div
+                className="cover-stamp"
+                style={{
+                  borderColor: foilColor,
+                  color: foilColor
+                }}
+              >
+                <span aria-hidden="true" style={{ color: foilColor }}>✧</span>
+                <b style={{ color: foilColor }}>{album?.frontTitle || 'Ultraa Albums'}</b>
+                <i style={{ color: foilColor }}>{album?.frontSubtitle || 'Heirloom Wedding'}</i>
+              </div>
+            </div>
+            <div className="sheet-face sheet-back">
+              {showPages && page(index, 'left')}
+            </div>
           </div>
         </div>
       </div>
       <div className="book-toolbar">
-        {open && <><button aria-label="Previous page" aria-disabled={!!motion || index === 0} onClick={() => move('prev')}><ChevronLeft size={17}/></button>
-          <span aria-live="polite" className="page-counter">{index + 1} / {spreads.length}</span>
-          <button aria-label="Next page" aria-disabled={!!motion || index === spreads.length - 1} onClick={() => move('next')}><ChevronRight size={17}/></button></>}
-        <button ref={toggle} className="book-toggle" aria-expanded={open} aria-disabled={!!motion} onClick={() => move(open ? 'close' : 'open')}>
+        {open && (
+          <>
+            <button
+              aria-label="Previous page"
+              aria-disabled={!!motion || index === 0}
+              onClick={() => move('prev')}
+              className="cursor-pointer"
+            >
+              <ChevronLeft size={17}/>
+            </button>
+            <span aria-live="polite" className="page-counter">
+              {index + 1} / {spreads.length}
+            </span>
+            <button
+              aria-label="Next page"
+              aria-disabled={!!motion || index === spreads.length - 1}
+              onClick={() => move('next')}
+              className="cursor-pointer"
+            >
+              <ChevronRight size={17}/>
+            </button>
+          </>
+        )}
+        <button
+          ref={toggle}
+          className="book-toggle cursor-pointer"
+          aria-expanded={open}
+          aria-disabled={!!motion}
+          onClick={() => {
+            if (open && onClose) {
+              onClose();
+            } else {
+              move(open ? 'close' : 'open');
+            }
+          }}
+        >
           {open ? <X size={15}/> : <BookOpen size={16}/>} {open ? 'Close album' : 'Open album'}
         </button>
       </div>

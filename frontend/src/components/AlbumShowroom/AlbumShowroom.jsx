@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { SHOWROOM_ALBUMS } from './albumShowroomData';
 import Album3DCard from './Album3DCard';
 import AlbumInteriorPage from './AlbumInteriorPage';
+import HeroBook from '../LivingAlbum/HeroBook';
 import TextReveal from '../motion/TextReveal';
 import RevealOnScroll from '../motion/RevealOnScroll';
 import './AlbumShowroom.css';
@@ -46,16 +47,6 @@ export default function AlbumShowroom({ onSelectProduct }) {
   const currentTrackRef = useRef(null);
   const incomingTrackRef = useRef(null);
   const spotlightRef = useRef(null);
-  const bookRigRef = useRef(null);
-  const ambientShadowRef = useRef(null);
-  const leftWingRef = useRef(null);
-  const rightWingRef = useRef(null);
-  const coverLeafRef = useRef(null);
-  const showroomCoverFrontRef = useRef(null);
-  const showroomCoverBackRef = useRef(null);
-  const coverFrontShadowRef = useRef(null);
-  const coverBackShadowRef = useRef(null);
-  const turnLeafRef = useRef(null);
 
   // Animation Lock & Timeline Refs
   const isAnimatingRef = useRef(false);
@@ -66,15 +57,11 @@ export default function AlbumShowroom({ onSelectProduct }) {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [transitionState, setTransitionState] = useState(null); // { direction: 'next' | 'prev', targetPageIndex: number } | null
   const [activeAlbumId, setActiveAlbumId] = useState(null);
-  const [currentSpreadIndex, setCurrentSpreadIndex] = useState(0);
-  const [isTurnAnimating, setIsTurnAnimating] = useState(false);
   const [cardsPerView, setCardsPerView] = useState(4);
 
   // Active expanded album
   const activeAlbum = SHOWROOM_ALBUMS.find((a) => a.id === activeAlbumId) || null;
   const otherAlbums = SHOWROOM_ALBUMS.filter((a) => a.id !== activeAlbumId);
-  const totalSpreads = activeAlbum?.spreads?.length || 1;
-  const activeSpread = activeAlbum?.spreads[currentSpreadIndex] || activeAlbum?.spreads?.[0];
 
   // 1. Responsive Cards Per View Detection
   useEffect(() => {
@@ -286,130 +273,10 @@ export default function AlbumShowroom({ onSelectProduct }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleNextPage, handlePrevPage, activeAlbumId]);
 
-  // 5. Authentic Physical 3D Cover Opening Animation when an album is selected
+  // 5. Smooth scroll into view when an album is selected for spotlight viewing
   useEffect(() => {
-    if (!activeAlbum || !coverLeafRef.current || !bookRigRef.current || !leftWingRef.current) return;
-
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    setCurrentSpreadIndex(0);
-
-    if (spotlightRef.current) {
+    if (activeAlbumId && spotlightRef.current) {
       spotlightRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-
-    const rig = bookRigRef.current;
-    const cover = coverLeafRef.current;
-    const frontFace = showroomCoverFrontRef.current;
-    const backFace = showroomCoverBackRef.current;
-    const leftWing = leftWingRef.current;
-    const shadow = ambientShadowRef.current;
-    const frontShadow = coverFrontShadowRef.current;
-    const backShadow = coverBackShadowRef.current;
-
-    if (prefersReduced) {
-      gsap.set(rig, { x: '0%', rotateY: 0, rotateX: 3, rotateZ: 0 });
-      gsap.set(leftWing, { opacity: 1, scaleX: 1 });
-      gsap.set(cover, { display: 'none' });
-      return;
-    }
-
-    // Set initial closed state: Rig centered as a closed book (x: -25%), Left wing folded inside spine, Cover closed at 0deg
-    gsap.set(rig, { x: '-25%', rotateY: -12, rotateX: 3.5, rotateZ: 0.5, scale: 1 });
-    gsap.set(cover, { rotateY: 0, skewY: 0, display: 'block', zIndex: 60 });
-    if (frontFace) {
-      frontFace.style.display = 'block';
-      gsap.set(frontFace, { opacity: 1, visibility: 'visible' });
-    }
-    if (backFace) {
-      backFace.style.display = 'none';
-      gsap.set(backFace, { opacity: 0, visibility: 'hidden' });
-    }
-    gsap.set(leftWing, { opacity: 0, scaleX: 0.15, transformOrigin: 'right center' });
-    if (shadow) gsap.set(shadow, { width: '220px', maxWidth: '240px', opacity: 0.28 });
-
-    const tl = gsap.timeline({
-      onComplete: () => {
-        // Dock cover and hide leaf so left spread is 100% sharp and interactive
-        if (cover) cover.style.display = 'none';
-        gsap.set(cover, { display: 'none' });
-      }
-    });
-
-    // 1. The whole book centers and levels with synchronized power3.inOut
-    tl.to(rig, {
-      x: '0%',
-      rotateY: 0,
-      rotateX: 3,
-      rotateZ: 0,
-      duration: 1.15,
-      ease: 'power3.inOut'
-    }, 0);
-
-    // 2. Ambient shadow expands to encompass full open spread
-    if (shadow) {
-      tl.to(shadow, {
-        width: '94%',
-        maxWidth: '480px',
-        opacity: 0.4,
-        duration: 1.15,
-        ease: 'power3.inOut'
-      }, 0);
-    }
-
-    // 3. Left wing baseboard smoothly unfolds outward from center spine
-    tl.to(leftWing, {
-      opacity: 1,
-      scaleX: 1,
-      duration: 1.1,
-      ease: 'power3.inOut'
-    }, 0.05);
-
-    // 4. Front cover leaf swings 180 degrees from spine hinge
-    tl.to(cover, {
-      rotateY: -180,
-      duration: 1.15,
-      ease: 'power3.inOut',
-      onUpdate: () => {
-        const curRot = parseFloat(gsap.getProperty(cover, 'rotateY')) || 0;
-        // Midpoint face toggle: when passing perpendicular (-88deg), toggle display
-        // to prevent reversed/mirrored typography
-        if (curRot <= -88) {
-          if (frontFace && frontFace.style.display !== 'none') {
-            frontFace.style.display = 'none';
-          }
-          if (backFace && backFace.style.display !== 'block') {
-            backFace.style.display = 'block';
-            gsap.set(backFace, { opacity: 1, visibility: 'visible' });
-          }
-        } else {
-          if (frontFace && frontFace.style.display !== 'block') {
-            frontFace.style.display = 'block';
-            gsap.set(frontFace, { opacity: 1, visibility: 'visible' });
-          }
-          if (backFace && backFace.style.display !== 'none') {
-            backFace.style.display = 'none';
-          }
-        }
-      }
-    }, 0);
-
-    // Deterministic timeline face swap at exact perpendicular midpoint (t = 0.55s)
-    if (frontFace) tl.set(frontFace, { display: 'none', visibility: 'hidden' }, 0.55);
-    if (backFace) tl.set(backFace, { display: 'block', visibility: 'visible', opacity: 1 }, 0.55);
-    // At swing completion, hide cover leaf completely
-    tl.set(cover, { display: 'none' }, 1.15);
-
-    // 5. Authentic cover flexion during swing
-    tl.to(cover, { skewY: -2.6, duration: 0.52, ease: 'power2.in' }, 0);
-    tl.to(cover, { skewY: 0, duration: 0.63, ease: 'power2.out' }, 0.52);
-
-    // 6. Dynamic lighting shadows
-    if (frontShadow) {
-      tl.fromTo(frontShadow, { opacity: 0 }, { opacity: 0.5, duration: 0.52 }, 0);
-      tl.to(frontShadow, { opacity: 0, duration: 0.2 }, 0.52);
-    }
-    if (backShadow) {
-      tl.fromTo(backShadow, { opacity: 0.6 }, { opacity: 0, duration: 0.58 }, 0.52);
     }
   }, [activeAlbumId]);
 
@@ -418,57 +285,6 @@ export default function AlbumShowroom({ onSelectProduct }) {
     navigate(`/products/${slug}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [navigate]);
-
-  // 7. Spotlight Spread Navigation (Next / Prev)
-  const handleNextSpread = () => {
-    if (isTurnAnimating || currentSpreadIndex >= totalSpreads - 1) return;
-    setIsTurnAnimating(true);
-    const targetIdx = currentSpreadIndex + 1;
-
-    const leaf = turnLeafRef.current;
-    if (!leaf) {
-      setCurrentSpreadIndex(targetIdx);
-      setIsTurnAnimating(false);
-      return;
-    }
-
-    gsap.set(leaf, { display: 'block', rotateY: 0, zIndex: 45 });
-    gsap.to(leaf, {
-      rotateY: -180,
-      duration: 0.72,
-      ease: 'power3.inOut',
-      onComplete: () => {
-        setCurrentSpreadIndex(targetIdx);
-        gsap.set(leaf, { display: 'none', rotateY: 0 });
-        setIsTurnAnimating(false);
-      }
-    });
-  };
-
-  const handlePrevSpread = () => {
-    if (isTurnAnimating || currentSpreadIndex <= 0) return;
-    setIsTurnAnimating(true);
-    const targetIdx = currentSpreadIndex - 1;
-
-    const leaf = turnLeafRef.current;
-    if (!leaf) {
-      setCurrentSpreadIndex(targetIdx);
-      setIsTurnAnimating(false);
-      return;
-    }
-
-    gsap.set(leaf, { display: 'block', rotateY: -180, zIndex: 45 });
-    gsap.to(leaf, {
-      rotateY: 0,
-      duration: 0.72,
-      ease: 'power3.inOut',
-      onComplete: () => {
-        setCurrentSpreadIndex(targetIdx);
-        gsap.set(leaf, { display: 'none', rotateY: 0 });
-        setIsTurnAnimating(false);
-      }
-    });
-  };
 
   return (
     <section
@@ -656,259 +472,14 @@ export default function AlbumShowroom({ onSelectProduct }) {
             {/* Main Stage Grid: 3D Open Book on Left + Editorial Specifications on Right */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center bg-[#FAF7F2] border border-[#DED5C9] rounded-2xl p-6 sm:p-10 shadow-[0_24px_64px_-16px_rgba(32,30,27,0.12)]">
               
-              {/* Left Column: 3D Open Heirloom Book Stage */}
-              <div className="lg:col-span-7 flex flex-col items-center justify-center relative select-none">
-                
-                {/* 3D Spread Viewport */}
-                <div
-                  className="relative w-full max-w-[540px] h-[270px] xs:h-[300px] sm:h-[350px] md:h-[370px] flex items-center justify-center overflow-visible"
-                  style={{ perspective: '1800px' }}
-                >
-                  {/* Ambient Depth Shadow */}
-                  <div
-                    ref={ambientShadowRef}
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none rounded-full"
-                    style={{
-                      width: '94%',
-                      maxWidth: '480px',
-                      height: '280px',
-                      background: 'radial-gradient(ellipse at 50% 50%, rgba(32, 30, 27, 0.28) 0%, rgba(32, 30, 27, 0.06) 55%, transparent 72%)',
-                      filter: 'blur(30px)',
-                      transform: 'translate(-50%, -50%) translateZ(-35px)'
-                    }}
-                  />
-
-                  {/* Physical 3D Book Rig */}
-                  <div
-                    ref={bookRigRef}
-                    className="relative transform-style-3d will-change-transform w-[280px] xs:w-[320px] sm:w-[420px] md:w-[480px] max-w-[92vw] h-[195px] xs:h-[220px] sm:h-[290px] md:h-[310px]"
-                    style={{
-                      transform: 'rotateX(3deg) rotateY(0deg)'
-                    }}
-                  >
-                    {/* -------------------------------------------------------------
-                        1. LEFT WING (0% to 50%): Left Hardcover Baseboard + Left Spread
-                        - Folds inside spine (scaleX: 0.15, opacity: 0) when closed
-                        - Unfolds outward (scaleX: 1, opacity: 1) when opening
-                        ------------------------------------------------------------- */}
-                    <div
-                      ref={leftWingRef}
-                      className="absolute top-0 left-0 w-1/2 h-full transform-style-3d will-change-transform z-10"
-                      style={{ transformOrigin: 'right center' }}
-                    >
-                      {/* Hardcover Archival Baseboard Left */}
-                      <div
-                        className="absolute -top-1.5 -left-1.5 w-[calc(100%+6px)] h-[calc(100%+12px)] rounded-l-xs overflow-hidden transition-colors duration-500"
-                        style={{
-                          backgroundColor: activeAlbum.coverColor,
-                          boxShadow: '0 24px 60px -12px rgba(32, 30, 27, 0.25), 0 8px 24px -4px rgba(32, 30, 27, 0.12)',
-                          transform: 'translateZ(-14px)'
-                        }}
-                      />
-                      {/* Left Page Spread */}
-                      <div className="absolute inset-0 overflow-hidden rounded-l-xs">
-                        <AlbumInteriorPage
-                          pageData={activeSpread?.left}
-                          side="left"
-                          albumType={activeAlbum.slug}
-                          pageNumber={currentSpreadIndex * 2 + 1}
-                        />
-                      </div>
-                    </div>
-
-                    {/* -------------------------------------------------------------
-                        2. RIGHT WING (50% to 100%): Right Hardcover Baseboard + Right Spread
-                        ------------------------------------------------------------- */}
-                    <div
-                      ref={rightWingRef}
-                      className="absolute top-0 left-1/2 w-1/2 h-full transform-style-3d will-change-transform z-10"
-                      style={{ transformOrigin: 'left center' }}
-                    >
-                      {/* Hardcover Archival Baseboard Right */}
-                      <div
-                        className="absolute -top-1.5 -right-1.5 w-[calc(100%+6px)] h-[calc(100%+12px)] rounded-r-xs overflow-hidden transition-colors duration-500"
-                        style={{
-                          backgroundColor: activeAlbum.coverColor,
-                          boxShadow: '0 24px 60px -12px rgba(32, 30, 27, 0.25), 0 8px 24px -4px rgba(32, 30, 27, 0.12)',
-                          transform: 'translateZ(-14px)'
-                        }}
-                      />
-                      {/* Right Page Spread */}
-                      <div className="absolute inset-0 overflow-hidden rounded-r-xs">
-                        <AlbumInteriorPage
-                          pageData={activeSpread?.right}
-                          side="right"
-                          albumType={activeAlbum.slug}
-                          pageNumber={currentSpreadIndex * 2 + 2}
-                        />
-                      </div>
-                      {/* Layered Page Block Edge (14px thickness) */}
-                      <div
-                        className="absolute top-1 right-0 w-[14px] h-[calc(100%-8px)] pointer-events-none"
-                        style={{
-                          transformOrigin: 'right center',
-                          transform: 'rotateY(90deg) translateZ(-14px)',
-                          background: 'repeating-linear-gradient(to bottom, #FAF7F2 0px, #FAF7F2 2.5px, #DED5C9 2.5px, #DED5C9 3.5px)',
-                          boxShadow: 'inset 0 0 4px rgba(0,0,0,0.18)'
-                        }}
-                      />
-                    </div>
-
-                    {/* -------------------------------------------------------------
-                        3. 3D CENTER SPINE HINGE & THICKNESS (x = 50%)
-                        ------------------------------------------------------------- */}
-                    <div
-                      className="absolute top-0 left-1/2 -translate-x-full w-[16px] h-full rounded-l-xs flex flex-col justify-between py-4 px-0.5 items-center pointer-events-none transition-colors duration-500 z-20"
-                      style={{
-                        backgroundColor: activeAlbum.coverColor,
-                        transformOrigin: 'right center',
-                        transform: 'rotateY(-90deg) translateZ(0px)',
-                        boxShadow: 'inset -2px 0 6px rgba(0,0,0,0.25), 0 4px 10px rgba(0,0,0,0.12)'
-                      }}
-                    >
-                      <span
-                        className="font-serif text-[7px] uppercase tracking-[0.22em] font-medium transition-colors duration-500"
-                        style={{
-                          writingMode: 'vertical-rl',
-                          transform: 'rotate(180deg)',
-                          color: activeAlbum.accentColor
-                        }}
-                      >
-                        {activeAlbum.spineTitle}
-                      </span>
-                    </div>
-
-                    {/* Center Zero-Gutter Spine Crease Shadow */}
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[16px] h-full pointer-events-none z-25">
-                      <div className="w-full h-full bg-gradient-to-r from-black/15 via-black/35 to-black/15 opacity-60" />
-                    </div>
-
-                    {/* -------------------------------------------------------------
-                        4. DYNAMIC 3D TURNING LEAF (Active during Next / Prev spread turns)
-                        ------------------------------------------------------------- */}
-                    <div
-                      ref={turnLeafRef}
-                      className="absolute top-0 w-1/2 h-full hidden pointer-events-none transform-style-3d will-change-transform z-45"
-                      style={{ left: '50%', transformOrigin: 'left center' }}
-                    >
-                      <div
-                        className="absolute inset-0 backface-hidden overflow-hidden bg-[#FAF7F2] rounded-r-xs shadow-xl"
-                        style={{
-                          backfaceVisibility: 'hidden',
-                          WebkitBackfaceVisibility: 'hidden',
-                          transform: 'rotateY(0deg) translateZ(1px)'
-                        }}
-                      >
-                        <AlbumInteriorPage
-                          pageData={activeSpread?.right}
-                          side="right"
-                          albumType={activeAlbum.slug}
-                          pageNumber={currentSpreadIndex * 2 + 2}
-                        />
-                      </div>
-                      <div
-                        className="absolute inset-0 backface-hidden overflow-hidden bg-[#FAF7F2] rounded-l-xs shadow-xl"
-                        style={{
-                          transform: 'rotateY(180deg) translateZ(1px)',
-                          backfaceVisibility: 'hidden',
-                          WebkitBackfaceVisibility: 'hidden'
-                        }}
-                      >
-                        <AlbumInteriorPage
-                          pageData={activeAlbum?.spreads[Math.min(currentSpreadIndex + 1, totalSpreads - 1)]?.left}
-                          side="left"
-                          albumType={activeAlbum.slug}
-                          pageNumber={(currentSpreadIndex + 1) * 2 + 1}
-                        />
-                      </div>
-                    </div>
-
-                    {/* -------------------------------------------------------------
-                        5. MASTER 3D FRONT COVER LEAF (180° swing from closed to open)
-                        ------------------------------------------------------------- */}
-                    <div
-                      ref={coverLeafRef}
-                      className="absolute top-0 w-1/2 h-full pointer-events-none transform-style-3d will-change-transform z-50"
-                      style={{ left: '50%', transformOrigin: 'left center' }}
-                    >
-                      {/* FRONT FACE OF COVER (Facing user when closed at rotateY: 0deg) */}
-                      <div
-                        ref={showroomCoverFrontRef}
-                        className="absolute inset-0 backface-hidden rounded-r-xs flex items-center justify-center p-3 sm:p-5 shadow-2xl transition-colors duration-500"
-                        style={{
-                          backgroundColor: activeAlbum.coverColor,
-                          boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.15), 0 16px 36px rgba(32,30,27,0.22)',
-                          backfaceVisibility: 'hidden',
-                          WebkitBackfaceVisibility: 'hidden',
-                          transform: 'rotateY(0deg) translateZ(1px)',
-                          display: 'block'
-                        }}
-                      >
-                        <div
-                          className="relative w-full h-full border-[1.5px] flex flex-col items-center justify-center text-center p-3"
-                          style={{ borderColor: activeAlbum.accentColor }}
-                        >
-                          <span className="text-[14px] font-serif mb-1" style={{ color: activeAlbum.accentColor }}>✦</span>
-                          <h4 className="font-serif text-[12px] sm:text-[14px] font-normal tracking-[0.2em] uppercase leading-tight m-0" style={{ color: activeAlbum.accentColor }}>
-                            {activeAlbum.frontTitle}
-                          </h4>
-                          <div className="w-8 h-[1px] my-1.5 opacity-80" style={{ backgroundColor: activeAlbum.accentColor }} />
-                          <span className="font-sans text-[6.5px] sm:text-[7.5px] font-semibold tracking-[0.18em] uppercase opacity-85" style={{ color: activeAlbum.accentColor }}>
-                            {activeAlbum.frontSubtitle}
-                          </span>
-                        </div>
-                        <div ref={coverFrontShadowRef} className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/15 to-transparent pointer-events-none opacity-0" />
-                      </div>
-
-                      {/* BACK FACE OF COVER (Inside spread Plate 01 resting on left stack at rotateY: -180deg) */}
-                      <div
-                        ref={showroomCoverBackRef}
-                        className="absolute inset-0 backface-hidden rounded-l-xs shadow-2xl"
-                        style={{
-                          transform: 'rotateY(180deg) translateZ(1px)',
-                          backfaceVisibility: 'hidden',
-                          WebkitBackfaceVisibility: 'hidden',
-                          display: 'none'
-                        }}
-                      >
-                        <AlbumInteriorPage
-                          pageData={activeAlbum?.spreads[0]?.left}
-                          side="left"
-                          albumType={activeAlbum.slug}
-                          pageNumber={1}
-                        />
-                        <div ref={coverBackShadowRef} className="absolute inset-0 bg-gradient-to-l from-black/50 via-black/15 to-transparent pointer-events-none opacity-0" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Spread Navigation Controls Below 3D Book */}
-                {totalSpreads > 1 && (
-                  <div className="mt-4 flex items-center gap-3 bg-white/90 backdrop-blur-xs border border-[#DED5C9] px-4 py-1.5 rounded-full shadow-xs">
-                    <button
-                      type="button"
-                      onClick={handlePrevSpread}
-                      disabled={isTurnAnimating || currentSpreadIndex === 0}
-                      className="flex items-center gap-1 text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-[#201E1B] hover:text-[#B99A69] disabled:opacity-25 disabled:cursor-not-allowed bg-transparent border-none cursor-pointer"
-                    >
-                      <ChevronLeft size={13} />
-                      <span>Prev</span>
-                    </button>
-                    <span className="text-[11px] font-sans font-bold tracking-widest text-[#777066]">
-                      0{currentSpreadIndex + 1} / 0{totalSpreads}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={handleNextSpread}
-                      disabled={isTurnAnimating || currentSpreadIndex === totalSpreads - 1}
-                      className="flex items-center gap-1 text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-[#201E1B] hover:text-[#B99A69] disabled:opacity-25 disabled:cursor-not-allowed bg-transparent border-none cursor-pointer"
-                    >
-                      <span>Next</span>
-                      <ChevronRight size={13} />
-                    </button>
-                  </div>
-                )}
+              {/* Left Column: Authentic 3D Open Heirloom Book Stage with Smooth Hinge Physics */}
+              <div className="lg:col-span-7 flex flex-col items-center justify-center relative select-none w-full">
+                <HeroBook
+                  key={activeAlbum.id}
+                  album={activeAlbum}
+                  initiallyOpen={true}
+                  onClose={() => setActiveAlbumId(null)}
+                />
               </div>
 
               {/* Right Column: Key Format Specifications & Direct Navigation */}

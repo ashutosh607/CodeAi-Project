@@ -1,10 +1,11 @@
-import React, { useRef, useEffect } from 'react';
-import { Truck, ShieldCheck, Package, ArrowRight } from 'lucide-react';
+import React, { useRef, useEffect, useState } from 'react';
+import { Truck, ShieldCheck, Package, ArrowRight, Check, Layers } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import TextReveal from './motion/TextReveal';
 import RevealOnScroll from './motion/RevealOnScroll';
+import TiltCard from './motion/TiltCard';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -90,70 +91,77 @@ export default function UKDeskSection() {
   const sectionRef = useRef(null);
   const guaranteesRef = useRef(null);
   const cardsGridRef = useRef(null);
+  const [hoveredProduct, setHoveredProduct] = useState(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (prefersReduced) return;
 
-      // 1. Entrance animation for the top 3 guarantee cards (coming smoothly from the left with blur-to-clear)
+      // 1. Alternating entrance animation for the top 3 guarantee cards
       const guaranteeCards = guaranteesRef.current?.querySelectorAll('.uk-guarantee-card');
       if (guaranteeCards && guaranteeCards.length > 0) {
-        gsap.fromTo(
-          guaranteeCards,
-          {
-            x: -35,
-            opacity: 0,
-            filter: 'blur(8px)'
-          },
-          {
-            x: 0,
-            opacity: 1,
-            filter: 'blur(0px)',
-            duration: 0.88,
-            stagger: 0.12,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: guaranteesRef.current,
-              start: 'top 85%',
-              once: true
+        guaranteeCards.forEach((card, idx) => {
+          const fromX = idx % 2 === 0 ? -40 : 40;
+          gsap.fromTo(
+            card,
+            {
+              x: fromX,
+              opacity: 0,
+              filter: 'blur(6px)'
             },
-            onComplete: () => {
-              gsap.set(guaranteeCards, { clearProps: 'transform,opacity,filter' });
+            {
+              x: 0,
+              opacity: 1,
+              filter: 'blur(0px)',
+              duration: 0.88,
+              delay: idx * 0.12,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: guaranteesRef.current,
+                start: 'top 85%',
+                once: true
+              },
+              onComplete: () => {
+                gsap.set(card, { clearProps: 'transform,opacity,filter' });
+              }
             }
-          }
-        );
+          );
+        });
       }
 
-      // 2. Entrance animation for the 4 product cards (coming from right and up with blur-to-clear)
+      // 2. Alternating entrance animation for the 4 product cards (even from Left, odd from Right)
       const productCards = cardsGridRef.current?.querySelectorAll('.uk-product-card');
       if (productCards && productCards.length > 0) {
-        gsap.fromTo(
-          productCards,
-          {
-            y: 40,
-            x: 18,
-            opacity: 0,
-            filter: 'blur(8px)'
-          },
-          {
-            y: 0,
-            x: 0,
-            opacity: 1,
-            filter: 'blur(0px)',
-            duration: 0.95,
-            stagger: 0.12,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: cardsGridRef.current,
-              start: 'top 82%',
-              once: true
+        productCards.forEach((card, idx) => {
+          const fromX = idx % 2 === 0 ? -48 : 48;
+          gsap.fromTo(
+            card,
+            {
+              x: fromX,
+              y: 16,
+              opacity: 0,
+              filter: 'blur(6px)'
             },
-            onComplete: () => {
-              gsap.set(productCards, { clearProps: 'transform,opacity,filter' });
+            {
+              x: 0,
+              y: 0,
+              opacity: 1,
+              filter: 'blur(0px)',
+              duration: 0.95,
+              delay: idx * 0.12,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: cardsGridRef.current,
+                start: 'top 82%',
+                once: true
+              },
+              onComplete: () => {
+                gsap.set(card, { clearProps: 'transform,opacity,filter' });
+              }
             }
-          }
-        );
+          );
+        });
       }
     }, sectionRef);
 
@@ -293,49 +301,91 @@ export default function UKDeskSection() {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-6 lg:gap-6 items-stretch"
         >
           {UK_COLLECTIONS.map((col, idx) => (
-            <div
+            <TiltCard
               key={idx}
-              className="uk-product-card group relative bg-white/95 hover:bg-white border border-[#EAE3D6] hover:border-[#D6C7B2] rounded-2xl p-4 sm:p-4.5 pb-6 shadow-[0_12px_32px_-8px_rgba(32,30,27,0.07)] hover:shadow-[0_20px_45px_-8px_rgba(185,154,105,0.25)] hover:-translate-y-2 transition-all duration-400 flex flex-col justify-between backdrop-blur-xs overflow-hidden"
+              maxTilt={7}
+              scale={1.02}
+              glare={true}
+              onMouseEnter={() => setHoveredProduct(col.slug)}
+              onMouseLeave={() => setHoveredProduct(null)}
+              className="uk-product-card h-full flex flex-col"
             >
-              <div>
-                {/* Product Photograph Container with Sliding Inclusions Overlay */}
-                <div className="relative aspect-[16/11] rounded-xl overflow-hidden mb-4 sm:mb-5 bg-[#F0EAE1]">
-                  <img
-                    src={col.image}
-                    alt={col.title}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-106 will-change-transform"
-                    loading="lazy"
-                  />
+              <div
+                className="group relative h-full bg-white/95 hover:bg-white border border-[#EAE3D6] hover:border-[#B99A69]/80 rounded-2xl p-4 sm:p-5 pb-6 shadow-[0_12px_32px_-8px_rgba(32,30,27,0.07)] hover:shadow-[0_20px_45px_-8px_rgba(185,154,105,0.25)] transition-all duration-400 flex flex-col justify-between backdrop-blur-xs overflow-hidden"
+              >
+                <div>
+                  {/* Product Photograph Container */}
+                  <div className="relative aspect-[16/11] rounded-xl overflow-hidden mb-4 sm:mb-5 bg-[#F0EAE1]">
+                    <img
+                      src={col.image}
+                      alt={col.title}
+                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-106 will-change-transform"
+                      loading="lazy"
+                    />
 
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/25 pointer-events-none" />
+
+                    {/* Top Tag */}
+                    <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#141310]/85 backdrop-blur-md border border-[#FFFFFF]/20 text-[#FAF7F2] text-[9.5px] font-sans font-medium uppercase tracking-[0.14em]">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
+                      <span>{col.tag}</span>
+                    </div>
+                  </div>
+
+                  {/* Editorial Title */}
+                  <h3 className="font-serif text-[18px] sm:text-[20px] text-[#201E1B] font-normal leading-[1.25] mb-2.5 text-left group-hover:text-[#B99A69] transition-colors">
+                    {col.title}
+                  </h3>
+
+                  {/* Supporting Spec Copy */}
+                  <p className="font-sans text-[12px] sm:text-[12.5px] text-[#777066] leading-[1.65] mb-4 text-left font-normal">
+                    {col.desc}
+                  </p>
+
+                  {/* Interactive "Words come / see what it does include" Specifications Drawer */}
+                  <div className="pt-3.5 border-t border-[#F2ECE3] transition-all duration-300">
+                    <div className="flex items-center gap-1.5 text-[10px] uppercase font-sans font-semibold tracking-[0.16em] text-[#9E7D4B] mb-2 text-left">
+                      <Layers size={11} className="text-[#B99A69]" />
+                      <span>UK Specifications</span>
+                    </div>
+
+                    <ul className="space-y-1.5 m-0 p-0 list-none text-left">
+                      {col.includes.map((line, lIdx) => (
+                        <li
+                          key={line}
+                          className="flex items-start gap-2 text-[11.5px] sm:text-[12px] text-[#3A3630] leading-snug font-normal transition-transform duration-300"
+                          style={{
+                            transform: hoveredProduct === col.slug ? 'translateX(2.5px)' : 'none',
+                            transitionDelay: `${lIdx * 30}ms`
+                          }}
+                        >
+                          <span className="w-3.5 h-3.5 rounded-full bg-[#B99A69]/15 flex items-center justify-center shrink-0 mt-0.5 text-[#9E7D4B] group-hover:bg-[#B99A69]/25 transition-colors">
+                            <Check size={8.5} strokeWidth={2.8} />
+                          </span>
+                          <span>{line}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
 
-                {/* Editorial Title */}
-                <h3 className="font-serif text-[18px] sm:text-[20px] text-[#201E1B] font-normal leading-[1.25] mb-2.5 text-left group-hover:text-[#B99A69] transition-colors">
-                  {col.title}
-                </h3>
-
-                {/* Supporting Spec Copy */}
-                <p className="font-sans text-[12px] sm:text-[12.5px] text-[#777066] leading-[1.65] mb-6 text-left font-normal">
-                  {col.desc}
-                </p>
-                <details className="studio-inclusions"><summary>Specifications</summary><ul>{col.includes.map(line => <li key={line}>{line}</li>)}</ul></details>
+                {/* Action Link: "View UK Specifications →" */}
+                <div className="pt-4 border-t border-[#F2ECE3] flex items-center justify-between mt-auto">
+                  <Link
+                    to={`/for-uk/${col.slug}`}
+                    className="inline-flex items-center gap-1.5 text-[11px] font-sans uppercase tracking-[0.16em] font-semibold text-[#201E1B] group-hover:text-[#B99A69] transition-colors text-left"
+                    style={{ textDecoration: 'none' }}
+                  >
+                    <span>View UK Specifications</span>
+                    <ArrowRight
+                      size={13}
+                      className="text-[#B99A69] transition-transform duration-300 group-hover:translate-x-1.5"
+                    />
+                  </Link>
+                </div>
               </div>
-
-              {/* Action Link: "View UK Specifications →" */}
-              <div className="pt-2 border-t border-[#F2ECE3] flex items-center justify-between mt-auto">
-                <Link
-                  to={`/for-uk/${col.slug}`}
-                  className="inline-flex items-center gap-1.5 text-[11px] font-sans uppercase tracking-[0.16em] font-semibold text-[#201E1B] group-hover:text-[#B99A69] transition-colors text-left"
-                  style={{ textDecoration: 'none' }}
-                >
-                  <span>View UK Specifications</span>
-                  <ArrowRight
-                    size={13}
-                    className="text-[#B99A69] transition-transform duration-300 group-hover:translate-x-1.5"
-                  />
-                </Link>
-              </div>
-            </div>
+            </TiltCard>
           ))}
         </div>
 

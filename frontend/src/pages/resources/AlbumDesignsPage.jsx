@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import RevealOnScroll from '../../components/motion/RevealOnScroll';
 import TextReveal from '../../components/motion/TextReveal';
+import StaggerBoxes from '../../components/motion/StaggerBoxes';
+import TiltCard from '../../components/motion/TiltCard';
 import {
   ChevronRight,
   SlidersHorizontal,
@@ -481,93 +483,106 @@ export default function AlbumDesignsPage() {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <StaggerBoxes
+              direction="alternate"
+              distance={48}
+              stagger={0.12}
+              duration={0.9}
+              className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch"
+            >
               {filteredSpecimens.map((item) => (
-                <div
+                <TiltCard
                   key={item.id}
-                  className="bg-white border border-[#EAE6DF] p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between group"
+                  maxTilt={6}
+                  scale={1.02}
+                  glare={true}
+                  className="h-full flex flex-col"
                 >
-                  <div className="space-y-4">
-                    {/* Image Specimen Frame */}
-                    <div className="relative aspect-[16/9] bg-[#141310] overflow-hidden">
-                      <img
-                        src={item.imgSrc}
-                        alt={item.alt}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                      />
-                      <div className="absolute top-3 left-3 flex gap-1.5">
-                        <span className="bg-[#141310]/85 text-white text-[10px] uppercase font-semibold px-2.5 py-1 tracking-wider">
-                          {item.style}
-                        </span>
-                        <span className="bg-white/90 text-[#141310] text-[10px] uppercase font-semibold px-2.5 py-1 tracking-wider">
-                          {item.chapter}
-                        </span>
+                  <div
+                    className="h-full bg-white border border-[#EAE6DF] hover:border-[#B99A69]/70 rounded-2xl p-6 shadow-sm hover:shadow-[0_16px_36px_-8px_rgba(185,154,105,0.2)] transition-all duration-300 flex flex-col justify-between group overflow-hidden"
+                  >
+                    <div className="space-y-4">
+                      {/* Image Specimen Frame */}
+                      <div className="relative aspect-[16/9] bg-[#141310] overflow-hidden rounded-xl">
+                        <img
+                          src={item.imgSrc}
+                          alt={item.alt}
+                          className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700 ease-out"
+                        />
+                        <div className="absolute top-3 left-3 flex gap-1.5">
+                          <span className="bg-[#141310]/85 backdrop-blur-md text-white text-[10px] uppercase font-semibold px-2.5 py-1 tracking-wider rounded-sm">
+                            {item.style}
+                          </span>
+                          <span className="bg-white/95 backdrop-blur-md text-[#141310] text-[10px] uppercase font-semibold px-2.5 py-1 tracking-wider rounded-sm">
+                            {item.chapter}
+                          </span>
+                        </div>
+                        <div className="absolute bottom-3 right-3">
+                          <button
+                            type="button"
+                            onClick={() => setActiveSpecimenModal(item)}
+                            className="w-8 h-8 rounded-full bg-white/95 hover:bg-white text-[#141310] flex items-center justify-center shadow-md transition-colors"
+                            title="Inspect 1:1 Scale Proof"
+                          >
+                            <Maximize2 size={14} />
+                          </button>
+                        </div>
                       </div>
-                      <div className="absolute bottom-3 right-3">
-                        <button
-                          type="button"
-                          onClick={() => setActiveSpecimenModal(item)}
-                          className="w-8 h-8 rounded-full bg-white/90 hover:bg-white text-[#141310] flex items-center justify-center shadow-md transition-colors"
-                          title="Inspect 1:1 Scale Proof"
-                        >
-                          <Maximize2 size={14} />
-                        </button>
+
+                      {/* Metadata Header */}
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between text-[11px] text-[#635E52] uppercase tracking-[0.14em]">
+                          <span>{item.provenance}</span>
+                          <span>{item.dimensions}</span>
+                        </div>
+                        <h3 className="font-serif text-[22px] text-[#141310] leading-snug group-hover:text-[#9E7D4B] transition-colors">
+                          {item.title}
+                        </h3>
+                        <p className="text-[13px] text-[#4A463F] leading-relaxed line-clamp-2 pt-1 font-normal">
+                          {item.description}
+                        </p>
+                      </div>
+
+                      {/* Technical Blueprint Specs */}
+                      <div className="p-3.5 bg-[#F4F4F0] border border-[#EAE6DF] rounded-xl space-y-1.5 text-[11.5px] text-[#4A463F]">
+                        <div className="flex justify-between">
+                          <span className="text-[#635E52]">Substrate:</span>
+                          <span className="font-medium text-[#141310]">{item.substrate}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-[#635E52]">Gamut:</span>
+                          <span className="font-medium text-[#141310]">{item.colorGamut}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-[#635E52]">Tolerance:</span>
+                          <span className="font-medium text-[#141310]">{item.safeMargin}</span>
+                        </div>
                       </div>
                     </div>
 
-                    {/* Metadata Header */}
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-between text-[11px] text-[#635E52] uppercase tracking-[0.14em]">
-                        <span>{item.provenance}</span>
-                        <span>{item.dimensions}</span>
-                      </div>
-                      <h3 className="font-serif text-[22px] text-[#141310] leading-snug group-hover:text-[#635E52] transition-colors">
-                        {item.title}
-                      </h3>
-                      <p className="text-[13px] text-[#4A463F] leading-relaxed line-clamp-2 pt-1">
-                        {item.description}
-                      </p>
-                    </div>
+                    {/* Card Footer Actions */}
+                    <div className="pt-5 mt-4 border-t border-[#EAE6DF] flex items-center justify-between">
+                      <button
+                        type="button"
+                        onClick={() => setActiveSpecimenModal(item)}
+                        className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.14em] font-semibold text-[#141310] hover:text-[#9E7D4B] transition-colors"
+                      >
+                        <Eye size={14} />
+                        <span>Inspect 1:1 Proof</span>
+                      </button>
 
-                    {/* Technical Blueprint Specs */}
-                    <div className="p-3 bg-[#F4F4F0] border border-[#EAE6DF] space-y-1 text-[11px] text-[#4A463F]">
-                      <div className="flex justify-between">
-                        <span className="text-[#635E52]">Substrate:</span>
-                        <span className="font-medium text-[#141310]">{item.substrate}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-[#635E52]">Gamut:</span>
-                        <span className="font-medium text-[#141310]">{item.colorGamut}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-[#635E52]">Tolerance:</span>
-                        <span className="font-medium text-[#141310]">{item.safeMargin}</span>
-                      </div>
+                      <Link
+                        to={`/enquire?product=Album Designing&specimen=${encodeURIComponent(item.title)}`}
+                        className="inline-flex items-center gap-1 text-[11px] uppercase tracking-[0.14em] font-semibold text-[#9E7D4B] hover:text-[#141310] transition-colors"
+                      >
+                        <span>Commission Layout</span>
+                        <ArrowRight size={12} />
+                      </Link>
                     </div>
                   </div>
-
-                  {/* Card Footer Actions */}
-                  <div className="pt-6 mt-4 border-t border-[#EAE6DF] flex items-center justify-between">
-                    <button
-                      type="button"
-                      onClick={() => setActiveSpecimenModal(item)}
-                      className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.14em] font-semibold text-[#141310] hover:text-[#635E52] transition-colors"
-                    >
-                      <Eye size={14} />
-                      <span>Inspect 1:1 Proof</span>
-                    </button>
-
-                    <Link
-                      to={`/enquire?product=Album Designing&specimen=${encodeURIComponent(item.title)}`}
-                      className="inline-flex items-center gap-1 text-[11px] uppercase tracking-[0.14em] font-semibold text-[#635E52] hover:text-[#141310] transition-colors"
-                    >
-                      <span>Commission Layout</span>
-                      <ArrowRight size={12} />
-                    </Link>
-                  </div>
-                </div>
+                </TiltCard>
               ))}
-            </div>
+            </StaggerBoxes>
           )}
         </div>
       </section>

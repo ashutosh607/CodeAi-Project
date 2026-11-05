@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import RevealOnScroll from './motion/RevealOnScroll';
 import TextReveal from './motion/TextReveal';
+import TiltCard from './motion/TiltCard';
 
 export default function IntroSection() {
   const [imgSrc, setImgSrc] = useState('https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1200&q=85');
@@ -42,20 +43,22 @@ export default function IntroSection() {
             </RevealOnScroll>
           </div>
 
-          {/* Right Column: Physical Product Photography Frame */}
+          {/* Right Column: Physical Product Photography Frame with 3D Tilt */}
           <RevealOnScroll direction="right" className="intro-image-column">
-            <div className="intro-photo-card group overflow-hidden">
-              <img
-                src={imgSrc}
-                alt="Ultraa Albums Bespoke Cover and Handcrafted Box Sets"
-                className="intro-feature-photo transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                onError={handleImgError}
-                loading="lazy"
-              />
-              <div className="intro-photo-caption-bar">
-                <span>Handcrafted Velvet &amp; Leather Box Sets with Bespoke Debossing</span>
+            <TiltCard maxTilt={5} scale={1.02} glare={true} className="w-full">
+              <div className="intro-photo-card group overflow-hidden rounded-2xl shadow-[0_16px_40px_-12px_rgba(20,19,16,0.12)] border border-[#EAE3D6]">
+                <img
+                  src={imgSrc}
+                  alt="Ultraa Albums Bespoke Cover and Handcrafted Box Sets"
+                  className="intro-feature-photo transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                  onError={handleImgError}
+                  loading="lazy"
+                />
+                <div className="intro-photo-caption-bar">
+                  <span>Handcrafted Velvet &amp; Leather Box Sets with Bespoke Debossing</span>
+                </div>
               </div>
-            </div>
+            </TiltCard>
           </RevealOnScroll>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import gsap from 'gsap';
-import { ArrowRight, Check, Sparkles } from 'lucide-react';
+import { BookOpen, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 /**
@@ -10,8 +10,9 @@ import { useNavigate } from 'react-router-dom';
  * Features:
  * - 3D album volume with visible cover boards, spine, and layered page block edges
  * - Realistic contact shadow that reacts to hover elevation
- * - GSAP 3D hover physics (lift, tilt, shadow diffusion)
- * - Click directly navigates to the respective album page in the ALBUMS navbar collection
+ * - Pure, clean aesthetic without clutter or hover popups
+ * - Clicking the book or "OPEN ALBUM" normally opens the 3D in-place viewer
+ * - "Collection →" link navigates directly to the dedicated collection page
  */
 export default function Album3DCard({
   album,
@@ -23,15 +24,6 @@ export default function Album3DCard({
   const bookVolumeRef = useRef(null);
   const shadowRef = useRef(null);
 
-  const handleOpenCollection = (e) => {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    navigate(`/products/${album.slug}`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   const handleOpen3D = (e) => {
     if (e) {
       e.preventDefault();
@@ -40,33 +32,18 @@ export default function Album3DCard({
     if (onOpenViewer) {
       onOpenViewer(album);
     } else {
-      handleOpenCollection(e);
+      navigate(`/products/${album.slug}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
-  const handleExplore = handleOpenCollection;
-  const handleViewSpecs = handleOpenCollection;
-
-  const getSpreadPhoto = () => {
-    return (
-      album.spreads?.[0]?.left?.image ||
-      album.spreads?.[0]?.right?.image ||
-      album.previewImage ||
-      'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=85'
-    );
-  };
-
-  const getInclusions = () => {
-    const list = [];
-    if (album.binding) list.push(album.binding.split(',')[0]);
-    if (album.paperType) list.push(album.paperType.split(',')[0]);
-    if (album.finishing) list.push(album.finishing.split(',')[0]);
-    if (list.length === 0) {
-      list.push('180° Lay-Flat Seamless Gutter');
-      list.push('1.1mm Archival Rigid Core Boards');
-      list.push('Fuji Crystal Archive DPII Chemistry');
+  const handleOpenCollection = (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
     }
-    return list.slice(0, 3);
+    navigate(`/products/${album.slug}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   useEffect(() => {
@@ -89,12 +66,12 @@ export default function Album3DCard({
         const shadowEl = shadowRef.current;
         if (!bookEl || !shadowEl) return;
 
-        // GSAP smooth physical elevation
+        // Smooth physical elevation only on hover (NO popups or overlays)
         const handleMouseEnter = () => {
           gsap.to(bookEl, {
-            y: -14,
-            rotateX: 5,
-            rotateY: -6,
+            y: -12,
+            rotateX: 4,
+            rotateY: -7,
             duration: 0.45,
             ease: 'power2.out'
           });
@@ -102,9 +79,9 @@ export default function Album3DCard({
           gsap.to(shadowEl, {
             scaleX: 1.12,
             scaleY: 0.85,
-            opacity: 0.55,
+            opacity: 0.52,
             filter: 'blur(14px)',
-            y: 6,
+            y: 5,
             duration: 0.45,
             ease: 'power2.out'
           });
@@ -151,20 +128,20 @@ export default function Album3DCard({
   return (
     <div
       ref={podiumRef}
-      onClick={handleOpenCollection}
+      onClick={handleOpen3D}
       className="album-product-podium cursor-pointer"
     >
       {/* 3D Physical Album Stage */}
       <div
         className="album-3d-stage"
-        onClick={handleOpenCollection}
+        onClick={handleOpen3D}
         role="button"
         tabIndex={0}
-        aria-label={`Open ${album.name} collection`}
+        aria-label={`Open 3D preview for ${album.name}`}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            handleOpenCollection(e);
+            handleOpen3D(e);
           }
         }}
       >
@@ -254,33 +231,6 @@ export default function Album3DCard({
             {/* Specular lighting sheen across cover */}
             <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/10 pointer-events-none" />
           </div>
-
-          {/* Floating Photo Preview of Inside Spread on Hover */}
-          <div className="album-hover-spread-peek">
-            <img
-              src={getSpreadPhoto()}
-              alt={`${album.name} spread preview`}
-              className="album-spread-peek-img"
-              loading="lazy"
-            />
-            <div className="album-spread-peek-tag">
-              <Sparkles size={10} className="text-[#D4AF37]" />
-              <span>Spread &amp; Craft Preview</span>
-            </div>
-          </div>
-
-          {/* Hover Hint Pill */}
-          <div
-            className="album-open-hint"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleOpen3D(e);
-            }}
-            title="Inspect 3D spread preview"
-          >
-            <Sparkles size={10} className="text-[#D4AF37]" />
-            <span>3D PREVIEW</span>
-          </div>
         </div>
       </div>
 
@@ -291,7 +241,7 @@ export default function Album3DCard({
         </span>
         <h3
           className="album-card-caption-title cursor-pointer"
-          onClick={handleOpenCollection}
+          onClick={handleOpen3D}
         >
           {album.name}
         </h3>
@@ -299,39 +249,28 @@ export default function Album3DCard({
           {album.tagline}
         </p>
 
-        {/* On-Hover Words / Inclusions Reveal */}
-        <div className="album-hover-inclusions-drawer">
-          <div className="album-inclusions-title">
-            <Sparkles size={10} className="text-[#B99A69]" />
-            <span>WHAT IT INCLUDES:</span>
-          </div>
-          <ul className="album-inclusions-list">
-            {getInclusions().map((inc, i) => (
-              <li key={i}>
-                <Check size={11} className="text-[#B99A69] shrink-0" />
-                <span>{inc}</span>
-              </li>
-            ))}
-          </ul>
-          {album.sizes && album.sizes.length > 0 && (
-            <div className="album-sizes-pill-row">
-              <span className="album-sizes-label">SIZES:</span>
-              <span className="album-sizes-val">
-                {album.sizes.slice(0, 3).map(s => s.name).join(' • ')}
-              </span>
-            </div>
-          )}
-        </div>
+        {/* Clean Action Controls: "OPEN ALBUM" to open 3D viewer & "Collection →" to navigate */}
+        <div className="flex items-center justify-center gap-2.5 mt-3.5 w-full">
+          <button
+            type="button"
+            onClick={handleOpen3D}
+            className="album-card-cta-btn"
+            aria-label={`Open ${album.name} in 3D viewer`}
+          >
+            <BookOpen size={12} />
+            <span>OPEN ALBUM</span>
+          </button>
 
-        <button
-          type="button"
-          onClick={handleOpenCollection}
-          className="album-card-cta-btn"
-          aria-label={`Open ${album.name} collection`}
-        >
-          <span>EXPLORE COLLECTION</span>
-          <ArrowRight size={12} />
-        </button>
+          <button
+            type="button"
+            onClick={handleOpenCollection}
+            className="inline-flex items-center gap-1 text-[11px] font-sans font-medium uppercase tracking-[0.14em] text-[#777066] hover:text-[#B99A69] transition-colors py-1.5 px-2.5 cursor-pointer bg-transparent border-none"
+            aria-label={`Explore ${album.name} collection`}
+          >
+            <span>Collection</span>
+            <ArrowRight size={11} />
+          </button>
+        </div>
       </div>
     </div>
   );
