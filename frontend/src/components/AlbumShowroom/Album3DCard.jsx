@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import gsap from 'gsap';
-import { ArrowRight, BookOpen, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Album3DCard Component
@@ -10,16 +11,25 @@ import { ArrowRight, BookOpen, Sparkles } from 'lucide-react';
  * - 3D album volume with visible cover boards, spine, and layered page block edges
  * - Realistic contact shadow that reacts to hover elevation
  * - GSAP 3D hover physics (lift, tilt, shadow diffusion)
- * - Click to open the immersive 3D album showroom experience
+ * - Click directly navigates to the respective album page in the ALBUMS navbar collection
  */
 export default function Album3DCard({
   album,
   index = 0,
-  onOpenAlbum
+  onSelectProduct
 }) {
+  const navigate = useNavigate();
   const podiumRef = useRef(null);
   const bookVolumeRef = useRef(null);
   const shadowRef = useRef(null);
+
+  const handleExplore = () => {
+    if (onSelectProduct) {
+      onSelectProduct(album);
+    }
+    navigate(`/products/${album.slug}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -41,7 +51,7 @@ export default function Album3DCard({
         const shadowEl = shadowRef.current;
         if (!bookEl || !shadowEl) return;
 
-        // GSAP QuickTo or smooth tweens for physical elevation
+        // GSAP smooth physical elevation
         const handleMouseEnter = () => {
           gsap.to(bookEl, {
             y: -14,
@@ -105,14 +115,14 @@ export default function Album3DCard({
       {/* 3D Physical Album Stage */}
       <div
         className="album-3d-stage"
-        onClick={() => onOpenAlbum(album)}
+        onClick={handleExplore}
         role="button"
         tabIndex={0}
-        aria-label={`Open 3D Showroom for ${album.name}`}
+        aria-label={`Explore ${album.name}`}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            onOpenAlbum(album);
+            handleExplore();
           }
         }}
       >
@@ -205,9 +215,8 @@ export default function Album3DCard({
 
           {/* Hover Hint Pill */}
           <div className="album-open-hint">
-            <BookOpen size={10} className="text-[#B99A69]" />
-            <span>Open 3D Album</span>
-            <Sparkles size={9} className="text-[#B99A69]" />
+            <span>Explore</span>
+            <ArrowRight size={10} className="text-[#B99A69]" />
           </div>
         </div>
       </div>
@@ -225,14 +234,13 @@ export default function Album3DCard({
         </p>
         <button
           type="button"
-          onClick={() => onOpenAlbum(album)}
+          onClick={handleExplore}
           className="album-card-cta-btn"
         >
-          <span>Explore 3D Interior</span>
+          <span>Explore</span>
           <ArrowRight size={12} />
         </button>
       </div>
     </div>
   );
 }
-

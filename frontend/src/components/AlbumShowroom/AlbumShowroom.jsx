@@ -1,10 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Sparkles, Compass } from 'lucide-react';
+import { Compass } from 'lucide-react';
 import { SHOWROOM_ALBUMS } from './albumShowroomData';
 import Album3DCard from './Album3DCard';
-import Album3DViewerModal from './Album3DViewerModal';
 import './AlbumShowroom.css';
 
 if (typeof window !== 'undefined') {
@@ -15,14 +14,12 @@ if (typeof window !== 'undefined') {
  * AlbumShowroom Component
  * 
  * Exclusive 3D Album Showroom section:
- * - Transforms flat cards into physical, handcrafted 3D album products
+ * - Four physical, handcrafted 3D albums on luxury studio podiums
  * - Realistic contact shadows, page block edges, and debossed cover typography
  * - GSAP hover elevations and 3D tilts
- * - Click any album to open an interactive 3D book experience with page turning
- * - Side-by-side technical specifications and direct enquiry integration
+ * - Clicking any album or "Explore →" navigates directly to that album's respective page in the navbar
  */
 export default function AlbumShowroom({ onSelectProduct }) {
-  const [activeAlbum, setActiveAlbum] = useState(null);
   const sectionRef = useRef(null);
   const gridRef = useRef(null);
 
@@ -84,7 +81,7 @@ export default function AlbumShowroom({ onSelectProduct }) {
           </h2>
 
           <p className="font-sans text-[14px] sm:text-[16px] text-[#777066] leading-[1.7] max-w-[620px] mx-auto">
-            Experience our four signature formats as physical handcrafted specimens. Click any album to open its 3D volume, inspect binding leaves, and explore curated spreads.
+            Experience our four signature formats as physical handcrafted specimens. Click any album to explore its dedicated specifications, materials, and bespoke bindery options.
           </p>
         </div>
 
@@ -103,23 +100,11 @@ export default function AlbumShowroom({ onSelectProduct }) {
               key={album.id}
               album={album}
               index={index}
-              onOpenAlbum={(selected) => setActiveAlbum(selected)}
+              onSelectProduct={onSelectProduct}
             />
           ))}
         </div>
       </div>
-
-      {/* =====================================================================
-          IMMERSIVE 3D OPEN BOOK VIEWER MODAL
-          ===================================================================== */}
-      {activeAlbum && (
-        <Album3DViewerModal
-          album={activeAlbum}
-          onClose={() => setActiveAlbum(null)}
-          onSelectProduct={onSelectProduct}
-        />
-      )}
     </section>
   );
 }
-
