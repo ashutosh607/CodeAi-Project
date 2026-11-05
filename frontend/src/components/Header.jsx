@@ -3,18 +3,30 @@ import {
   ChevronDown,
   Menu,
   X,
-  BookOpen,
-  User
+  ArrowRight,
+  MessageCircle,
+  BookOpen
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import AnnouncementTicker from './AnnouncementTicker';
 
-export default function Header() {
-  const [activeMenu, setActiveMenu] = useState(null); // 'albums', 'services', 'uk', 'about', 'resources'
+export default function Header({ onOpenPayOnline }) {
+  const [activeMenu, setActiveMenu] = useState(null); // 'albums' | 'services' | 'uk' | 'about' | 'resources'
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileAccordion, setMobileAccordion] = useState(null);
+  const [isScrolled, setIsScrolled] = useState(false);
   const timeoutRef = useRef(null);
   const navRef = useRef(null);
   const location = useLocation();
+
+  // Scroll detection for sticky elevated styling
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleMouseEnter = (menuKey) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -24,12 +36,18 @@ export default function Header() {
   const handleMouseLeave = () => {
     timeoutRef.current = setTimeout(() => {
       setActiveMenu(null);
-    }, 200);
+    }, 180);
   };
 
   const handleMenuClick = (menuKey) => {
     setActiveMenu((prev) => (prev === menuKey ? null : menuKey));
   };
+
+  // Close dropdowns on route changes, outside clicks or Escape key
+  useEffect(() => {
+    setActiveMenu(null);
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -61,373 +79,218 @@ export default function Header() {
   const isCurrent = (path) => location.pathname === path;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 flex flex-col font-sans" ref={navRef}>
-      {/* 1. Atelier Utility Top Bar (36px) */}
-      <div className="atelier-utility-topbar">
-        <div className="max-w-[1440px] h-full mx-auto px-3 sm:px-6 md:px-12 flex items-center justify-between">
-          <div className="flex items-center gap-2 sm:gap-3 overflow-hidden text-ellipsis whitespace-nowrap text-[11px] text-[#4A463F]">
-            <span className="font-semibold uppercase tracking-[0.12em] text-[10px] hidden sm:inline">
-              Atelier &amp; Global Delivery:
-            </span>
-            <a
-              href="tel:+919322254315"
-              className="font-medium text-[#141310] hover:text-[#635E52] transition-colors"
-            >
-              +91 93222 54315
-            </a>
-            <span className="text-[#CCC5BC] hidden md:inline">|</span>
-            <span className="hidden md:inline">Mumbai Atelier</span>
-            <span className="text-[#CCC5BC] hidden lg:inline">|</span>
-            <span className="hidden lg:inline">Express Worldwide Shipping</span>
-          </div>
+    <div
+      className={`fixed top-0 left-0 right-0 z-50 flex flex-col font-sans transition-shadow duration-300 ${
+        isScrolled ? 'shadow-[0_8px_24px_-6px_rgba(32,30,27,0.08)]' : ''
+      }`}
+      ref={navRef}
+    >
+      {/* 1. Top Announcement Strip — Text Only Infinite Ticker */}
+      <AnnouncementTicker />
 
-          <div className="flex items-center gap-2.5 sm:gap-4 text-[10px] sm:text-[11px] font-semibold tracking-[0.12em] uppercase shrink-0">
-            <Link
-              to="/pay-online"
-              className="flex items-center gap-1.5 text-[#1B1C1A] hover:text-[#635E52] transition-colors"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-[#635E52]"></span>
-              <span>Pay Online</span>
+      {/* 2. Main Luxury Navbar */}
+      <header
+        className={`w-full relative transition-all duration-300 border-b border-[#DED5C9] ${
+          isScrolled
+            ? 'bg-[#F7F3EC]/96 backdrop-blur-md h-[72px]'
+            : 'bg-[#F7F3EC]/92 backdrop-blur-sm h-[76px] sm:h-[82px]'
+        }`}
+      >
+        <div className="max-w-[1440px] h-full mx-auto px-4 sm:px-6 md:px-10 lg:px-12 flex items-center justify-between gap-4">
+          {/* Brand Wordmark with Hairline Divider */}
+          <div className="flex items-center gap-4 lg:gap-6 shrink-0">
+            <Link to="/" className="flex flex-col group py-1" aria-label="Ultraa Albums Home">
+              <span className="font-serif text-[18px] sm:text-[21px] md:text-[23px] uppercase tracking-[0.2em] text-[#201E1B] group-hover:text-[#B99A69] transition-colors leading-tight font-normal">
+                Ultraa Albums
+              </span>
+              <span className="font-sans uppercase tracking-[0.24em] text-[#777066] text-[8px] sm:text-[9px] font-medium mt-0.5">
+                Artisanal Bookbinders &amp; Photo Lab
+              </span>
             </Link>
-            <span className="text-[#CCC5BC] hidden sm:inline">|</span>
-            <Link
-              to="/resources/catalog"
-              className="text-[#4A463F] hover:text-[#1B1C1A] transition-colors hidden sm:inline"
-            >
-              Catalog &amp; Swatches
-            </Link>
-            <span className="text-[#CCC5BC] hidden md:inline">|</span>
-            <a
-              href="https://wa.me/919322254315"
-              target="_blank"
-              rel="noreferrer"
-              className="text-[#4A463F] hover:text-[#1B1C1A] transition-colors hidden md:inline"
-            >
-              Concierge WhatsApp
-            </a>
+            <div className="hidden lg:block w-[1px] h-8 bg-[#DED5C9]" aria-hidden="true" />
           </div>
-        </div>
-      </div>
-
-      {/* 2. Global Sticky Masthead */}
-      <header className="atelier-main-header">
-        <div className="max-w-[1440px] h-full mx-auto px-3 sm:px-6 md:px-12 flex items-center justify-between gap-3 sm:gap-6">
-          {/* Brand Logo */}
-          <Link to="/" className="flex flex-col group shrink-0">
-            <span className="font-serif text-[18px] sm:text-[22px] uppercase tracking-[0.16em] sm:tracking-[0.2em] text-[#141310] group-hover:text-[#635E52] transition-colors leading-tight font-normal">
-              Ultraa Albums
-            </span>
-            <span className="font-sans uppercase tracking-[0.18em] sm:tracking-[0.25em] text-[#635E52] text-[8px] sm:text-[9px] font-semibold">
-              Artisanal Bookbinders &amp; Photo Lab
-            </span>
-          </Link>
 
           {/* Desktop Primary Nav */}
-          <nav className="hidden xl:flex items-center gap-7 h-full text-[11px] font-semibold tracking-[0.14em] uppercase text-[#4A463F]">
+          <nav className="hidden xl:flex items-center gap-7 lg:gap-8 h-full text-[11px] font-medium tracking-[0.16em] uppercase text-[#777066]">
             {/* HOME */}
             <Link
               to="/"
-              className={`py-6 transition-colors hover:text-[#141310] ${isCurrent('/') ? 'text-[#141310] font-bold' : ''}`}
+              className={`relative py-6 transition-colors hover:text-[#201E1B] ${
+                isCurrent('/') ? 'text-[#201E1B] font-semibold' : ''
+              }`}
             >
-              Home
+              <span>Home</span>
+              {isCurrent('/') && (
+                <span className="absolute bottom-5 left-0 right-0 h-[1.5px] bg-[#201E1B]" />
+              )}
             </Link>
 
-            {/* ALBUMS MEGA MENU */}
+            {/* ALBUMS */}
             <div
-              className="group h-full flex items-center"
+              className="h-full flex items-center"
               onMouseEnter={() => handleMouseEnter('albums')}
               onMouseLeave={handleMouseLeave}
             >
               <button
                 type="button"
-                className={`py-6 flex items-center gap-1 transition-colors hover:text-[#141310] bg-transparent border-none uppercase font-semibold text-[11px] tracking-[0.14em] ${activeMenu === 'albums' ? 'text-[#141310]' : ''}`}
+                className={`py-6 flex items-center gap-1.5 transition-colors hover:text-[#201E1B] bg-transparent border-none uppercase text-[11px] font-medium tracking-[0.16em] cursor-pointer ${
+                  activeMenu === 'albums' || location.pathname.startsWith('/products')
+                    ? 'text-[#201E1B] font-semibold'
+                    : ''
+                }`}
                 onClick={() => handleMenuClick('albums')}
                 aria-expanded={activeMenu === 'albums'}
               >
                 <span>Albums</span>
-                <ChevronDown size={13} className="text-[#635E52]" />
+                <ChevronDown
+                  size={12}
+                  className={`text-[#777066] transition-transform duration-200 ${
+                    activeMenu === 'albums' ? 'rotate-180 text-[#201E1B]' : ''
+                  }`}
+                />
               </button>
-
-              {activeMenu === 'albums' && (
-                <div
-                  className="atelier-dropdown-full-pane"
-                  onMouseEnter={() => handleMouseEnter('albums')}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <div className="max-w-[1440px] mx-auto grid grid-cols-12 gap-8 py-8 px-4 md:px-12">
-                    <div className="col-span-3">
-                      <p className="font-semibold uppercase tracking-[0.2em] text-[#635E52] text-[10px] mb-4">
-                        Collection 01 • Layflat &amp; Books
-                      </p>
-                      <div className="flex flex-col space-y-3 font-normal text-[14px] normal-case text-[#4A463F]">
-                        <Link to="/products/flush-mount-album" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">
-                          Flush Mount Album
-                        </Link>
-                        <Link to="/products/layflat" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">
-                          Layflat Books
-                        </Link>
-                        <Link to="/products/photo-book" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">
-                          Photo Book
-                        </Link>
-                        <Link to="/products/luxury-albums" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">
-                          Luxury Albums
-                        </Link>
-                      </div>
-                    </div>
-
-                    <div className="col-span-3">
-                      <p className="font-semibold uppercase tracking-[0.2em] text-[#635E52] text-[10px] mb-4">
-                        Collection 02 • Presentation &amp; Storage
-                      </p>
-                      <div className="flex flex-col space-y-3 font-normal text-[14px] normal-case text-[#4A463F]">
-                        <Link to="/products/box-and-bags" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">
-                          Box and Bags
-                        </Link>
-                        <Link to="/products/slip-in-albums" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">
-                          Slip in Albums
-                        </Link>
-                        <Link to="/resources/catalog" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">
-                          Bespoke Swatches &amp; Finishes
-                        </Link>
-                      </div>
-                    </div>
-
-                    <div className="col-span-6 bg-[#EFEEEA] p-6 rounded-none flex items-center justify-between border border-[#EAE6DF]">
-                      <div className="max-w-sm">
-                        <span className="font-semibold uppercase tracking-[0.14em] text-[#635E52] text-[10px]">
-                          Atelier Spotlight
-                        </span>
-                        <h4 className="font-serif text-[20px] text-[#141310] mt-1 mb-2 normal-case font-normal">
-                          Hand-Bound Japanese Silk Spreads
-                        </h4>
-                        <p className="text-[13px] text-[#4A463F] mb-4 normal-case leading-relaxed">
-                          Archival Fuji Crystal Halide paper, micro-debossed leather covers, and seamless panoramic presentation.
-                        </p>
-                        <Link
-                          to="/products/luxury-albums"
-                          onClick={() => setActiveMenu(null)}
-                          className="font-semibold uppercase tracking-[0.14em] text-[11px] text-[#141310] hover:text-[#635E52] inline-flex items-center gap-1"
-                        >
-                          Explore Specimen →
-                        </Link>
-                      </div>
-                      <div className="w-24 h-24 bg-[#E3E2DF] flex items-center justify-center">
-                        <BookOpen size={32} className="text-[#635E52]" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* SERVICES */}
             <div
-              className="group h-full flex items-center"
+              className="h-full flex items-center"
               onMouseEnter={() => handleMouseEnter('services')}
               onMouseLeave={handleMouseLeave}
             >
               <button
                 type="button"
-                className={`py-6 flex items-center gap-1 transition-colors hover:text-[#141310] bg-transparent border-none uppercase font-semibold text-[11px] tracking-[0.14em] ${activeMenu === 'services' ? 'text-[#141310]' : ''}`}
+                className={`py-6 flex items-center gap-1.5 transition-colors hover:text-[#201E1B] bg-transparent border-none uppercase text-[11px] font-medium tracking-[0.16em] cursor-pointer ${
+                  activeMenu === 'services' || location.pathname.startsWith('/services')
+                    ? 'text-[#201E1B] font-semibold'
+                    : ''
+                }`}
                 onClick={() => handleMenuClick('services')}
                 aria-expanded={activeMenu === 'services'}
               >
                 <span>Services</span>
-                <ChevronDown size={13} className="text-[#635E52]" />
+                <ChevronDown
+                  size={12}
+                  className={`text-[#777066] transition-transform duration-200 ${
+                    activeMenu === 'services' ? 'rotate-180 text-[#201E1B]' : ''
+                  }`}
+                />
               </button>
-
-              {activeMenu === 'services' && (
-                <div
-                  className="atelier-dropdown-full-pane"
-                  onMouseEnter={() => handleMouseEnter('services')}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <div className="max-w-[1440px] mx-auto grid grid-cols-4 gap-8 py-8 px-4 md:px-12">
-                    <Link
-                      to="/services/image-editing"
-                      onClick={() => setActiveMenu(null)}
-                      className="p-4 hover:bg-[#FAF9F5] transition-colors border border-transparent hover:border-[#EAE6DF]"
-                    >
-                      <p className="font-semibold uppercase text-[#635E52] text-[10px] mb-1">Lab Retouching</p>
-                      <h5 className="font-serif text-[18px] text-[#141310] normal-case font-normal">Image Editing</h5>
-                      <p className="text-[13px] text-[#4A463F] mt-2 normal-case leading-relaxed">Master skin tones, frequency separation, and color grading for fine art.</p>
-                    </Link>
-                    <Link
-                      to="/services/photo-editing-and-album-design"
-                      onClick={() => setActiveMenu(null)}
-                      className="p-4 hover:bg-[#FAF9F5] transition-colors border border-transparent hover:border-[#EAE6DF]"
-                    >
-                      <p className="font-semibold uppercase text-[#635E52] text-[10px] mb-1">Curated Spreads</p>
-                      <h5 className="font-serif text-[18px] text-[#141310] normal-case font-normal">Photo Editing &amp; Album Design</h5>
-                      <p className="text-[13px] text-[#4A463F] mt-2 normal-case leading-relaxed">End-to-end narrative sequencing from raw capture to bound volume.</p>
-                    </Link>
-                    <Link
-                      to="/services/wedding-photography"
-                      onClick={() => setActiveMenu(null)}
-                      className="p-4 hover:bg-[#FAF9F5] transition-colors border border-transparent hover:border-[#EAE6DF]"
-                    >
-                      <p className="font-semibold uppercase text-[#635E52] text-[10px] mb-1">Production</p>
-                      <h5 className="font-serif text-[18px] text-[#141310] normal-case font-normal">Wedding Photography</h5>
-                      <p className="text-[13px] text-[#4A463F] mt-2 normal-case leading-relaxed">Editorial documentation crew operating globally across high-profile commissions.</p>
-                    </Link>
-                    <Link
-                      to="/services/album-designing"
-                      onClick={() => setActiveMenu(null)}
-                      className="p-4 hover:bg-[#FAF9F5] transition-colors border border-transparent hover:border-[#EAE6DF]"
-                    >
-                      <p className="font-semibold uppercase text-[#635E52] text-[10px] mb-1">Editorial Layout</p>
-                      <h5 className="font-serif text-[18px] text-[#141310] normal-case font-normal">Album Designing</h5>
-                      <p className="text-[13px] text-[#4A463F] mt-2 normal-case leading-relaxed">Minimalist architectural grids and typography tailored to your brand.</p>
-                    </Link>
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* FOR UK */}
             <div
-              className="group h-full flex items-center"
+              className="h-full flex items-center"
               onMouseEnter={() => handleMouseEnter('uk')}
               onMouseLeave={handleMouseLeave}
             >
               <button
                 type="button"
-                className={`py-6 flex items-center gap-1 transition-colors hover:text-[#141310] bg-transparent border-none uppercase font-semibold text-[11px] tracking-[0.14em] ${activeMenu === 'uk' || location.pathname.startsWith('/for-uk') ? 'text-[#141310] font-bold' : ''}`}
+                className={`py-6 flex items-center gap-1.5 transition-colors hover:text-[#201E1B] bg-transparent border-none uppercase text-[11px] font-medium tracking-[0.16em] cursor-pointer ${
+                  activeMenu === 'uk' || location.pathname.startsWith('/for-uk')
+                    ? 'text-[#201E1B] font-semibold'
+                    : ''
+                }`}
                 onClick={() => handleMenuClick('uk')}
                 aria-expanded={activeMenu === 'uk'}
               >
                 <span>For UK</span>
-                <ChevronDown size={13} className="text-[#635E52]" />
+                <ChevronDown
+                  size={12}
+                  className={`text-[#777066] transition-transform duration-200 ${
+                    activeMenu === 'uk' ? 'rotate-180 text-[#201E1B]' : ''
+                  }`}
+                />
               </button>
-
-              {activeMenu === 'uk' && (
-                <div
-                  className="atelier-dropdown-full-pane"
-                  onMouseEnter={() => handleMouseEnter('uk')}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <div className="max-w-[1440px] mx-auto flex gap-12 py-8 px-4 md:px-12">
-                    <div className="w-1/4 pr-8 border-r border-[#EAE6DF]">
-                      <span className="font-semibold uppercase tracking-[0.2em] text-[#635E52] text-[10px]">
-                        United Kingdom Liaison
-                      </span>
-                      <h4 className="font-serif text-[20px] text-[#141310] mt-2 mb-2 normal-case font-normal">
-                        Dedicated Logistics &amp; Sterling Billing
-                      </h4>
-                      <p className="text-[13px] text-[#4A463F] normal-case leading-relaxed">
-                        Duty-paid priority air transit directly to studios across London, Edinburgh, and Manchester.
-                      </p>
-                    </div>
-                    <div className="w-3/4 grid grid-cols-3 gap-6 font-normal text-[14px] normal-case text-[#4A463F]">
-                      <Link to="/for-uk/flush-mount-album-uk" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">Flush Mount for UK</Link>
-                      <Link to="/for-uk/luxury-albums-uk" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">Luxury Albums for UK</Link>
-                      <Link to="/for-uk/box-and-bags-uk" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">Box and Bags for UK</Link>
-                      <Link to="/for-uk/slip-in-albums-uk" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">Slip in Albums for UK</Link>
-                      <Link to="/for-uk/photo-book-uk" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">Photo Book for UK</Link>
-                      <Link to="/for-uk/image-editing-uk" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">Image Editing for UK</Link>
-                      <Link to="/for-uk/photography-uk" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">Photography for UK</Link>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* ABOUT */}
             <div
-              className="group h-full flex items-center"
+              className="h-full flex items-center"
               onMouseEnter={() => handleMouseEnter('about')}
               onMouseLeave={handleMouseLeave}
             >
               <Link
                 to="/about"
-                className={`py-6 flex items-center gap-1 transition-colors hover:text-[#141310] ${isCurrent('/about') ? 'text-[#141310] font-bold' : ''}`}
+                className={`py-6 flex items-center gap-1.5 transition-colors hover:text-[#201E1B] ${
+                  activeMenu === 'about' || isCurrent('/about')
+                    ? 'text-[#201E1B] font-semibold'
+                    : ''
+                }`}
                 onClick={() => setActiveMenu(null)}
               >
                 <span>About</span>
-                <ChevronDown size={13} className="text-[#635E52]" />
+                <ChevronDown
+                  size={12}
+                  className={`text-[#777066] transition-transform duration-200 ${
+                    activeMenu === 'about' ? 'rotate-180 text-[#201E1B]' : ''
+                  }`}
+                />
               </Link>
-
-              {activeMenu === 'about' && (
-                <div
-                  className="atelier-dropdown-full-pane"
-                  onMouseEnter={() => handleMouseEnter('about')}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <div className="max-w-[1440px] mx-auto grid grid-cols-6 gap-6 py-8 px-4 md:px-12 font-normal text-[14px] normal-case text-[#4A463F]">
-                    <Link to="/about#our-story" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">Our Story</Link>
-                    <Link to="/about#craftsmanship" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">Quality &amp; Craftsmanship</Link>
-                    <Link to="/about#why-choose-us" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">Why Choose Ultraa</Link>
-                    <Link to="/about#global-presence" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">Global Presence</Link>
-                    <Link to="/about#our-team" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">Our Team</Link>
-                    <Link to="/about#how-we-work" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">How We Work</Link>
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* RESOURCES */}
             <div
-              className="group h-full flex items-center"
+              className="h-full flex items-center"
               onMouseEnter={() => handleMouseEnter('resources')}
               onMouseLeave={handleMouseLeave}
             >
               <button
                 type="button"
-                className={`py-6 flex items-center gap-1 transition-colors hover:text-[#141310] bg-transparent border-none uppercase font-semibold text-[11px] tracking-[0.14em] ${activeMenu === 'resources' ? 'text-[#141310]' : ''}`}
+                className={`py-6 flex items-center gap-1.5 transition-colors hover:text-[#201E1B] bg-transparent border-none uppercase text-[11px] font-medium tracking-[0.16em] cursor-pointer ${
+                  activeMenu === 'resources' || location.pathname.startsWith('/resources')
+                    ? 'text-[#201E1B] font-semibold'
+                    : ''
+                }`}
                 onClick={() => handleMenuClick('resources')}
                 aria-expanded={activeMenu === 'resources'}
               >
                 <span>Resources</span>
-                <ChevronDown size={13} className="text-[#635E52]" />
+                <ChevronDown
+                  size={12}
+                  className={`text-[#777066] transition-transform duration-200 ${
+                    activeMenu === 'resources' ? 'rotate-180 text-[#201E1B]' : ''
+                  }`}
+                />
               </button>
-
-              {activeMenu === 'resources' && (
-                <div
-                  className="atelier-dropdown-full-pane"
-                  onMouseEnter={() => handleMouseEnter('resources')}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <div className="max-w-[1440px] mx-auto grid grid-cols-5 gap-6 py-8 px-4 md:px-12 font-normal text-[14px] normal-case text-[#4A463F]">
-                    <Link to="/resources/album-designs" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">Album Designs</Link>
-                    <Link to="/resources/wedding-photo-albums" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">Wedding Photo Albums</Link>
-                    <Link to="/resources/blogs" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">Blogs</Link>
-                    <Link to="/resources/faq" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">FAQ</Link>
-                    <Link to="/resources/catalog" onClick={() => setActiveMenu(null)} className="hover:text-[#141310] transition-colors">Catalog Download</Link>
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* CONTACT */}
             <Link
               to="/contact"
-              className={`py-6 transition-colors hover:text-[#141310] ${isCurrent('/contact') ? 'text-[#141310] font-bold' : ''}`}
+              className={`py-6 transition-colors hover:text-[#201E1B] ${
+                isCurrent('/contact') ? 'text-[#201E1B] font-semibold' : ''
+              }`}
             >
               Contact
             </Link>
           </nav>
 
           {/* Right Header Actions */}
-          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+          <div className="flex items-center gap-2.5 sm:gap-3.5 shrink-0">
+            {/* Catalog & Swatches Trigger */}
             <Link
-              to="/enquire"
-              className="px-3.5 py-1.5 sm:px-6 sm:py-2.5 rounded-none bg-[#292724] text-[#FAF9F5] font-semibold text-[10px] sm:text-[11px] uppercase tracking-[0.14em] sm:tracking-[0.2em] hover:bg-[#141310] transition-all duration-200"
+              to="/resources/catalog"
+              className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-2 rounded-full border border-[#DED5C9] bg-transparent text-[#777066] hover:text-[#201E1B] hover:border-[#201E1B] transition-all text-[10px] sm:text-[11px] font-sans font-medium uppercase tracking-[0.16em]"
+              title="Atelier Catalog & Swatches"
+              aria-label="Atelier Catalog & Swatches"
             >
-              Enquire
+              <BookOpen size={13} className="text-[#B99A69]" />
+              <span className="hidden sm:inline">Catalog</span>
             </Link>
 
+            {/* Primary Enquire Pill CTA (Champagne Gold Luxury Accent) */}
             <Link
-              to="/contact"
-              className="w-8 h-8 rounded-none bg-[#141310] flex items-center justify-center text-[#FFFFFF] hover:bg-[#635E52] transition-colors hidden sm:flex"
-              aria-label="Studio Concierge"
+              to="/enquire"
+              className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 rounded-full bg-[#B99A69] text-white font-sans font-medium text-[10px] sm:text-[11px] uppercase tracking-[0.18em] transition-all duration-300 hover:bg-[#201E1B] hover:shadow-md cursor-pointer group"
             >
-              <User size={15} />
+              <span>Enquire</span>
+              <ArrowRight size={13} className="text-white transition-transform group-hover:translate-x-0.5" />
             </Link>
 
             {/* Mobile Hamburger */}
             <button
               type="button"
-              className="xl:hidden p-1.5 text-[#141310] bg-transparent border-none cursor-pointer flex items-center justify-center"
+              className="xl:hidden p-2 text-[#201E1B] bg-transparent border-none cursor-pointer flex items-center justify-center"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle navigation menu"
             >
@@ -435,22 +298,478 @@ export default function Header() {
             </button>
           </div>
         </div>
+
+        {/* Full-Width Luxury Mega Menu Dropdown Pane */}
+        {activeMenu && (
+          <div
+            className="atelier-dropdown-full-pane"
+            onMouseEnter={() => handleMouseEnter(activeMenu)}
+            onMouseLeave={handleMouseLeave}
+          >
+            <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-10 lg:px-12 py-8 lg:py-10">
+              {/* 1. ALBUMS MEGA MENU */}
+              {activeMenu === 'albums' && (
+                <div className="grid grid-cols-12 gap-8 lg:gap-10 items-start">
+                  {/* Collection 01: Layflat & Books */}
+                  <div className="col-span-3">
+                    <p className="font-sans text-[10px] uppercase tracking-[0.22em] text-[#B99A69] font-semibold mb-4">
+                      Collection 01 • Layflat &amp; Books
+                    </p>
+                    <div className="flex flex-col space-y-3.5 text-[13px] text-[#201E1B]">
+                      <Link
+                        to="/products/flush-mount-album"
+                        onClick={() => setActiveMenu(null)}
+                        className="group flex flex-col hover:text-[#B99A69] transition-colors"
+                      >
+                        <span className="font-medium group-hover:translate-x-1 transition-transform inline-block">Flush Mount Album</span>
+                        <span className="text-[11px] text-[#777066] font-normal">Continuous panoramic spreads on 1.2mm museum core</span>
+                      </Link>
+                      <Link
+                        to="/products/layflat"
+                        onClick={() => setActiveMenu(null)}
+                        className="group flex flex-col hover:text-[#B99A69] transition-colors"
+                      >
+                        <span className="font-medium group-hover:translate-x-1 transition-transform inline-block">Layflat Books</span>
+                        <span className="text-[11px] text-[#777066] font-normal">Seamless gutter-free fine art storytelling</span>
+                      </Link>
+                      <Link
+                        to="/products/photo-book"
+                        onClick={() => setActiveMenu(null)}
+                        className="group flex flex-col hover:text-[#B99A69] transition-colors"
+                      >
+                        <span className="font-medium group-hover:translate-x-1 transition-transform inline-block">Photo Book</span>
+                        <span className="text-[11px] text-[#777066] font-normal">Editorial press-printed archival heirloom volumes</span>
+                      </Link>
+                      <Link
+                        to="/products/luxury-albums"
+                        onClick={() => setActiveMenu(null)}
+                        className="group flex flex-col hover:text-[#B99A69] transition-colors"
+                      >
+                        <span className="font-medium group-hover:translate-x-1 transition-transform inline-block">Luxury Leather Albums</span>
+                        <span className="text-[11px] text-[#777066] font-normal">Full-grain Italian calf leather with micro-debossing</span>
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* Collection 02: Bespoke Bindery */}
+                  <div className="col-span-3">
+                    <p className="font-sans text-[10px] uppercase tracking-[0.22em] text-[#B99A69] font-semibold mb-4">
+                      Collection 02 • Presentation &amp; Keepsakes
+                    </p>
+                    <div className="flex flex-col space-y-3.5 text-[13px] text-[#201E1B]">
+                      <Link
+                        to="/products/box-and-bags"
+                        onClick={() => setActiveMenu(null)}
+                        className="group flex flex-col hover:text-[#B99A69] transition-colors"
+                      >
+                        <span className="font-medium group-hover:translate-x-1 transition-transform inline-block">Presentation Box &amp; Bags</span>
+                        <span className="text-[11px] text-[#777066] font-normal">Handmade linen clamshell boxes &amp; protective raw silk bags</span>
+                      </Link>
+                      <Link
+                        to="/products/slip-in-albums"
+                        onClick={() => setActiveMenu(null)}
+                        className="group flex flex-col hover:text-[#B99A69] transition-colors"
+                      >
+                        <span className="font-medium group-hover:translate-x-1 transition-transform inline-block">Slip-in Folios &amp; Prints</span>
+                        <span className="text-[11px] text-[#777066] font-normal">Beveled window mounts and museum archival slip-cases</span>
+                      </Link>
+                      <Link
+                        to="/resources/catalog"
+                        onClick={() => setActiveMenu(null)}
+                        className="group flex flex-col hover:text-[#B99A69] transition-colors"
+                      >
+                        <span className="font-medium group-hover:translate-x-1 transition-transform inline-block">Atelier Swatches &amp; Linens</span>
+                        <span className="text-[11px] text-[#777066] font-normal">Belgian linen, distress leathers &amp; Japanese silk</span>
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* Atelier Spotlight Card */}
+                  <div className="col-span-6 bg-[#EEE7DC]/50 border border-[#DED5C9] p-7 flex items-center justify-between gap-6">
+                    <div className="max-w-md">
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#B99A69]"></span>
+                        <span className="font-sans text-[9px] uppercase tracking-[0.24em] text-[#B99A69] font-semibold">
+                          Atelier Spotlight
+                        </span>
+                      </div>
+                      <h4 className="font-serif text-[22px] text-[#201E1B] font-normal leading-snug mb-2">
+                        Museum-Grade Archival Layflat
+                      </h4>
+                      <p className="text-[12.5px] text-[#777066] leading-relaxed mb-4">
+                        Handcrafted with continuous panoramic spreads on 1.2mm acid-free core boards. Wrapped in archival Italian leather or heritage woven linens, guaranteed for over a century.
+                      </p>
+                      <div className="flex items-center gap-5">
+                        <Link
+                          to="/products/flush-mount-album"
+                          onClick={() => setActiveMenu(null)}
+                          className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.16em] font-semibold text-[#201E1B] hover:text-[#B99A69] transition-colors"
+                        >
+                          <span>Explore Specimen</span>
+                          <ArrowRight size={12} />
+                        </Link>
+                        <span className="text-[#DED5C9]">|</span>
+                        <Link
+                          to="/resources/catalog"
+                          onClick={() => setActiveMenu(null)}
+                          className="text-[11px] uppercase tracking-[0.16em] text-[#777066] hover:text-[#201E1B] transition-colors"
+                        >
+                          Download Catalog (PDF)
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="w-28 h-28 rounded-sm bg-[#FAF7F2] border border-[#DED5C9] flex flex-col items-center justify-center p-3 text-center shrink-0 shadow-sm">
+                      <BookOpen size={28} className="text-[#B99A69] mb-1.5" />
+                      <span className="font-serif text-[11px] uppercase tracking-[0.1em] text-[#201E1B]">Heirloom Vol. XII</span>
+                      <span className="text-[9px] text-[#777066]">Flush Mount</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 2. SERVICES MEGA MENU */}
+              {activeMenu === 'services' && (
+                <div className="grid grid-cols-4 gap-6">
+                  <Link
+                    to="/services/image-editing"
+                    onClick={() => setActiveMenu(null)}
+                    className="group p-5 bg-[#FAF7F2] hover:bg-[#EEE7DC]/40 border border-[#DED5C9] hover:border-[#B99A69]/50 transition-all"
+                  >
+                    <p className="font-sans text-[9px] uppercase tracking-[0.2em] text-[#B99A69] font-semibold mb-1.5">
+                      Lab Retouching
+                    </p>
+                    <h5 className="font-serif text-[18px] text-[#201E1B] font-normal mb-2 group-hover:text-[#B99A69] transition-colors">
+                      Image Editing &amp; Retouching
+                    </h5>
+                    <p className="text-[12px] text-[#777066] leading-relaxed">
+                      Master skin tones, frequency separation, and color grading tuned specifically for fine art photo paper chemistry.
+                    </p>
+                    <span className="inline-flex items-center gap-1 text-[11px] uppercase tracking-[0.14em] font-medium text-[#201E1B] mt-4 group-hover:text-[#B99A69]">
+                      Learn More <ArrowRight size={11} className="group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </Link>
+
+                  <Link
+                    to="/services/photo-editing-and-album-design"
+                    onClick={() => setActiveMenu(null)}
+                    className="group p-5 bg-[#FAF7F2] hover:bg-[#EEE7DC]/40 border border-[#DED5C9] hover:border-[#B99A69]/50 transition-all"
+                  >
+                    <p className="font-sans text-[9px] uppercase tracking-[0.2em] text-[#B99A69] font-semibold mb-1.5">
+                      Curated Spreads
+                    </p>
+                    <h5 className="font-serif text-[18px] text-[#201E1B] font-normal mb-2 group-hover:text-[#B99A69] transition-colors">
+                      Photo Editing &amp; Album Design
+                    </h5>
+                    <p className="text-[12px] text-[#777066] leading-relaxed">
+                      End-to-end narrative sequencing from raw capture culling to finished print-ready spreads with unlimited revisions.
+                    </p>
+                    <span className="inline-flex items-center gap-1 text-[11px] uppercase tracking-[0.14em] font-medium text-[#201E1B] mt-4 group-hover:text-[#B99A69]">
+                      Learn More <ArrowRight size={11} className="group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </Link>
+
+                  <Link
+                    to="/services/wedding-photography"
+                    onClick={() => setActiveMenu(null)}
+                    className="group p-5 bg-[#FAF7F2] hover:bg-[#EEE7DC]/40 border border-[#DED5C9] hover:border-[#B99A69]/50 transition-all"
+                  >
+                    <p className="font-sans text-[9px] uppercase tracking-[0.2em] text-[#B99A69] font-semibold mb-1.5">
+                      Production Crew
+                    </p>
+                    <h5 className="font-serif text-[18px] text-[#201E1B] font-normal mb-2 group-hover:text-[#B99A69] transition-colors">
+                      Wedding Photography
+                    </h5>
+                    <p className="text-[12px] text-[#777066] leading-relaxed">
+                      Editorial documentation crew operating globally across destination ceremonies and multi-day celebrations.
+                    </p>
+                    <span className="inline-flex items-center gap-1 text-[11px] uppercase tracking-[0.14em] font-medium text-[#201E1B] mt-4 group-hover:text-[#B99A69]">
+                      Learn More <ArrowRight size={11} className="group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </Link>
+
+                  <Link
+                    to="/services/album-designing"
+                    onClick={() => setActiveMenu(null)}
+                    className="group p-5 bg-[#FAF7F2] hover:bg-[#EEE7DC]/40 border border-[#DED5C9] hover:border-[#B99A69]/50 transition-all"
+                  >
+                    <p className="font-sans text-[9px] uppercase tracking-[0.2em] text-[#B99A69] font-semibold mb-1.5">
+                      Editorial Layout
+                    </p>
+                    <h5 className="font-serif text-[18px] text-[#201E1B] font-normal mb-2 group-hover:text-[#B99A69] transition-colors">
+                      Album Designing &amp; Grids
+                    </h5>
+                    <p className="text-[12px] text-[#777066] leading-relaxed">
+                      Bespoke architectural layout typesetting with generous white space and museum-grade visual rhythm.
+                    </p>
+                    <span className="inline-flex items-center gap-1 text-[11px] uppercase tracking-[0.14em] font-medium text-[#201E1B] mt-4 group-hover:text-[#B99A69]">
+                      Learn More <ArrowRight size={11} className="group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </Link>
+                </div>
+              )}
+
+              {/* 3. FOR UK MEGA MENU */}
+              {activeMenu === 'uk' && (
+                <div className="flex gap-10 items-stretch">
+                  <div className="w-1/3 pr-8 border-r border-[#DED5C9] flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#B99A69]"></span>
+                        <span className="font-sans text-[9px] uppercase tracking-[0.22em] text-[#B99A69] font-semibold">
+                          United Kingdom Liaison Desk
+                        </span>
+                      </div>
+                      <h4 className="font-serif text-[22px] text-[#201E1B] font-normal leading-snug mb-3">
+                        Dedicated Logistics &amp; Sterling Billing
+                      </h4>
+                      <p className="text-[12.5px] text-[#777066] leading-relaxed mb-5">
+                        Duty-paid priority air transit directly to studios across London, Edinburgh, Manchester, and the Cotswolds. Seamless ordering with zero customs delays and transparent GBP invoicing.
+                      </p>
+                    </div>
+                    <Link
+                      to="/for-uk"
+                      onClick={() => setActiveMenu(null)}
+                      className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.16em] font-semibold text-[#201E1B] hover:text-[#B99A69] transition-colors"
+                    >
+                      <span>Explore Full UK Desk Overview</span>
+                      <ArrowRight size={12} />
+                    </Link>
+                  </div>
+
+                  <div className="w-2/3 grid grid-cols-3 gap-y-4 gap-x-6 text-[13px] text-[#201E1B]">
+                    <Link to="/for-uk/flush-mount-album-uk" onClick={() => setActiveMenu(null)} className="group p-3 hover:bg-[#EEE7DC]/40 rounded-sm transition-colors block">
+                      <span className="font-medium group-hover:text-[#B99A69] transition-colors block">Flush Mount for UK</span>
+                      <span className="text-[11px] text-[#777066] block mt-0.5">Continuous spreads for UK wedding studios</span>
+                    </Link>
+                    <Link to="/for-uk/luxury-albums-uk" onClick={() => setActiveMenu(null)} className="group p-3 hover:bg-[#EEE7DC]/40 rounded-sm transition-colors block">
+                      <span className="font-medium group-hover:text-[#B99A69] transition-colors block">Luxury Albums for UK</span>
+                      <span className="text-[11px] text-[#777066] block mt-0.5">Full-grain leather with British hallmarked foils</span>
+                    </Link>
+                    <Link to="/for-uk/box-and-bags-uk" onClick={() => setActiveMenu(null)} className="group p-3 hover:bg-[#EEE7DC]/40 rounded-sm transition-colors block">
+                      <span className="font-medium group-hover:text-[#B99A69] transition-colors block">Box &amp; Bags for UK</span>
+                      <span className="text-[11px] text-[#777066] block mt-0.5">Handmade linen caskets &amp; velvet totes</span>
+                    </Link>
+                    <Link to="/for-uk/slip-in-albums-uk" onClick={() => setActiveMenu(null)} className="group p-3 hover:bg-[#EEE7DC]/40 rounded-sm transition-colors block">
+                      <span className="font-medium group-hover:text-[#B99A69] transition-colors block">Slip-in Albums for UK</span>
+                      <span className="text-[11px] text-[#777066] block mt-0.5">Classic portrait folios and matted albums</span>
+                    </Link>
+                    <Link to="/for-uk/photo-book-uk" onClick={() => setActiveMenu(null)} className="group p-3 hover:bg-[#EEE7DC]/40 rounded-sm transition-colors block">
+                      <span className="font-medium group-hover:text-[#B99A69] transition-colors block">Photo Book for UK</span>
+                      <span className="text-[11px] text-[#777066] block mt-0.5">Lightweight fine art volumes &amp; parent copies</span>
+                    </Link>
+                    <Link to="/for-uk/image-editing-uk" onClick={() => setActiveMenu(null)} className="group p-3 hover:bg-[#EEE7DC]/40 rounded-sm transition-colors block">
+                      <span className="font-medium group-hover:text-[#B99A69] transition-colors block">Image Editing for UK</span>
+                      <span className="text-[11px] text-[#777066] block mt-0.5">Fast UK-timezone turnaround retouching</span>
+                    </Link>
+                    <Link to="/for-uk/photography-uk" onClick={() => setActiveMenu(null)} className="group p-3 hover:bg-[#EEE7DC]/40 rounded-sm transition-colors block">
+                      <span className="font-medium group-hover:text-[#B99A69] transition-colors block">Photography for UK</span>
+                      <span className="text-[11px] text-[#777066] block mt-0.5">Associate shooter support &amp; second shooters</span>
+                    </Link>
+                    <Link to="/for-uk#turnaround" onClick={() => setActiveMenu(null)} className="group p-3 hover:bg-[#EEE7DC]/40 rounded-sm transition-colors block">
+                      <span className="font-medium group-hover:text-[#B99A69] transition-colors block">UK Turnaround Schedules</span>
+                      <span className="text-[11px] text-[#777066] block mt-0.5">Express 10-14 day doorstep delivery</span>
+                    </Link>
+                    <Link to="/contact" onClick={() => setActiveMenu(null)} className="group p-3 bg-[#EEE7DC]/60 hover:bg-[#EEE7DC] rounded-sm transition-colors block border border-[#DED5C9]">
+                      <span className="font-medium text-[#B99A69] block">Request UK Sample Kit</span>
+                      <span className="text-[11px] text-[#777066] block mt-0.5">Includes swatches &amp; paper specimen book</span>
+                    </Link>
+                  </div>
+                </div>
+              )}
+
+              {/* 4. ABOUT MEGA MENU */}
+              {activeMenu === 'about' && (
+                <div className="grid grid-cols-6 gap-6">
+                  <Link
+                    to="/about#our-story"
+                    onClick={() => setActiveMenu(null)}
+                    className="group p-4 bg-[#FAF7F2] hover:bg-[#EEE7DC]/40 border border-[#DED5C9] hover:border-[#B99A69]/50 transition-all flex flex-col justify-between"
+                  >
+                    <div>
+                      <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-[#B99A69] font-semibold block mb-2">Heritage</span>
+                      <h5 className="font-serif text-[17px] text-[#201E1B] font-normal mb-2 group-hover:text-[#B99A69] transition-colors">Our Story</h5>
+                      <p className="text-[12px] text-[#777066] leading-relaxed">
+                        Over 12 years of archival bookbinding tradition and bespoke photo finishing.
+                      </p>
+                    </div>
+                    <span className="text-[11px] uppercase tracking-[0.12em] font-medium text-[#201E1B] group-hover:text-[#B99A69] mt-4">Read Story →</span>
+                  </Link>
+
+                  <Link
+                    to="/about#craftsmanship"
+                    onClick={() => setActiveMenu(null)}
+                    className="group p-4 bg-[#FAF7F2] hover:bg-[#EEE7DC]/40 border border-[#DED5C9] hover:border-[#B99A69]/50 transition-all flex flex-col justify-between"
+                  >
+                    <div>
+                      <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-[#B99A69] font-semibold block mb-2">Integrity</span>
+                      <h5 className="font-serif text-[17px] text-[#201E1B] font-normal mb-2 group-hover:text-[#B99A69] transition-colors">Craftsmanship</h5>
+                      <p className="text-[12px] text-[#777066] leading-relaxed">
+                        Acid-free mountings, Japanese binding thread, and genuine archival chemistry.
+                      </p>
+                    </div>
+                    <span className="text-[11px] uppercase tracking-[0.12em] font-medium text-[#201E1B] group-hover:text-[#B99A69] mt-4">Learn More →</span>
+                  </Link>
+
+                  <Link
+                    to="/about#why-choose-us"
+                    onClick={() => setActiveMenu(null)}
+                    className="group p-4 bg-[#FAF7F2] hover:bg-[#EEE7DC]/40 border border-[#DED5C9] hover:border-[#B99A69]/50 transition-all flex flex-col justify-between"
+                  >
+                    <div>
+                      <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-[#B99A69] font-semibold block mb-2">Distinction</span>
+                      <h5 className="font-serif text-[17px] text-[#201E1B] font-normal mb-2 group-hover:text-[#B99A69] transition-colors">Why Choose Us</h5>
+                      <p className="text-[12px] text-[#777066] leading-relaxed">
+                        Trusted partner to 1,400+ international wedding photographers and ateliers.
+                      </p>
+                    </div>
+                    <span className="text-[11px] uppercase tracking-[0.12em] font-medium text-[#201E1B] group-hover:text-[#B99A69] mt-4">Discover →</span>
+                  </Link>
+
+                  <Link
+                    to="/about#global-presence"
+                    onClick={() => setActiveMenu(null)}
+                    className="group p-4 bg-[#FAF7F2] hover:bg-[#EEE7DC]/40 border border-[#DED5C9] hover:border-[#B99A69]/50 transition-all flex flex-col justify-between"
+                  >
+                    <div>
+                      <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-[#B99A69] font-semibold block mb-2">Reach</span>
+                      <h5 className="font-serif text-[17px] text-[#201E1B] font-normal mb-2 group-hover:text-[#B99A69] transition-colors">Global Presence</h5>
+                      <p className="text-[12px] text-[#777066] leading-relaxed">
+                        Headquarters in Mumbai with dedicated liaison in London and global delivery in 38+ countries.
+                      </p>
+                    </div>
+                    <span className="text-[11px] uppercase tracking-[0.12em] font-medium text-[#201E1B] group-hover:text-[#B99A69] mt-4">View Map →</span>
+                  </Link>
+
+                  <Link
+                    to="/about#our-team"
+                    onClick={() => setActiveMenu(null)}
+                    className="group p-4 bg-[#FAF7F2] hover:bg-[#EEE7DC]/40 border border-[#DED5C9] hover:border-[#B99A69]/50 transition-all flex flex-col justify-between"
+                  >
+                    <div>
+                      <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-[#B99A69] font-semibold block mb-2">Artisans</span>
+                      <h5 className="font-serif text-[17px] text-[#201E1B] font-normal mb-2 group-hover:text-[#B99A69] transition-colors">Our Team</h5>
+                      <p className="text-[12px] text-[#777066] leading-relaxed">
+                        Passionate bookbinders, master colorists, and attentive client concierges.
+                      </p>
+                    </div>
+                    <span className="text-[11px] uppercase tracking-[0.12em] font-medium text-[#201E1B] group-hover:text-[#B99A69] mt-4">Meet Us →</span>
+                  </Link>
+
+                  <Link
+                    to="/about#how-we-work"
+                    onClick={() => setActiveMenu(null)}
+                    className="group p-4 bg-[#FAF7F2] hover:bg-[#EEE7DC]/40 border border-[#DED5C9] hover:border-[#B99A69]/50 transition-all flex flex-col justify-between"
+                  >
+                    <div>
+                      <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-[#B99A69] font-semibold block mb-2">Process</span>
+                      <h5 className="font-serif text-[17px] text-[#201E1B] font-normal mb-2 group-hover:text-[#B99A69] transition-colors">How We Work</h5>
+                      <p className="text-[12px] text-[#777066] leading-relaxed">
+                        Effortless workflow from online upload to quality inspection and doorstep arrival.
+                      </p>
+                    </div>
+                    <span className="text-[11px] uppercase tracking-[0.12em] font-medium text-[#201E1B] group-hover:text-[#B99A69] mt-4">Our Workflow →</span>
+                  </Link>
+                </div>
+              )}
+
+              {/* 5. RESOURCES MEGA MENU */}
+              {activeMenu === 'resources' && (
+                <div className="grid grid-cols-5 gap-6">
+                  <Link
+                    to="/resources/album-designs"
+                    onClick={() => setActiveMenu(null)}
+                    className="group p-5 bg-[#FAF7F2] hover:bg-[#EEE7DC]/40 border border-[#DED5C9] hover:border-[#B99A69]/50 transition-all flex flex-col justify-between"
+                  >
+                    <div>
+                      <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-[#B99A69] font-semibold block mb-2">Inspirations</span>
+                      <h5 className="font-serif text-[18px] text-[#201E1B] font-normal mb-2 group-hover:text-[#B99A69] transition-colors">Album Designs</h5>
+                      <p className="text-[12px] text-[#777066] leading-relaxed">
+                        Curated portfolio of award-winning real wedding album layouts and templates.
+                      </p>
+                    </div>
+                    <span className="text-[11px] uppercase tracking-[0.14em] font-medium text-[#201E1B] group-hover:text-[#B99A69] mt-4">Browse Designs →</span>
+                  </Link>
+
+                  <Link
+                    to="/resources/wedding-photo-albums"
+                    onClick={() => setActiveMenu(null)}
+                    className="group p-5 bg-[#FAF7F2] hover:bg-[#EEE7DC]/40 border border-[#DED5C9] hover:border-[#B99A69]/50 transition-all flex flex-col justify-between"
+                  >
+                    <div>
+                      <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-[#B99A69] font-semibold block mb-2">Showcase</span>
+                      <h5 className="font-serif text-[18px] text-[#201E1B] font-normal mb-2 group-hover:text-[#B99A69] transition-colors">Wedding Photo Albums</h5>
+                      <p className="text-[12px] text-[#777066] leading-relaxed">
+                        In-depth guide to choosing leather, linens, cover debossing, and archival paper types.
+                      </p>
+                    </div>
+                    <span className="text-[11px] uppercase tracking-[0.14em] font-medium text-[#201E1B] group-hover:text-[#B99A69] mt-4">Explore Guide →</span>
+                  </Link>
+
+                  <Link
+                    to="/resources/blogs"
+                    onClick={() => setActiveMenu(null)}
+                    className="group p-5 bg-[#FAF7F2] hover:bg-[#EEE7DC]/40 border border-[#DED5C9] hover:border-[#B99A69]/50 transition-all flex flex-col justify-between"
+                  >
+                    <div>
+                      <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-[#B99A69] font-semibold block mb-2">Editorial</span>
+                      <h5 className="font-serif text-[18px] text-[#201E1B] font-normal mb-2 group-hover:text-[#B99A69] transition-colors">Atelier Journal</h5>
+                      <p className="text-[12px] text-[#777066] leading-relaxed">
+                        Articles on print preparation, color calibration, packaging tips, and photographer spotlights.
+                      </p>
+                    </div>
+                    <span className="text-[11px] uppercase tracking-[0.14em] font-medium text-[#201E1B] group-hover:text-[#B99A69] mt-4">Read Journal →</span>
+                  </Link>
+
+                  <Link
+                    to="/resources/faq"
+                    onClick={() => setActiveMenu(null)}
+                    className="group p-5 bg-[#FAF7F2] hover:bg-[#EEE7DC]/40 border border-[#DED5C9] hover:border-[#B99A69]/50 transition-all flex flex-col justify-between"
+                  >
+                    <div>
+                      <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-[#B99A69] font-semibold block mb-2">Assistance</span>
+                      <h5 className="font-serif text-[18px] text-[#201E1B] font-normal mb-2 group-hover:text-[#B99A69] transition-colors">Studio FAQ</h5>
+                      <p className="text-[12px] text-[#777066] leading-relaxed">
+                        Answers to file preparation, ICC profiles, page thicknesses, shipping rates, and turnaround times.
+                      </p>
+                    </div>
+                    <span className="text-[11px] uppercase tracking-[0.14em] font-medium text-[#201E1B] group-hover:text-[#B99A69] mt-4">View FAQ →</span>
+                  </Link>
+
+                  <Link
+                    to="/resources/catalog"
+                    onClick={() => setActiveMenu(null)}
+                    className="group p-5 bg-[#EEE7DC]/70 hover:bg-[#EEE7DC] border border-[#B99A69]/40 hover:border-[#B99A69] transition-all flex flex-col justify-between"
+                  >
+                    <div>
+                      <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-[#B99A69] font-semibold block mb-2">PDF Specifier</span>
+                      <h5 className="font-serif text-[18px] text-[#201E1B] font-normal mb-2 group-hover:text-[#B99A69] transition-colors">2026 Master Catalog</h5>
+                      <p className="text-[12px] text-[#777066] leading-relaxed">
+                        Download complete high-res specification sheet, swatch colors, foil options, and studio pricing.
+                      </p>
+                    </div>
+                    <span className="text-[11px] uppercase tracking-[0.14em] font-semibold text-[#B99A69] mt-4">Download Catalog (PDF) ↓</span>
+                  </Link>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </header>
 
       {/* 3. Mobile Navigation Drawer */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 top-[100px] sm:top-[116px] bg-black/40 z-40 xl:hidden backdrop-blur-xs transition-opacity"
+          className="fixed inset-0 top-[110px] bg-black/35 z-40 xl:hidden backdrop-blur-xs transition-opacity"
           onClick={() => setMobileMenuOpen(false)}
         >
           <div
-            className="w-full max-w-xs sm:max-w-sm bg-[#FAF9F5] h-full overflow-y-auto p-5 sm:p-6 space-y-4 shadow-xl border-r border-[#EAE6DF]"
+            className="w-full max-w-sm bg-[#FAF7F2] h-full overflow-y-auto p-6 space-y-4 shadow-xl border-r border-[#DED5C9]"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex flex-col space-y-2 border-b border-[#EAE6DF] pb-4">
+            <div className="flex flex-col space-y-1 border-b border-[#DED5C9] pb-4">
               <Link
                 to="/"
-                className="py-2 text-[13px] font-semibold tracking-wider uppercase text-[#141310]"
+                className="py-2.5 text-[12px] font-semibold tracking-[0.16em] uppercase text-[#201E1B]"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Home
@@ -460,23 +779,25 @@ export default function Header() {
               <div>
                 <button
                   type="button"
-                  className="w-full flex items-center justify-between py-2 text-[13px] font-semibold tracking-wider uppercase text-[#141310] bg-transparent border-none text-left"
+                  className="w-full flex items-center justify-between py-2.5 text-[12px] font-semibold tracking-[0.16em] uppercase text-[#201E1B] bg-transparent border-none text-left cursor-pointer"
                   onClick={() => toggleMobileAccordion('albums')}
                 >
                   <span>Albums</span>
                   <ChevronDown
-                    size={15}
-                    className={`transition-transform ${mobileAccordion === 'albums' ? 'rotate-180' : ''}`}
+                    size={14}
+                    className={`transition-transform duration-200 ${
+                      mobileAccordion === 'albums' ? 'rotate-180' : ''
+                    }`}
                   />
                 </button>
                 {mobileAccordion === 'albums' && (
-                  <div className="pl-4 py-2 space-y-2 text-[14px] text-[#4A463F] flex flex-col">
+                  <div className="pl-4 py-2 space-y-2 text-[13px] text-[#777066] flex flex-col">
                     <Link to="/products/flush-mount-album" onClick={() => setMobileMenuOpen(false)}>Flush Mount Album</Link>
                     <Link to="/products/layflat" onClick={() => setMobileMenuOpen(false)}>Layflat Books</Link>
                     <Link to="/products/photo-book" onClick={() => setMobileMenuOpen(false)}>Photo Book</Link>
-                    <Link to="/products/luxury-albums" onClick={() => setMobileMenuOpen(false)}>Luxury Albums</Link>
-                    <Link to="/products/box-and-bags" onClick={() => setMobileMenuOpen(false)}>Box and Bags</Link>
-                    <Link to="/products/slip-in-albums" onClick={() => setMobileMenuOpen(false)}>Slip in Albums</Link>
+                    <Link to="/products/luxury-albums" onClick={() => setMobileMenuOpen(false)}>Luxury Leather Albums</Link>
+                    <Link to="/products/box-and-bags" onClick={() => setMobileMenuOpen(false)}>Presentation Box &amp; Bags</Link>
+                    <Link to="/products/slip-in-albums" onClick={() => setMobileMenuOpen(false)}>Slip-in Folios</Link>
                   </div>
                 )}
               </div>
@@ -485,21 +806,23 @@ export default function Header() {
               <div>
                 <button
                   type="button"
-                  className="w-full flex items-center justify-between py-2 text-[13px] font-semibold tracking-wider uppercase text-[#141310] bg-transparent border-none text-left"
+                  className="w-full flex items-center justify-between py-2.5 text-[12px] font-semibold tracking-[0.16em] uppercase text-[#201E1B] bg-transparent border-none text-left cursor-pointer"
                   onClick={() => toggleMobileAccordion('services')}
                 >
                   <span>Services</span>
                   <ChevronDown
-                    size={15}
-                    className={`transition-transform ${mobileAccordion === 'services' ? 'rotate-180' : ''}`}
+                    size={14}
+                    className={`transition-transform duration-200 ${
+                      mobileAccordion === 'services' ? 'rotate-180' : ''
+                    }`}
                   />
                 </button>
                 {mobileAccordion === 'services' && (
-                  <div className="pl-4 py-2 space-y-2 text-[14px] text-[#4A463F] flex flex-col">
-                    <Link to="/services/image-editing" onClick={() => setMobileMenuOpen(false)}>Image Editing</Link>
+                  <div className="pl-4 py-2 space-y-2 text-[13px] text-[#777066] flex flex-col">
+                    <Link to="/services/image-editing" onClick={() => setMobileMenuOpen(false)}>Image Editing &amp; Retouching</Link>
                     <Link to="/services/photo-editing-and-album-design" onClick={() => setMobileMenuOpen(false)}>Photo Editing &amp; Album Design</Link>
                     <Link to="/services/wedding-photography" onClick={() => setMobileMenuOpen(false)}>Wedding Photography</Link>
-                    <Link to="/services/album-designing" onClick={() => setMobileMenuOpen(false)}>Album Designing</Link>
+                    <Link to="/services/album-designing" onClick={() => setMobileMenuOpen(false)}>Editorial Layout Designing</Link>
                   </div>
                 )}
               </div>
@@ -508,22 +831,23 @@ export default function Header() {
               <div>
                 <button
                   type="button"
-                  className="w-full flex items-center justify-between py-2 text-[13px] font-semibold tracking-wider uppercase text-[#141310] bg-transparent border-none text-left"
+                  className="w-full flex items-center justify-between py-2.5 text-[12px] font-semibold tracking-[0.16em] uppercase text-[#201E1B] bg-transparent border-none text-left cursor-pointer"
                   onClick={() => toggleMobileAccordion('uk')}
                 >
                   <span>For UK</span>
                   <ChevronDown
-                    size={15}
-                    className={`transition-transform ${mobileAccordion === 'uk' ? 'rotate-180' : ''}`}
+                    size={14}
+                    className={`transition-transform duration-200 ${
+                      mobileAccordion === 'uk' ? 'rotate-180' : ''
+                    }`}
                   />
                 </button>
                 {mobileAccordion === 'uk' && (
-                  <div className="pl-4 py-2 space-y-2 text-[14px] text-[#4A463F] flex flex-col">
+                  <div className="pl-4 py-2 space-y-2 text-[13px] text-[#777066] flex flex-col">
                     <Link to="/for-uk" onClick={() => setMobileMenuOpen(false)}>UK Desk Overview</Link>
                     <Link to="/for-uk/flush-mount-album-uk" onClick={() => setMobileMenuOpen(false)}>Flush Mount for UK</Link>
-                    <Link to="/for-uk/luxury-albums-uk" onClick={() => setMobileMenuOpen(false)}>Luxury Albums for UK</Link>
-                    <Link to="/for-uk/box-and-bags-uk" onClick={() => setMobileMenuOpen(false)}>Box and Bags for UK</Link>
-                    <Link to="/for-uk/slip-in-albums-uk" onClick={() => setMobileMenuOpen(false)}>Slip in Albums for UK</Link>
+                    <Link to="/for-uk/luxury-albums-uk" onClick={() => setMobileMenuOpen(false)}>Luxury Leather Albums UK</Link>
+                    <Link to="/for-uk/box-and-bags-uk" onClick={() => setMobileMenuOpen(false)}>Box &amp; Bags UK</Link>
                   </div>
                 )}
               </div>
@@ -531,7 +855,7 @@ export default function Header() {
               {/* Mobile About */}
               <Link
                 to="/about"
-                className="py-2 text-[13px] font-semibold tracking-wider uppercase text-[#141310]"
+                className="py-2.5 text-[12px] font-semibold tracking-[0.16em] uppercase text-[#201E1B]"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 About Our Atelier
@@ -540,7 +864,7 @@ export default function Header() {
               {/* Mobile Resources */}
               <Link
                 to="/resources/catalog"
-                className="py-2 text-[13px] font-semibold tracking-wider uppercase text-[#141310]"
+                className="py-2.5 text-[12px] font-semibold tracking-[0.16em] uppercase text-[#201E1B]"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Resources &amp; Catalog
@@ -549,7 +873,7 @@ export default function Header() {
               {/* Mobile Contact */}
               <Link
                 to="/contact"
-                className="py-2 text-[13px] font-semibold tracking-wider uppercase text-[#141310]"
+                className="py-2.5 text-[12px] font-semibold tracking-[0.16em] uppercase text-[#201E1B]"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Contact Concierge
@@ -558,18 +882,18 @@ export default function Header() {
 
             <div className="pt-4 flex flex-col gap-3">
               <Link
+                to="/enquire"
+                className="w-full py-3 text-center bg-[#201E1B] text-[#F7F3EC] font-sans font-medium text-[11px] uppercase tracking-[0.2em] rounded-full hover:bg-[#B99A69] transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Request Studio Quote
+              </Link>
+              <Link
                 to="/pay-online"
-                className="w-full py-3 text-center bg-[#EFEEEA] text-[#141310] font-semibold text-[11px] uppercase tracking-widest border border-[#CCC5BC]"
+                className="w-full py-3 text-center bg-[#EEE7DC] text-[#201E1B] font-sans font-medium text-[11px] uppercase tracking-[0.2em] rounded-full border border-[#DED5C9]"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Pay Online Portal
-              </Link>
-              <Link
-                to="/enquire"
-                className="w-full py-3 text-center bg-[#292724] text-[#FAF9F5] font-semibold text-[11px] uppercase tracking-widest"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Enquire Now
               </Link>
             </div>
           </div>
