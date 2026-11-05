@@ -1,0 +1,298 @@
+/* ==========================================================================
+   ALBUM CARD — Camera-Inspired Luxury Interactive Component
+   Palette:
+   - Cream / Off-White Card: #FAF7F2
+   - Hairline Border: #DED5C9
+   - Brass / Gold Accent: #b89a62
+   - Deep Carbon Ink Text: #201E1B
+   - Editorial Secondary Text: #777066
+   ========================================================================== */
+
+.album-card-viewport {
+  perspective: 1200px;
+  width: 100%;
+  height: 100%;
+}
+
+.album-card-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #FAF7F2;
+  border: 1px solid #DED5C9;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transform-style: preserve-3d;
+  will-change: transform, box-shadow;
+  box-shadow: 0 4px 18px rgba(32, 30, 27, 0.04);
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  cursor: pointer;
+}
+
+.album-card-root:hover {
+  border-color: rgba(184, 154, 98, 0.65);
+  box-shadow: 
+    0 24px 48px -12px rgba(32, 30, 27, 0.16),
+    0 8px 20px -4px rgba(184, 154, 98, 0.14);
+}
+
+/* --------------------------------------------------------------------------
+   1. APERTURE IRIS VIEWPORT & IMAGE CONTAINER
+   -------------------------------------------------------------------------- */
+.album-card-media-wrap {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  background-color: #EEE7DC;
+  /* Default cursor hidden when lens magnifier is active */
+  cursor: none;
+}
+
+@media (max-width: 640px) {
+  .album-card-media-wrap {
+    height: 220px;
+  }
+}
+
+.album-card-iris {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  /* Will be animated from circle(0% at 50% 50%) to circle(75% at 50% 50%) */
+  clip-path: circle(0% at 50% 50%);
+  will-change: clip-path;
+}
+
+.album-card-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* Vintage camera aperture frame blades overlay (subtle hairline) */
+.album-card-aperture-ring {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  z-index: 5;
+}
+
+/* Category Hallmark Badge */
+.album-card-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  background-color: rgba(250, 247, 242, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid #DED5C9;
+  font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
+  font-size: 8.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #777066;
+  pointer-events: none;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.album-card-root:hover .album-card-badge {
+  color: #201E1B;
+  border-color: #b89a62;
+}
+
+/* --------------------------------------------------------------------------
+   2. LENS MAGNIFIER (Follows cursor over photo, 1.9x zoom)
+   -------------------------------------------------------------------------- */
+.album-card-lens {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 20;
+  border: 1.5px solid #b89a62;
+  box-shadow: 
+    0 12px 32px rgba(32, 30, 27, 0.35),
+    inset 0 0 16px rgba(184, 154, 98, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.4);
+  transform: scale(0);
+  opacity: 0;
+  will-change: transform, left, top;
+  backdrop-filter: contrast(105%);
+}
+
+.album-card-lens-glass {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.album-card-lens-photo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: none;
+  object-fit: cover;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Optics reflection highlight on the lens */
+.album-card-lens-specular {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.38) 0%, transparent 55%),
+              linear-gradient(135deg, rgba(184, 154, 98, 0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Camera viewfinder micro-crosshair */
+.album-card-lens-reticle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.album-card-lens-reticle::before,
+.album-card-lens-reticle::after {
+  content: '';
+  position: absolute;
+  background-color: rgba(184, 154, 98, 0.85);
+}
+
+.album-card-lens-reticle::before {
+  top: 4.5px;
+  left: 0;
+  width: 10px;
+  height: 1px;
+}
+
+.album-card-lens-reticle::after {
+  left: 4.5px;
+  top: 0;
+  width: 1px;
+  height: 10px;
+}
+
+/* --------------------------------------------------------------------------
+   3. 3D TILT GLARE OVERLAY
+   -------------------------------------------------------------------------- */
+.album-card-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 25;
+  border-radius: 8px;
+  opacity: 0;
+  background: radial-gradient(circle 240px at var(--glare-x, 50%) var(--glare-y, 50%), rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.08) 45%, transparent 75%);
+  mix-blend-mode: overlay;
+  will-change: opacity;
+  transition: opacity 0.35s ease;
+}
+
+/* --------------------------------------------------------------------------
+   4. EDITORIAL BODY CONTENT & MICRO-INTERACTIONS
+   -------------------------------------------------------------------------- */
+.album-card-body {
+  padding: 22px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  background-color: #FAF7F2;
+  position: relative;
+  z-index: 10;
+}
+
+.album-card-title {
+  font-family: var(--font-serif, "Playfair Display", Georgia, serif);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.25;
+  color: #201E1B;
+  margin: 0 0 10px 0;
+  transition: color 0.3s ease;
+  will-change: transform, opacity;
+}
+
+.album-card-root:hover .album-card-title {
+  color: #b89a62;
+}
+
+.album-card-desc {
+  font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.65;
+  color: #777066;
+  margin: 0 0 20px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+.album-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #201E1B;
+  text-decoration: none;
+  margin-top: auto;
+  transition: color 0.3s ease;
+  will-change: transform, opacity;
+}
+
+.album-card-root:hover .album-card-link {
+  color: #b89a62;
+}
+
+.album-card-arrow {
+  color: #b89a62;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+
+.album-card-root:hover .album-card-arrow {
+  transform: translateX(6px);
+}
+
+/* Touch device override (no cursor hiding) */
+@media (hover: none) {
+  .album-card-media-wrap {
+    cursor: default;
+  }
+  .album-card-lens {
+    display: none !important;
+  }
+}

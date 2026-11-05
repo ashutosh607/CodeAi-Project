@@ -31,19 +31,19 @@ export default function HeroSection() {
             </div>
 
             {/* 2. Headline in high-end editorial serif typography */}
-            <h1 className="font-serif text-[42px] sm:text-[54px] md:text-[62px] lg:text-[68px] font-normal tracking-[-0.01em] text-[#201E1B] leading-[1.08] mb-6 sm:mb-8">
+            <h1 className="font-serif text-[34px] xs:text-[40px] sm:text-[52px] md:text-[62px] lg:text-[68px] font-normal tracking-[-0.01em] text-[#201E1B] leading-[1.1] sm:leading-[1.08] mb-5 sm:mb-8">
               Wedding<br />
               Photo Albums<br />
               <span className="italic font-normal text-[#201E1B]">Engineered to Outlast Generations.</span>
             </h1>
 
             {/* 3. Supporting paragraph */}
-            <p className="font-sans text-[15px] sm:text-[16px] text-[#777066] leading-[1.7] max-w-[520px] mb-8 sm:mb-10 font-normal">
+            <p className="font-sans text-[14px] sm:text-[16px] text-[#777066] leading-[1.65] sm:leading-[1.7] max-w-[520px] mb-6 sm:mb-10 font-normal">
               A wedding album is not a book; it is a sacred heirloom carrying the whispers of an unforgettable day. Crafted with genuine leather, hand-bound art paper, and museum-grade archival printing, our albums transform ephemeral moments into permanent treasures.
             </p>
 
             {/* 4. Action Buttons (Explore Albums -> & ▷ Watch Film) */}
-            <div className="flex flex-wrap items-center gap-4 sm:gap-6 mb-8">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-6 mb-6 sm:mb-8">
               {/* Primary Pill Button with Guaranteed Visible Cream/Ivory Text in ALL states */}
               <Link
                 to="/products/wedding-albums"

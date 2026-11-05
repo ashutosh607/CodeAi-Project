@@ -168,14 +168,14 @@ html.lenis, html.lenis body {
    Main Content Layout Offset (Prevent Header Overlap)
    ========================================================================== */
 #main-content {
-  padding-top: 114px;
+  padding-top: 116px;
   position: relative;
   width: 100%;
 }
 
 @media (max-width: 640px) {
   #main-content {
-    padding-top: 102px;
+    padding-top: 110px;
   }
 }
 
@@ -363,12 +363,8 @@ html.lenis, html.lenis body {
 
 @media (max-width: 640px) {
   .hero-book-viewport {
-    height: 225px !important;
-    max-width: 320px !important;
-  }
-  .hero-book-viewport > div {
-    width: 300px !important;
-    height: 200px !important;
+    height: 240px;
+    max-width: 320px;
   }
 }
 

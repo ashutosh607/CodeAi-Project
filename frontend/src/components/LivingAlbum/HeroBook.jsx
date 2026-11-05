@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import gsap from 'gsap';
 import BookPage from './BookPage';
-import BookControls from './BookControls';
+import { ChevronLeft, ChevronRight, BookOpen, X, Sparkles } from 'lucide-react';
 
 export const LUXURY_SPREADS = [
   {
@@ -58,20 +58,6 @@ export const LUXURY_SPREADS = [
   }
 ];
 
-// Luxury atelier easing curves
-const LUXURY_EASE = 'cubic-bezier(0.645, 0.045, 0.355, 1)';
-const GSAP_LUXURY_EASE = 'power2.inOut';
-
-/**
- * HeroBook Component
- * 
- * Rebuilt 3D heirloom album featuring:
- * - Strict containment in right column (zero text overlap)
- * - 3D hinged covers and multi-segment curved page flips
- * - Preloaded imagery with graceful fallback
- * - Natural mid-air suspension (no floor or table)
- * - Accessible controls, touch swipe, keyboard navigation, and prefers-reduced-motion support
- */
 export default function HeroBook({
   isOpen,
   setIsOpen,
@@ -80,30 +66,26 @@ export default function HeroBook({
   const [currentSpreadIndex, setCurrentSpreadIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [displayMaterial, setDisplayMaterial] = useState(material);
 
   // References
   const stageRef = useRef(null);
-  const bookContainerRef = useRef(null);
-  const frontCoverRef = useRef(null);
+  const closedBookRef = useRef(null);
+  const openSpreadRef = useRef(null);
+  const openingCoverRef = useRef(null);
   const turnLeafRef = useRef(null);
   const turnFrontShadowRef = useRef(null);
   const turnBackShadowRef = useRef(null);
-  const underlyingLeftShadowRef = useRef(null);
-  const underlyingRightShadowRef = useRef(null);
   const floatTweenRef = useRef(null);
-
-  // Touch gesture state
   const touchStartXRef = useRef(null);
+  const prevMaterialIdRef = useRef(material?.id);
 
   const totalSpreads = LUXURY_SPREADS.length;
   const activeSpread = LUXURY_SPREADS[currentSpreadIndex];
   const nextSpreadIndex = Math.min(currentSpreadIndex + 1, totalSpreads - 1);
   const prevSpreadIndex = Math.max(currentSpreadIndex - 1, 0);
 
-  // Responsive page width: 210px desktop, 150px mobile
-  const getPageWidth = () => (typeof window !== 'undefined' && window.innerWidth < 640 ? 150 : 210);
-
-  // 1. Preload all spread images on mount to prevent stutter
+  // 1. Preload spread images & motion check
   useEffect(() => {
     LUXURY_SPREADS.forEach((spread) => {
       if (spread.left?.image) {
@@ -116,7 +98,6 @@ export default function HeroBook({
       }
     });
 
-    // Check user's motion preference
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setPrefersReducedMotion(mediaQuery.matches);
     const handleChange = (e) => setPrefersReducedMotion(e.matches);
@@ -124,41 +105,89 @@ export default function HeroBook({
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
-  // 2. Subtle, slow vertical floating when closed (weightlessly suspended in studio air)
-  useEffect(() => {
-    if (isOpen || prefersReducedMotion) {
-      if (floatTweenRef.current) floatTweenRef.current.pause();
-      return;
-    }
-
-    const isMobile = window.innerWidth < 640;
+  // 2. Weightless floating animation when closed
+  const resumeFloating = useCallback(() => {
+    if (isOpen || prefersReducedMotion) return;
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
     if (isMobile) return;
 
-    if (bookContainerRef.current) {
+    if (closedBookRef.current) {
+      if (floatTweenRef.current) floatTweenRef.current.kill();
       floatTweenRef.current = gsap.timeline({ repeat: -1, yoyo: true });
-      floatTweenRef.current.to(bookContainerRef.current, {
+      floatTweenRef.current.to(closedBookRef.current, {
         y: -6,
-        rotateY: -11,
-        rotateX: 2,
-        duration: 5.2,
+        rotateY: -9,
+        rotateX: 1.5,
+        duration: 4.5,
         ease: 'sine.inOut'
       });
     }
+  }, [isOpen, prefersReducedMotion]);
 
+  useEffect(() => {
+    resumeFloating();
     return () => {
       if (floatTweenRef.current) floatTweenRef.current.kill();
     };
-  }, [isOpen, prefersReducedMotion]);
+  }, [resumeFloating]);
 
-  // 3. Open Album Action (Cover rotates -180deg around spine while book centers balance)
+  // 3. CINEMATIC ATELIER BOOK "PUSH & SLIDE" SWAP ANIMATION (When material changes)
+  // Incoming specimen pushes the present book out to the left with soft motion blur
+  useEffect(() => {
+    if (!material || material.id === prevMaterialIdRef.current) return;
+    prevMaterialIdRef.current = material.id;
+
+    if (!isOpen && closedBookRef.current) {
+      if (floatTweenRef.current) floatTweenRef.current.pause();
+      const bookElem = closedBookRef.current;
+
+      // Stage 1: Present book glides out to the left with motion blur
+      gsap.to(bookElem, {
+        x: -75,
+        rotateY: -26,
+        opacity: 0,
+        filter: 'blur(8px)',
+        duration: 0.28,
+        ease: 'power2.in',
+        onComplete: () => {
+          // Change material state at apex of blur
+          setDisplayMaterial(material);
+
+          // Stage 2: Newly crafted book glides in from the right, settling softly
+          gsap.fromTo(
+            bookElem,
+            {
+              x: 85,
+              rotateY: 8,
+              rotateX: 4,
+              opacity: 0,
+              filter: 'blur(8px)'
+            },
+            {
+              x: 0,
+              rotateY: -13,
+              rotateX: 3.5,
+              opacity: 1,
+              filter: 'blur(0px)',
+              duration: 0.45,
+              ease: 'power3.out',
+              onComplete: () => {
+                resumeFloating();
+              }
+            }
+          );
+        }
+      });
+    } else {
+      setDisplayMaterial(material);
+    }
+  }, [material, isOpen, resumeFloating]);
+
+  // 4. SMOOTH 3D BOOK OPENING ANIMATION (Organic 3D cover flip)
   const handleOpenAlbum = useCallback(() => {
     if (isOpen || isAnimating) return;
     setIsAnimating(true);
     if (floatTweenRef.current) floatTweenRef.current.kill();
-
-    const pageWidth = getPageWidth();
-    const cover = frontCoverRef.current;
-    const container = bookContainerRef.current;
 
     if (prefersReducedMotion) {
       setIsOpen(true);
@@ -166,46 +195,48 @@ export default function HeroBook({
       return;
     }
 
-    const tl = gsap.timeline({
-      onComplete: () => {
-        setIsOpen(true);
-        setIsAnimating(false);
-      }
-    });
-
-    // A. Book container slides from translateX(-pageWidth / 2) to translateX(0) so the spine centers
-    tl.to(container, {
-      x: 0,
-      y: 0,
-      rotateX: 3.5,
-      rotateY: 0,
-      scale: 1,
-      duration: 1.1,
-      ease: GSAP_LUXURY_EASE
-    });
-
-    // B. Front Cover rotates -180deg around left spine edge
-    if (cover) {
-      tl.to(
-        cover,
-        {
-          rotateY: -180,
-          duration: 1.1,
-          ease: GSAP_LUXURY_EASE
-        },
-        '-=1.1'
-      );
+    const closedBook = closedBookRef.current;
+    if (closedBook) {
+      // Smooth 3D cover swing: rotates around left spine edge into open spread
+      gsap.to(closedBook, {
+        rotateY: -65,
+        x: -40,
+        scale: 1.02,
+        opacity: 0,
+        duration: 0.46,
+        ease: 'power2.in',
+        onComplete: () => {
+          setIsOpen(true);
+          // When openSpread mounts, give it a soft settling entrance
+          setTimeout(() => {
+            if (openSpreadRef.current) {
+              gsap.fromTo(
+                openSpreadRef.current,
+                { scale: 0.96, opacity: 0 },
+                {
+                  scale: 1,
+                  opacity: 1,
+                  duration: 0.42,
+                  ease: 'power2.out',
+                  onComplete: () => setIsAnimating(false)
+                }
+              );
+            } else {
+              setIsAnimating(false);
+            }
+          }, 30);
+        }
+      });
+    } else {
+      setIsOpen(true);
+      setIsAnimating(false);
     }
   }, [isOpen, isAnimating, prefersReducedMotion, setIsOpen]);
 
-  // 4. Close Album Action (Reverses open animation smoothly)
+  // 5. SMOOTH 3D BOOK CLOSING ANIMATION
   const handleCloseAlbum = useCallback(() => {
     if (!isOpen || isAnimating) return;
     setIsAnimating(true);
-
-    const pageWidth = getPageWidth();
-    const cover = frontCoverRef.current;
-    const container = bookContainerRef.current;
 
     if (prefersReducedMotion) {
       setIsOpen(false);
@@ -214,40 +245,47 @@ export default function HeroBook({
       return;
     }
 
-    const tl = gsap.timeline({
-      onComplete: () => {
-        setIsOpen(false);
-        setCurrentSpreadIndex(0);
-        setIsAnimating(false);
-      }
-    });
-
-    // A. Front Cover rotates back from -180deg to 0deg
-    if (cover) {
-      tl.to(cover, {
-        rotateY: 0,
-        duration: 1.05,
-        ease: GSAP_LUXURY_EASE
+    const openSpread = openSpreadRef.current;
+    if (openSpread) {
+      gsap.to(openSpread, {
+        scale: 0.95,
+        opacity: 0,
+        duration: 0.36,
+        ease: 'power2.in',
+        onComplete: () => {
+          setIsOpen(false);
+          setCurrentSpreadIndex(0);
+          setTimeout(() => {
+            if (closedBookRef.current) {
+              gsap.fromTo(
+                closedBookRef.current,
+                { x: 30, opacity: 0, filter: 'blur(4px)' },
+                {
+                  x: 0,
+                  opacity: 1,
+                  filter: 'blur(0px)',
+                  duration: 0.42,
+                  ease: 'power2.out',
+                  onComplete: () => {
+                    setIsAnimating(false);
+                    resumeFloating();
+                  }
+                }
+              );
+            } else {
+              setIsAnimating(false);
+            }
+          }, 30);
+        }
       });
+    } else {
+      setIsOpen(false);
+      setCurrentSpreadIndex(0);
+      setIsAnimating(false);
     }
+  }, [isOpen, isAnimating, prefersReducedMotion, setIsOpen, resumeFloating]);
 
-    // B. Book container slides back so closed cover is centered (translateX = -pageWidth / 2)
-    tl.to(
-      container,
-      {
-        x: -pageWidth / 2,
-        y: 0,
-        rotateX: 2.5,
-        rotateY: -14,
-        scale: 0.98,
-        duration: 1.05,
-        ease: GSAP_LUXURY_EASE
-      },
-      '-=1.05'
-    );
-  }, [isOpen, isAnimating, prefersReducedMotion, setIsOpen]);
-
-  // 5. Page Turn NEXT (Turning right leaf from 0deg to -180deg)
+  // 6. SILKY SMOOTH PAGE TURN NEXT (0.78s continuous luxury flip)
   const handleNextPage = useCallback(() => {
     if (!isOpen || isAnimating || currentSpreadIndex >= totalSpreads - 1) return;
     setIsAnimating(true);
@@ -255,8 +293,6 @@ export default function HeroBook({
     const leaf = turnLeafRef.current;
     const frontShadow = turnFrontShadowRef.current;
     const backShadow = turnBackShadowRef.current;
-    const underRightShadow = underlyingRightShadowRef.current;
-    const underLeftShadow = underlyingLeftShadowRef.current;
 
     if (prefersReducedMotion || !leaf) {
       setCurrentSpreadIndex((prev) => prev + 1);
@@ -264,7 +300,6 @@ export default function HeroBook({
       return;
     }
 
-    // Set leaf on the right side
     gsap.set(leaf, {
       display: 'block',
       left: '50%',
@@ -281,43 +316,46 @@ export default function HeroBook({
       }
     });
 
-    // Phase 1: Lift from right page, curl slightly (0deg -> -90deg)
-    tl.to(leaf, {
-      rotateY: -90,
-      skewY: -2,
-      duration: 0.42,
-      ease: 'power2.in'
-    });
-
-    // Fade in moving gradient shadow on front face
-    if (frontShadow) {
-      tl.to(frontShadow, { opacity: 0.4, duration: 0.42 }, 0);
-    }
-    // Fade in soft shadow on underlying right page
-    if (underRightShadow) {
-      tl.to(underRightShadow, { opacity: 0.3, duration: 0.42 }, 0);
-    }
-
-    // Phase 2: Settle flat onto left page (-90deg -> -180deg)
+    // Continuous 3D rotation from 0deg to -180deg
     tl.to(leaf, {
       rotateY: -180,
-      skewY: 0,
-      duration: 0.48,
-      ease: 'power2.out'
+      duration: 0.76,
+      ease: 'power3.inOut'
     });
 
+    // Natural paper curl peaking at mid-turn
+    tl.to(
+      leaf,
+      {
+        skewY: -2.4,
+        duration: 0.36,
+        ease: 'power2.in'
+      },
+      0
+    );
+    tl.to(
+      leaf,
+      {
+        skewY: 0,
+        duration: 0.4,
+        ease: 'power2.out'
+      },
+      0.36
+    );
+
+    // Front specular shadow sweeps as page lifts
+    if (frontShadow) {
+      tl.fromTo(frontShadow, { opacity: 0 }, { opacity: 0.45, duration: 0.36 }, 0);
+      tl.to(frontShadow, { opacity: 0, duration: 0.15 }, 0.36);
+    }
+
+    // Back shadow dissolves as page settles flat on left stack
     if (backShadow) {
-      tl.fromTo(backShadow, { opacity: 0.45 }, { opacity: 0, duration: 0.48 }, '-=0.48');
-    }
-    if (underLeftShadow) {
-      tl.fromTo(underLeftShadow, { opacity: 0.35 }, { opacity: 0, duration: 0.48 }, '-=0.48');
-    }
-    if (underRightShadow) {
-      tl.to(underRightShadow, { opacity: 0, duration: 0.3 }, '-=0.3');
+      tl.fromTo(backShadow, { opacity: 0.5 }, { opacity: 0, duration: 0.4 }, 0.36);
     }
   }, [isOpen, isAnimating, currentSpreadIndex, totalSpreads, prefersReducedMotion]);
 
-  // 6. Page Turn PREV (Turning left leaf from -180deg back to 0deg)
+  // 7. SILKY SMOOTH PAGE TURN PREV (-180deg to 0deg)
   const handlePrevPage = useCallback(() => {
     if (!isOpen || isAnimating || currentSpreadIndex <= 0) return;
     setIsAnimating(true);
@@ -325,8 +363,6 @@ export default function HeroBook({
     const leaf = turnLeafRef.current;
     const frontShadow = turnFrontShadowRef.current;
     const backShadow = turnBackShadowRef.current;
-    const underLeftShadow = underlyingLeftShadowRef.current;
-    const underRightShadow = underlyingRightShadowRef.current;
 
     if (prefersReducedMotion || !leaf) {
       setCurrentSpreadIndex((prev) => prev - 1);
@@ -334,7 +370,6 @@ export default function HeroBook({
       return;
     }
 
-    // Set leaf on the right side with pivot at left center, starting at -180deg
     gsap.set(leaf, {
       display: 'block',
       left: '50%',
@@ -351,55 +386,40 @@ export default function HeroBook({
       }
     });
 
-    // Phase 1: Lift from left page (-180deg -> -90deg)
-    tl.to(leaf, {
-      rotateY: -90,
-      skewY: 2,
-      duration: 0.42,
-      ease: 'power2.in'
-    });
-
-    if (backShadow) {
-      tl.to(backShadow, { opacity: 0.4, duration: 0.42 }, 0);
-    }
-    if (underLeftShadow) {
-      tl.to(underLeftShadow, { opacity: 0.3, duration: 0.42 }, 0);
-    }
-
-    // Phase 2: Settle flat onto right page (-90deg -> 0deg)
     tl.to(leaf, {
       rotateY: 0,
-      skewY: 0,
-      duration: 0.48,
-      ease: 'power2.out'
+      duration: 0.76,
+      ease: 'power3.inOut'
     });
 
+    tl.to(
+      leaf,
+      {
+        skewY: 2.4,
+        duration: 0.36,
+        ease: 'power2.in'
+      },
+      0
+    );
+    tl.to(
+      leaf,
+      {
+        skewY: 0,
+        duration: 0.4,
+        ease: 'power2.out'
+      },
+      0.36
+    );
+
+    if (backShadow) {
+      tl.fromTo(backShadow, { opacity: 0 }, { opacity: 0.45, duration: 0.36 }, 0);
+      tl.to(backShadow, { opacity: 0, duration: 0.15 }, 0.36);
+    }
+
     if (frontShadow) {
-      tl.fromTo(frontShadow, { opacity: 0.45 }, { opacity: 0, duration: 0.48 }, '-=0.48');
-    }
-    if (underRightShadow) {
-      tl.fromTo(underRightShadow, { opacity: 0.35 }, { opacity: 0, duration: 0.48 }, '-=0.48');
-    }
-    if (underLeftShadow) {
-      tl.to(underLeftShadow, { opacity: 0, duration: 0.3 }, '-=0.3');
+      tl.fromTo(frontShadow, { opacity: 0.5 }, { opacity: 0, duration: 0.4 }, 0.36);
     }
   }, [isOpen, isAnimating, currentSpreadIndex, prefersReducedMotion]);
-
-  // 7. Keyboard Navigation (ArrowLeft, ArrowRight, Escape)
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'ArrowRight') {
-        if (!isOpen) handleOpenAlbum();
-        else handleNextPage();
-      } else if (e.key === 'ArrowLeft') {
-        if (isOpen) handlePrevPage();
-      } else if (e.key === 'Escape') {
-        if (isOpen) handleCloseAlbum();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, handleOpenAlbum, handleNextPage, handlePrevPage, handleCloseAlbum]);
 
   // 8. Touch Swipe Gestures
   const handleTouchStart = (e) => {
@@ -420,334 +440,436 @@ export default function HeroBook({
     touchStartXRef.current = null;
   };
 
+  // 9. Keyboard Navigation
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowRight') {
+        if (!isOpen) handleOpenAlbum();
+        else handleNextPage();
+      } else if (e.key === 'ArrowLeft') {
+        if (isOpen) handlePrevPage();
+      } else if (e.key === 'Escape') {
+        if (isOpen) handleCloseAlbum();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, handleOpenAlbum, handleNextPage, handlePrevPage, handleCloseAlbum]);
+
   return (
     <div
       ref={stageRef}
-      className="hero-book-stage relative w-full flex flex-col items-center justify-center select-none"
+      className="hero-book-stage relative w-full flex flex-col items-center select-none"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* 1. Ambient Circular Halo Orbit (Suspended studio atmosphere behind album) */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-        <div className="w-[380px] sm:w-[480px] h-[380px] sm:h-[480px] rounded-full border border-[#B99A69]/20 opacity-60" />
-        <div className="absolute w-[280px] sm:w-[380px] h-[280px] sm:h-[380px] rounded-full bg-gradient-radial from-[#FAF7F2] via-transparent to-transparent opacity-80" />
-      </div>
-
-      {/* 2. The 3D Scene Viewport (perspective: 2200px, strictly contained) */}
+      {/* =========================================================================
+          1. 3D SCENE VIEWPORT (Contains ONLY the 3D book and side arrows)
+          ========================================================================= */}
       <div
-        className="hero-book-viewport relative w-full max-w-[460px] h-[300px] sm:h-[320px] flex items-center justify-center"
-        style={{ perspective: '2200px' }}
+        className="hero-book-viewport relative w-full max-w-[480px] h-[270px] sm:h-[320px] md:h-[330px] flex items-center justify-center overflow-visible"
+        style={{ perspective: '1800px' }}
       >
-        {/* Soft Ambient Depth Shadow Suspended in Mid-Air Behind Album (No floor/glass line) */}
+        {/* Soft Ambient Depth Shadow Suspended in Mid-Air */}
         <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none rounded-full transition-all duration-700"
           style={{
-            width: isOpen ? '450px' : '260px',
-            height: isOpen ? '310px' : '310px',
-            background: 'radial-gradient(ellipse at 50% 50%, rgba(32, 30, 27, 0.20) 0%, rgba(32, 30, 27, 0.05) 50%, transparent 72%)',
-            filter: 'blur(32px)',
+            width: isOpen ? '90%' : '240px',
+            maxWidth: isOpen ? '450px' : '260px',
+            height: '260px',
+            background: 'radial-gradient(ellipse at 50% 50%, rgba(32, 30, 27, 0.22) 0%, rgba(32, 30, 27, 0.05) 55%, transparent 72%)',
+            filter: 'blur(30px)',
             opacity: isOpen ? 0.38 : 0.28,
             transform: 'translate(-50%, -50%) translateZ(-35px)'
           }}
         />
 
-        {/* =========================================================================
-            3D BOOK BODY CONTAINER
-            - Closed: translateX(-pageWidth / 2) so the closed book is centered
-            - Open: translateX(0) so the spine is centered
-            ========================================================================= */}
-        <div
-          ref={bookContainerRef}
-          className="relative transform-style-3d will-change-transform"
-          style={{
-            width: '420px', // Total open spread width (2 * 210px desktop)
-            height: '280px',
-            transform: isOpen
-              ? 'translateX(0px) rotateX(3.5deg) rotateY(0deg) scale(1)'
-              : 'translateX(-105px) rotateX(2.5deg) rotateY(-14deg) scale(0.98)'
-          }}
-        >
-          {/* A. Hardcover Archival Base Board (Forms the underlying casing) */}
+        {/* -----------------------------------------------------------------------
+            STATE A: PRISTINE CLOSED 3D HEIRLOOM ALBUM (when !isOpen)
+            - 100% physically closed volume with zero page leakage
+            - Smooth atelier book-push animation on color change
+            ----------------------------------------------------------------------- */}
+        {!isOpen && (
           <div
-            className="absolute -top-1.5 -left-1.5 w-[calc(100%+12px)] h-[calc(100%+12px)] rounded-xs overflow-hidden"
+            ref={closedBookRef}
+            onClick={handleOpenAlbum}
+            title="Click to Open Heirloom Album"
+            className="relative cursor-pointer transform-style-3d will-change-transform group transition-transform duration-300 w-[175px] sm:w-[215px] h-[235px] sm:h-[290px]"
             style={{
-              backgroundColor: material.color,
-              boxShadow: '0 24px 64px -14px rgba(32, 30, 27, 0.28), 0 8px 24px -6px rgba(32, 30, 27, 0.12)',
-              transform: 'translateZ(-14px)'
+              transform: 'rotateX(3.5deg) rotateY(-13deg) rotateZ(0.5deg)'
             }}
           >
+            {/* Back Cover Board */}
             <div
-              className="absolute inset-0 opacity-25"
+              className="absolute inset-0 rounded-xs transition-colors duration-500"
               style={{
-                backgroundImage:
-                  material.type === 'pebbled-leather'
-                    ? 'radial-gradient(rgba(0,0,0,0.18) 1.5px, transparent 0)'
-                    : 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px), repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px)',
-                backgroundSize: '4px 4px'
-              }}
-            />
-          </div>
-
-          {/* B. Spine Ribs & Headband (Visible on the left when closed) */}
-          <div
-            className={`absolute top-0 left-[210px] -translate-x-1/2 w-[16px] h-full transition-opacity duration-500 z-10 pointer-events-none ${
-              isOpen ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            {/* Center zero-gutter fold creasing shadow */}
-            <div className="w-full h-full bg-gradient-to-r from-black/15 via-black/35 to-black/15 opacity-60" />
-          </div>
-
-          {/* C. LEFT PAGE (Current Spread Left) */}
-          <div
-            className="absolute top-0 left-0 w-1/2 h-full z-10"
-            style={{ transformOrigin: 'right center' }}
-          >
-            <BookPage
-              pageData={activeSpread.left}
-              pageNumber={currentSpreadIndex * 2 + 1}
-              side="left"
-              isGutterShadow={true}
-            />
-            {/* Soft shadow cast on left page during turns */}
-            <div
-              ref={underlyingLeftShadowRef}
-              className="absolute inset-0 bg-gradient-to-l from-black/40 to-transparent pointer-events-none opacity-0 transition-opacity"
-            />
-          </div>
-
-          {/* D. RIGHT PAGE (Current Spread Right) */}
-          <div
-            className="absolute top-0 left-1/2 w-1/2 h-full z-10"
-            style={{ transformOrigin: 'left center' }}
-          >
-            <BookPage
-              pageData={activeSpread.right}
-              pageNumber={currentSpreadIndex * 2 + 2}
-              side="right"
-              isGutterShadow={true}
-            />
-            {/* Soft shadow cast on right page during turns */}
-            <div
-              ref={underlyingRightShadowRef}
-              className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent pointer-events-none opacity-0 transition-opacity"
-            />
-          </div>
-
-          {/* E. DYNAMIC 3D TURNING LEAF (Hinged at Center Spine x = 50%) */}
-          <div
-            ref={turnLeafRef}
-            className="absolute top-0 w-1/2 h-full hidden pointer-events-none transform-style-3d will-change-transform z-35"
-            style={{
-              left: '50%',
-              transformOrigin: 'left center'
-            }}
-          >
-            {/* Front Face of Turning Leaf (Right Page turning away) */}
-            <div className="absolute inset-0 backface-hidden overflow-hidden bg-[#FAF7F2] rounded-r-xs shadow-xl">
-              <BookPage
-                pageData={
-                  isAnimating && currentSpreadIndex < totalSpreads - 1
-                    ? activeSpread.right
-                    : LUXURY_SPREADS[prevSpreadIndex].right
-                }
-                pageNumber={currentSpreadIndex * 2 + 2}
-                side="right"
-                isGutterShadow={true}
-              />
-              {/* Dynamic shadow on front face during turn */}
-              <div
-                ref={turnFrontShadowRef}
-                className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/10 to-transparent pointer-events-none opacity-0"
-              />
-            </div>
-
-            {/* Back Face of Turning Leaf (Next Left Page settling down) */}
-            <div
-              className="absolute inset-0 backface-hidden overflow-hidden bg-[#FAF7F2] rounded-l-xs shadow-xl"
-              style={{ transform: 'rotateY(180deg)' }}
-            >
-              <BookPage
-                pageData={
-                  isAnimating && currentSpreadIndex < totalSpreads - 1
-                    ? LUXURY_SPREADS[nextSpreadIndex].left
-                    : activeSpread.left
-                }
-                pageNumber={(currentSpreadIndex + 1) * 2 + 1}
-                side="left"
-                isGutterShadow={true}
-              />
-              {/* Dynamic shadow on back face during turn */}
-              <div
-                ref={turnBackShadowRef}
-                className="absolute inset-0 bg-gradient-to-l from-black/40 via-black/10 to-transparent pointer-events-none opacity-0"
-              />
-            </div>
-          </div>
-
-          {/* =========================================================================
-              F. 3D HINGED FRONT COVER LEAF
-              - Origin: left center (the spine at x = 50% = 210px)
-              - 0deg when closed (covers the right half [210px, 420px])
-              - -180deg when open (folds over to left half [0px, 210px], beneath spread)
-              ========================================================================= */}
-          <div
-            ref={frontCoverRef}
-            onClick={!isOpen ? handleOpenAlbum : undefined}
-            title={!isOpen ? "Click to Open Heirloom Album" : undefined}
-            className={`absolute top-0 left-1/2 w-1/2 h-full rounded-r-xs transform-style-3d will-change-transform ${
-              !isOpen ? 'cursor-pointer z-30' : 'pointer-events-none z-5'
-            }`}
-            style={{
-              transformOrigin: 'left center',
-              transform: isOpen ? 'rotateY(-180deg)' : 'rotateY(0deg)'
-            }}
-          >
-            {/* 1. OUTSIDE COVER (Debossed Gold Foil Monogram) */}
-            <div
-              className="absolute inset-0 backface-hidden rounded-r-xs overflow-hidden flex items-center justify-center p-4 sm:p-5"
-              style={{
-                backgroundColor: material.color,
-                boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.15), 0 16px 36px rgba(32,30,27,0.22)'
+                backgroundColor: displayMaterial.color,
+                boxShadow: '0 24px 60px -12px rgba(32, 30, 27, 0.25), 0 8px 24px -4px rgba(32, 30, 27, 0.12)',
+                transform: 'translateZ(-16px)'
               }}
             >
-              {/* Cover Material Texture */}
               <div
-                className="absolute inset-0 opacity-25 pointer-events-none"
+                className="absolute inset-0 opacity-20 pointer-events-none"
                 style={{
                   backgroundImage:
-                    material.type === 'pebbled-leather'
-                      ? 'radial-gradient(rgba(0,0,0,0.18) 1.5px, transparent 0)'
+                    displayMaterial.type === 'pebbled-leather'
+                      ? 'radial-gradient(rgba(0,0,0,0.2) 1.5px, transparent 0)'
+                      : 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px), repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px)',
+                  backgroundSize: '4px 4px'
+                }}
+              />
+            </div>
+
+            {/* Left Spine Thickness (16px) */}
+            <div
+              className="absolute top-0 left-0 w-[16px] h-full rounded-l-xs flex flex-col justify-between py-5 px-0.5 items-center pointer-events-none transition-colors duration-500"
+              style={{
+                backgroundColor: displayMaterial.color,
+                transformOrigin: 'left center',
+                transform: 'rotateY(-90deg) translateZ(0px)',
+                boxShadow: 'inset -2px 0 6px rgba(0,0,0,0.25), 0 4px 10px rgba(0,0,0,0.12)'
+              }}
+            >
+              <div className="flex flex-col gap-2 opacity-60">
+                <span className="w-1.5 h-0.5 bg-black/40 rounded-full" />
+                <span className="w-1.5 h-0.5 bg-black/40 rounded-full" />
+              </div>
+              <span
+                className="font-serif text-[7px] uppercase tracking-[0.24em] font-medium transition-colors duration-500"
+                style={{
+                  writingMode: 'vertical-rl',
+                  transform: 'rotate(180deg)',
+                  color: displayMaterial.accent
+                }}
+              >
+                ULTRAA ALBUMS • MMXXVI
+              </span>
+              <div className="flex flex-col gap-2 opacity-60">
+                <span className="w-1.5 h-0.5 bg-black/40 rounded-full" />
+                <span className="w-1.5 h-0.5 bg-black/40 rounded-full" />
+              </div>
+            </div>
+
+            {/* Right Layered Archival Page Block Edge (14px) */}
+            <div
+              className="absolute top-1 right-0 w-[14px] h-[calc(100%-8px)] pointer-events-none"
+              style={{
+                transformOrigin: 'right center',
+                transform: 'rotateY(90deg) translateZ(-14px)',
+                background: 'repeating-linear-gradient(to bottom, #FAF7F2 0px, #FAF7F2 2.5px, #DED5C9 2.5px, #DED5C9 3.5px)',
+                boxShadow: 'inset 0 0 4px rgba(0,0,0,0.18)'
+              }}
+            />
+
+            {/* Bottom Page Block Edge */}
+            <div
+              className="absolute bottom-0 left-2 w-[calc(100%-4px)] h-[14px] pointer-events-none"
+              style={{
+                transformOrigin: 'bottom center',
+                transform: 'rotateX(-90deg) translateZ(-14px)',
+                background: 'repeating-linear-gradient(to right, #FAF7F2 0px, #FAF7F2 2.5px, #DED5C9 2.5px, #DED5C9 3.5px)',
+                boxShadow: 'inset 0 0 4px rgba(0,0,0,0.15)'
+              }}
+            />
+
+            {/* Front Cover Face (Top Layer) */}
+            <div
+              className="absolute inset-0 rounded-xs overflow-hidden flex items-center justify-center p-4 sm:p-5 transition-colors duration-500"
+              style={{
+                backgroundColor: displayMaterial.color,
+                boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.15), 0 16px 36px rgba(32,30,27,0.22)',
+                transform: 'translateZ(0px)'
+              }}
+            >
+              <div
+                className="absolute inset-0 opacity-22 pointer-events-none"
+                style={{
+                  backgroundImage:
+                    displayMaterial.type === 'pebbled-leather'
+                      ? 'radial-gradient(rgba(0,0,0,0.2) 1.5px, transparent 0)'
                       : 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px), repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px)',
                   backgroundSize: '4px 4px'
                 }}
               />
 
-              {/* Debossed Gold Frame & Typography */}
+              {/* Debossed Gold Frame & Monogram Typography */}
               <div
-                className="relative w-full h-full border-[1.5px] flex flex-col items-center justify-center text-center p-3.5 transition-colors"
+                className="relative w-full h-full border-[1.5px] flex flex-col items-center justify-center text-center p-3 transition-all duration-500"
                 style={{
-                  borderColor: material.accent,
+                  borderColor: displayMaterial.accent,
                   boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.2), 0 1px 1px rgba(255,255,255,0.2)'
                 }}
               >
                 <div
-                  className="text-[15px] sm:text-[17px] mb-1.5 font-serif"
-                  style={{ color: material.accent }}
+                  className="text-[15px] sm:text-[17px] mb-1 font-serif transition-colors duration-500"
+                  style={{ color: displayMaterial.accent }}
                 >
                   ✦
                 </div>
 
                 <h3
-                  className="font-serif text-[14px] sm:text-[18px] font-normal tracking-[0.22em] uppercase leading-tight m-0"
-                  style={{ color: material.accent, textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}
+                  className="font-serif text-[13px] sm:text-[16px] font-normal tracking-[0.22em] uppercase leading-tight m-0 transition-colors duration-500"
+                  style={{ color: displayMaterial.accent, textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}
                 >
                   ULTRAA ALBUMS
                 </h3>
 
                 <div
-                  className="w-8 sm:w-10 h-[1.2px] my-2 opacity-80"
-                  style={{ backgroundColor: material.accent }}
-                />
+                  className="w-8 sm:w-10 h-[1.2px] my-2 opacity-80 transition-colors duration-500"
+                  style={{ backgroundColor: displayMaterial.accent }}
+                ></div>
 
                 <p
-                  className="font-serif text-[8px] sm:text-[9.5px] tracking-[0.18em] uppercase m-0 mb-1.5 opacity-90"
-                  style={{ color: material.accent }}
+                  className="font-serif text-[8px] sm:text-[9px] tracking-[0.18em] uppercase m-0 mb-1 opacity-90 transition-colors duration-500"
+                  style={{ color: displayMaterial.accent }}
                 >
                   HEIRLOOM WEDDING VOL. XII
                 </p>
 
                 <span
-                  className="font-sans text-[6px] sm:text-[7px] font-medium tracking-[0.2em] uppercase opacity-75"
-                  style={{ color: material.accent }}
+                  className="font-sans text-[6px] sm:text-[7px] font-medium tracking-[0.2em] uppercase opacity-75 transition-colors duration-500"
+                  style={{ color: displayMaterial.accent }}
                 >
                   FINE ART FLUSH MOUNT BINDERY
                 </span>
               </div>
 
-              {/* Matte Diffused Natural Daylight Sheen */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/6 via-transparent to-black/8 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-white/8 via-transparent to-black/8 pointer-events-none" />
+            </div>
+          </div>
+        )}
+
+        {/* -----------------------------------------------------------------------
+            STATE B: OPEN 3D HEIRLOOM SPREAD (when isOpen)
+            - Complete two-page panoramic spread: Left Page + Right Page
+            - Strictly contained inside right column (width: 430px)
+            - Centered zero-gutter crease shadow
+            - Smooth page flip leaf when navigating
+            ----------------------------------------------------------------------- */}
+        {isOpen && (
+          <div
+            ref={openSpreadRef}
+            className="relative transform-style-3d will-change-transform w-[310px] xs:w-[335px] sm:w-[410px] md:w-[430px] max-w-[94vw] h-[215px] xs:h-[230px] sm:h-[275px] md:h-[290px]"
+            style={{
+              transform: 'rotateX(3.5deg) rotateY(0deg) scale(1)'
+            }}
+          >
+            {/* Hardcover Archival Base Board */}
+            <div
+              className="absolute -top-1.5 -left-1.5 w-[calc(100%+12px)] h-[calc(100%+12px)] rounded-xs overflow-hidden transition-colors duration-500"
+              style={{
+                backgroundColor: displayMaterial.color,
+                boxShadow: '0 24px 64px -14px rgba(32, 30, 27, 0.28), 0 8px 24px -6px rgba(32, 30, 27, 0.12)',
+                transform: 'translateZ(-14px)'
+              }}
+            >
+              <div
+                className="absolute inset-0 opacity-20"
+                style={{
+                  backgroundImage:
+                    displayMaterial.type === 'pebbled-leather'
+                      ? 'radial-gradient(rgba(0,0,0,0.18) 1.5px, transparent 0)'
+                      : 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px), repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px)',
+                  backgroundSize: '4px 4px'
+                }}
+              />
             </div>
 
-            {/* 2. INSIDE COVER (Fine-art Flyleaf Endpaper) */}
+            {/* LEFT PAGE (0% to 50%) */}
             <div
-              className="absolute inset-0 backface-hidden rounded-l-xs overflow-hidden bg-[#FAF7F2] p-4 flex items-center justify-center"
-              style={{ transform: 'rotateY(180deg)' }}
+              className="absolute top-0 left-0 w-1/2 h-full z-10"
+              style={{ transformOrigin: 'right center' }}
             >
-              <div className="w-full h-full border border-dashed border-[#DED5C9] bg-[#EEE7DC]/40 flex flex-col items-center justify-center p-3 text-center">
-                <span className="font-serif text-[11px] tracking-[0.2em] font-semibold text-[#201E1B]">
-                  EX LIBRIS
-                </span>
-                <span className="font-sans text-[8px] uppercase tracking-[0.16em] text-[#777066] mt-1">
-                  Ultraa Atelier Registry
-                </span>
-                <span className="font-mono text-[7px] text-[#A99B8A] mt-1">
-                  Vol. XII • MMXXVI
-                </span>
+              <BookPage
+                pageData={activeSpread.left}
+                pageNumber={currentSpreadIndex * 2 + 1}
+                side="left"
+                isGutterShadow={true}
+              />
+            </div>
+
+            {/* RIGHT PAGE (50% to 100%) */}
+            <div
+              className="absolute top-0 left-1/2 w-1/2 h-full z-10"
+              style={{ transformOrigin: 'left center' }}
+            >
+              <BookPage
+                pageData={activeSpread.right}
+                pageNumber={currentSpreadIndex * 2 + 2}
+                side="right"
+                isGutterShadow={true}
+              />
+            </div>
+
+            {/* Center Zero-Gutter Spine Seam Shadow */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[16px] h-full pointer-events-none z-20">
+              <div className="w-full h-full bg-gradient-to-r from-black/15 via-black/35 to-black/15 opacity-60" />
+            </div>
+
+            {/* DYNAMIC 3D TURNING LEAF (Hinged at Center Spine x = 50%) */}
+            <div
+              ref={turnLeafRef}
+              className="absolute top-0 w-1/2 h-full hidden pointer-events-none transform-style-3d will-change-transform z-35"
+              style={{
+                left: '50%',
+                transformOrigin: 'left center'
+              }}
+            >
+              {/* Front Face of Turning Leaf (Right Page turning away) */}
+              <div className="absolute inset-0 backface-hidden overflow-hidden bg-[#FAF7F2] rounded-r-xs shadow-xl">
+                <BookPage
+                  pageData={
+                    isAnimating && currentSpreadIndex < totalSpreads - 1
+                      ? activeSpread.right
+                      : LUXURY_SPREADS[nextSpreadIndex]?.right || activeSpread.right
+                  }
+                  pageNumber={currentSpreadIndex * 2 + 2}
+                  side="right"
+                  isGutterShadow={true}
+                />
+                <div
+                  ref={turnFrontShadowRef}
+                  className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/10 to-transparent pointer-events-none opacity-0"
+                />
+              </div>
+
+              {/* Back Face of Turning Leaf (Next Left Page settling down) */}
+              <div
+                className="absolute inset-0 backface-hidden overflow-hidden bg-[#FAF7F2] rounded-l-xs shadow-xl"
+                style={{ transform: 'rotateY(180deg)' }}
+              >
+                <BookPage
+                  pageData={
+                    isAnimating && currentSpreadIndex < totalSpreads - 1
+                      ? LUXURY_SPREADS[nextSpreadIndex]?.left || activeSpread.left
+                      : activeSpread.left
+                  }
+                  pageNumber={(currentSpreadIndex + 1) * 2 + 1}
+                  side="left"
+                  isGutterShadow={true}
+                />
+                <div
+                  ref={turnBackShadowRef}
+                  className="absolute inset-0 bg-gradient-to-l from-black/40 via-black/10 to-transparent pointer-events-none opacity-0"
+                />
               </div>
             </div>
           </div>
-
-          {/* G. Spine Outer Wrap (Visible on the left edge when closed) */}
-          <div
-            className={`absolute top-0 left-[210px] w-[14px] h-full rounded-l-xs flex flex-col justify-between py-5 px-0.5 items-center z-35 pointer-events-none transition-opacity duration-500 ${
-              !isOpen ? 'opacity-100' : 'opacity-0'
-            }`}
-            style={{
-              backgroundColor: material.color,
-              transformOrigin: 'right center',
-              transform: 'rotateY(-90deg) translateZ(0px)',
-              boxShadow: 'inset -2px 0 6px rgba(0,0,0,0.25), 0 4px 10px rgba(0,0,0,0.12)'
-            }}
-          >
-            <div className="flex flex-col gap-2 opacity-60">
-              <span className="w-1.5 h-0.5 bg-black/40 rounded-full" />
-              <span className="w-1.5 h-0.5 bg-black/40 rounded-full" />
-            </div>
-            <span
-              className="font-serif text-[7px] uppercase tracking-[0.24em] font-medium"
-              style={{
-                writingMode: 'vertical-rl',
-                transform: 'rotate(180deg)',
-                color: material.accent
-              }}
-            >
-              ULTRAA ALBUMS • MMXXVI
-            </span>
-            <div className="flex flex-col gap-2 opacity-60">
-              <span className="w-1.5 h-0.5 bg-black/40 rounded-full" />
-              <span className="w-1.5 h-0.5 bg-black/40 rounded-full" />
-            </div>
-          </div>
-
-          {/* H. Layered Archival Paper Block Edge (Visible on the right edge when closed) */}
-          <div
-            className={`absolute top-1 right-0 w-[14px] h-[calc(100%-8px)] pointer-events-none transition-opacity duration-300 z-15 ${
-              !isOpen ? 'opacity-100' : 'opacity-0'
-            }`}
-            style={{
-              transform: 'rotateY(90deg) translateZ(-7px)',
-              background: 'repeating-linear-gradient(to bottom, #FAF7F2 0px, #FAF7F2 2px, #DED5C9 2px, #DED5C9 3px)',
-              boxShadow: 'inset 0 0 4px rgba(0,0,0,0.15)'
-            }}
-          />
-        </div>
+        )}
 
         {/* =========================================================================
-            SIDE ARROWS & CONTROLS (Positioned outside the book boundary)
+            SIDE FLOATING ARROWS (Rendered inside viewport ONLY when isOpen)
             ========================================================================= */}
-        <BookControls
-          isOpen={isOpen}
-          currentSpreadIndex={currentSpreadIndex}
-          totalSpreads={totalSpreads}
-          isAnimating={isAnimating}
-          onOpen={handleOpenAlbum}
-          onClose={handleCloseAlbum}
-          onNext={handleNextPage}
-          onPrev={handlePrevPage}
-        />
+        {isOpen && (
+          <>
+            <button
+              type="button"
+              onClick={handlePrevPage}
+              disabled={isAnimating || currentSpreadIndex === 0}
+              className="hidden md:flex absolute -left-4 lg:-left-6 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#DED5C9] bg-[#FAF7F2]/95 backdrop-blur-md text-[#201E1B] items-center justify-center transition-all duration-200 hover:border-[#201E1B] hover:scale-105 disabled:opacity-20 disabled:hover:scale-100 disabled:cursor-not-allowed shadow-sm cursor-pointer"
+              aria-label="Previous Page Spread"
+              title="Previous Page"
+            >
+              <ChevronLeft size={16} />
+            </button>
+
+            <button
+              type="button"
+              onClick={handleNextPage}
+              disabled={isAnimating || currentSpreadIndex === totalSpreads - 1}
+              className="hidden md:flex absolute -right-4 lg:-right-6 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#DED5C9] bg-[#FAF7F2]/95 backdrop-blur-md text-[#201E1B] items-center justify-center transition-all duration-200 hover:border-[#201E1B] hover:scale-105 disabled:opacity-20 disabled:hover:scale-100 disabled:cursor-not-allowed shadow-sm cursor-pointer"
+              aria-label="Next Page Spread"
+              title="Next Page"
+            >
+              <ChevronRight size={16} />
+            </button>
+          </>
+        )}
+      </div>
+
+      {/* =========================================================================
+          2. BOTTOM CONTROL DOCK (Positioned centered cleanly BELOW the book)
+          ========================================================================= */}
+      <div className="hero-book-dock w-full mt-4 sm:mt-5 flex justify-center z-30 px-2">
+        {!isOpen ? (
+          <div className="flex flex-col items-center gap-2">
+            {/* Spread Indicator */}
+            <button
+              type="button"
+              onClick={handleOpenAlbum}
+              disabled={isAnimating}
+              className="group flex items-center gap-3 bg-transparent border-none cursor-pointer py-1 px-3 transition-transform hover:scale-105 disabled:cursor-wait"
+              title="Click to Open Heirloom Album"
+            >
+              <span className="w-8 sm:w-12 h-[1px] bg-[#A99B8A]/60 group-hover:bg-[#201E1B] transition-colors" />
+              <span className="font-sans text-[11px] sm:text-[12px] font-semibold tracking-[0.2em] text-[#777066]">
+                01 / 04
+              </span>
+              <span className="w-8 sm:w-12 h-[1px] bg-[#A99B8A]/60 group-hover:bg-[#201E1B] transition-colors" />
+            </button>
+
+            {/* Pill Button to Open */}
+            <button
+              type="button"
+              onClick={handleOpenAlbum}
+              disabled={isAnimating}
+              className="inline-flex items-center gap-2 px-5 sm:px-6 py-2 sm:py-2.5 rounded-full bg-[#201E1B] !text-[#FAF7F2] text-[10px] sm:text-[11px] font-sans font-medium uppercase tracking-[0.16em] hover:bg-[#B99A69] transition-all duration-300 cursor-pointer shadow-sm hover:shadow-md disabled:opacity-50"
+              style={{ color: '#FAF7F2' }}
+            >
+              <BookOpen size={12} className="text-[#B99A69]" />
+              <span style={{ color: '#FAF7F2' }}>Open Heirloom Album</span>
+              <Sparkles size={11} className="text-[#B99A69]" />
+            </button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2.5 sm:gap-4 bg-[#FAF7F2]/95 backdrop-blur-md border border-[#DED5C9] px-3.5 sm:px-6 py-1.5 sm:py-2 rounded-full shadow-sm max-w-full">
+            {/* Prev Spread */}
+            <button
+              type="button"
+              onClick={handlePrevPage}
+              disabled={isAnimating || currentSpreadIndex === 0}
+              className="flex items-center gap-1 text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-[#201E1B] hover:text-[#B99A69] disabled:opacity-25 disabled:cursor-not-allowed bg-transparent border-none cursor-pointer transition-colors"
+            >
+              <ChevronLeft size={13} />
+              <span>Prev</span>
+            </button>
+
+            {/* Live Counter: —— 03 / 04 —— */}
+            <div className="flex items-center gap-2 text-[#777066]">
+              <span className="w-2.5 sm:w-4 h-[1px] bg-[#DED5C9]" />
+              <span className="font-sans text-[10px] sm:text-[12px] font-bold tracking-[0.18em] text-[#201E1B]">
+                0{currentSpreadIndex + 1} / 0{totalSpreads}
+              </span>
+              <span className="w-2.5 sm:w-4 h-[1px] bg-[#DED5C9]" />
+            </div>
+
+            {/* Next Spread */}
+            <button
+              type="button"
+              onClick={handleNextPage}
+              disabled={isAnimating || currentSpreadIndex === totalSpreads - 1}
+              className="flex items-center gap-1 text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-[#201E1B] hover:text-[#B99A69] disabled:opacity-25 disabled:cursor-not-allowed bg-transparent border-none cursor-pointer transition-colors"
+            >
+              <span>Next</span>
+              <ChevronRight size={13} />
+            </button>
+
+            <span className="w-[1px] h-3.5 bg-[#DED5C9]" />
+
+            {/* Close Cover */}
+            <button
+              type="button"
+              onClick={handleCloseAlbum}
+              disabled={isAnimating}
+              className="flex items-center gap-1 text-[10px] sm:text-[11px] font-sans font-medium uppercase tracking-[0.14em] text-[#777066] hover:text-[#201E1B] bg-transparent border-none cursor-pointer transition-colors"
+              title="Close Album Cover"
+            >
+              <X size={12} />
+              <span>Close</span>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
 }
-
