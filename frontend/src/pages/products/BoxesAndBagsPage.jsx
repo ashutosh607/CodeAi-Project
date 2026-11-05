@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import RevealOnScroll from '../../components/motion/RevealOnScroll';
 import TextReveal from '../../components/motion/TextReveal';
@@ -18,9 +18,6 @@ import {
 export default function BoxesAndBagsPage() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   const handleEnquire = () => {
     navigate(`/enquire?product=${encodeURIComponent('Presentation Boxes & Keepsake Enclosures')}`);
@@ -213,7 +210,7 @@ export default function BoxesAndBagsPage() {
             </div>
           </RevealOnScroll>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '2rem' }}>
             {/* Archetype 1 */}
             <div style={{ background: '#FFFFFF', border: '1px solid #EAE6DF', display: 'flex', flexDirection: 'column' }}>
               <div style={{ aspectRatio: '4/3', background: '#EFEEEA', overflow: 'hidden' }}>

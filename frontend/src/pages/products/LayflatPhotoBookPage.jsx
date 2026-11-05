@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import ProductGallery from '../../components/ProductGallery';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import RevealOnScroll from '../../components/motion/RevealOnScroll';
 import TextReveal from '../../components/motion/TextReveal';
@@ -37,7 +38,6 @@ export default function LayflatPhotoBookPage() {
     }
   ];
 
-  const [activeImgIndex, setActiveImgIndex] = useState(0);
 
   // Configurator state
   const [selectedFormat, setSelectedFormat] = useState('10x14');
@@ -45,9 +45,6 @@ export default function LayflatPhotoBookPage() {
   const [spreadCount, setSpreadCount] = useState(30);
   const [selectedCover, setSelectedCover] = useState('hardcover');
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   // Price Calculation logic
   const calculateTotal = () => {
@@ -71,7 +68,8 @@ export default function LayflatPhotoBookPage() {
   };
 
   const handleEnquire = () => {
-    navigate(`/enquire?product=${encodeURIComponent('Layflat Photo Book')}`);
+    const specs = new URLSearchParams({ product:'Layflat Photo Book', dim:selectedFormat, paper:selectedPaper, spreads:String(spreadCount), mat:selectedCover });
+    navigate('/enquire?' + specs);
   };
 
   return (
@@ -100,47 +98,7 @@ export default function LayflatPhotoBookPage() {
             
             {/* Left 7 Cols: Image Gallery */}
             <RevealOnScroll direction="left" style={{ gridColumn: 'span 12' }} className="pay-col-left">
-              <div style={{ position: 'relative', width: '100%', aspectRatio: '16/11', background: '#EFEEEA', overflow: 'hidden', border: '1px solid #EAE6DF', marginBottom: '1rem' }}>
-                <img
-                  src={galleryImages[activeImgIndex].src}
-                  alt={galleryImages[activeImgIndex].label}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'opacity 0.4s ease' }}
-                />
-                <div style={{ position: 'absolute', top: '1rem', left: '1rem', background: 'rgba(250, 249, 245, 0.92)', backdropFilter: 'blur(4px)', padding: '0.35rem 0.85rem', fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#141310' }}>
-                  Specimen No. LB-180
-                </div>
-                <div style={{ position: 'absolute', bottom: '1rem', right: '1rem', background: '#141310', color: '#FFFFFF', padding: '0.4rem 0.9rem', fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-                  180° Seamless French Hinge
-                </div>
-              </div>
-
-              {/* Thumbnails */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem' }}>
-                {galleryImages.map((img, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => setActiveImgIndex(idx)}
-                    style={{
-                      aspectRatio: '4/3',
-                      background: '#EFEEEA',
-                      border: '1px solid',
-                      borderColor: activeImgIndex === idx ? '#141310' : '#EAE6DF',
-                      padding: 0,
-                      cursor: 'pointer',
-                      position: 'relative',
-                      overflow: 'hidden',
-                      opacity: activeImgIndex === idx ? 1 : 0.75,
-                      transition: 'all 0.2s ease'
-                    }}
-                  >
-                    <img src={img.src} alt={img.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    <span style={{ position: 'absolute', bottom: '0.4rem', left: '0.4rem', background: 'rgba(250, 249, 245, 0.9)', padding: '0.15rem 0.45rem', fontSize: '0.62rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#141310' }}>
-                      {img.label}
-                    </span>
-                  </button>
-                ))}
-              </div>
+              <ProductGallery images={galleryImages}/>
             </RevealOnScroll>
 
             {/* Right 5 Cols: Dossier & Specifications */}
@@ -272,7 +230,7 @@ export default function LayflatPhotoBookPage() {
             </div>
           </RevealOnScroll>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '2rem' }}>
             {/* Card 1 */}
             <div style={{ background: '#FFFFFF', border: '1px solid #EAE6DF', padding: '2.25rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <div>
@@ -348,7 +306,7 @@ export default function LayflatPhotoBookPage() {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '2rem', marginBottom: '3rem' }}>
             {/* Style 1 */}
             <div style={{ background: '#F4F4F0', border: '1px solid #EAE6DF', padding: '1.75rem' }}>
               <div style={{ aspectRatio: '4/3', background: '#EFEEEA', overflow: 'hidden', marginBottom: '1.25rem' }}>
@@ -425,7 +383,7 @@ export default function LayflatPhotoBookPage() {
 
           {/* Finishing Artistry Row */}
           <div style={{ background: '#EFEEEA', border: '1px solid #EAE6DF', padding: '2rem' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '2rem', alignItems: 'center' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: '2rem', alignItems: 'center' }}>
               <div>
                 <span style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#635E52' }}>Finishing Artistry</span>
                 <h4 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.5rem', color: '#141310', margin: '0.35rem 0 0.5rem 0', fontWeight: 500 }}>
@@ -436,7 +394,7 @@ export default function LayflatPhotoBookPage() {
                 </p>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))', gap: '1rem' }}>
                 <div style={{ background: '#FFFFFF', padding: '1rem', border: '1px solid #EAE6DF' }}>
                   <strong style={{ display: 'block', fontSize: '0.88rem', color: '#141310', marginBottom: '0.25rem' }}>Blind Letterpress</strong>
                   <span style={{ fontSize: '0.78rem', color: '#635E52', lineHeight: 1.4, display: 'block' }}>Deep sculptural deboss without ink for subtle shadows.</span>
@@ -470,7 +428,7 @@ export default function LayflatPhotoBookPage() {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '1.5rem' }}>
             {[
               { dim: '10" × 14"', spread: 'Panoramic: 10" × 28"', type: 'Landscape', name: 'Horizontal Landscape', desc: 'The flagship choice for dramatic destination ceremonies, coastal scenes, and wide architectural venues.', start: 'Starts at 30 Spreads' },
               { dim: '11" × 11"', spread: 'Panoramic: 11" × 22"', type: 'Square', name: 'Fine-Art Square', desc: 'Balanced, timeless geometry suited for varied editorial grid arrangements combining portrait and horizontal shots.', start: 'Starts at 25 Spreads' },
@@ -503,7 +461,7 @@ export default function LayflatPhotoBookPage() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: 'clamp(1.5rem, 3vw, 3rem)' }}>
               
               {/* Left 5 Cols: Configurator Summary */}
-              <div style={{ gridColumn: 'span 12', '@media(min-width: 992px)': { gridColumn: 'span 5' } }} className="pay-col-left">
+              <div style={{ gridColumn: 'span 12' }} className="pay-col-left">
                 <span style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#635E52', display: 'block', marginBottom: '0.5rem' }}>
                   Atelier Estimator
                 </span>
@@ -550,7 +508,7 @@ export default function LayflatPhotoBookPage() {
               </div>
 
               {/* Right 7 Cols: Interactive Form */}
-              <div style={{ gridColumn: 'span 12', '@media(min-width: 992px)': { gridColumn: 'span 7' } }} className="pay-col-right">
+              <div style={{ gridColumn: 'span 12' }} className="pay-col-right">
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
                   
                   {/* Step 1: Format */}
@@ -558,7 +516,7 @@ export default function LayflatPhotoBookPage() {
                     <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#141310', marginBottom: '0.75rem' }}>
                       1. Select Format & Proportion
                     </label>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: '0.5rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 110px), 1fr))', gap: '0.5rem' }}>
                       {[
                         { id: '10x14', name: '10" × 14"', sub: 'Landscape' },
                         { id: '11x11', name: '11" × 11"', sub: 'Square' },
@@ -592,7 +550,7 @@ export default function LayflatPhotoBookPage() {
                     <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#141310', marginBottom: '0.75rem' }}>
                       2. Archival Paper Substrate
                     </label>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.5rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 160px), 1fr))', gap: '0.5rem' }}>
                       {[
                         { id: 'hahnemuhle', name: 'Hahnemühle Rag', sub: '308gsm 100% Cotton' },
                         { id: 'matte', name: 'Fine Art Velvet', sub: '260gsm Smooth Matte' },
@@ -651,7 +609,7 @@ export default function LayflatPhotoBookPage() {
                     <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#141310', marginBottom: '0.75rem' }}>
                       4. Cover Encasement
                     </label>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.5rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 160px), 1fr))', gap: '0.5rem' }}>
                       {[
                         { id: 'hardcover', name: 'Belgian Linen Hardcover' },
                         { id: 'washi', name: 'Softcover Washi Flap' },
@@ -753,7 +711,7 @@ export default function LayflatPhotoBookPage() {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: '2rem' }}>
             <div style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '2rem' }}>
               <Percent size={32} color="#CDC6B7" style={{ marginBottom: '1.25rem' }} />
               <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.35rem', color: '#FFFFFF', margin: '0 0 0.75rem 0', fontWeight: 500 }}>
@@ -791,7 +749,7 @@ export default function LayflatPhotoBookPage() {
       <section style={{ padding: 'clamp(3rem, 6vw, 5.5rem) 0', borderBottom: '1px solid #EAE6DF' }}>
         <div className="section-container" style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 2rem' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: 'clamp(1.5rem, 3vw, 3rem)' }}>
-            <div style={{ gridColumn: 'span 12', '@media(min-width: 992px)': { gridColumn: 'span 4' } }} className="pay-col-left">
+            <div style={{ gridColumn: 'span 12' }} className="pay-col-left">
               <span style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#635E52', display: 'block', marginBottom: '0.5rem' }}>
                 Technical Guidance
               </span>
@@ -807,7 +765,7 @@ export default function LayflatPhotoBookPage() {
               </Link>
             </div>
 
-            <div style={{ gridColumn: 'span 12', '@media(min-width: 992px)': { gridColumn: 'span 8' } }} className="pay-col-right">
+            <div style={{ gridColumn: 'span 12' }} className="pay-col-right">
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {[
                   {

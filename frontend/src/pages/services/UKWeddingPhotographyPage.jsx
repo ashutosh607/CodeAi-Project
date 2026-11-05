@@ -1,3 +1,4 @@
+import { studioEmail } from '../../utils/studioEmail';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
@@ -32,7 +33,6 @@ export default function UKWeddingPhotographyPage() {
   });
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     document.title = 'Auteur Wedding Photography for Stately British Celebrations | Ultraa Albums';
   }, []);
 
@@ -72,7 +72,7 @@ export default function UKWeddingPhotographyPage() {
       category: 'European Odyssey for British Patrons',
       desc: 'Transcontinental cinematic production coordinating private air logistics and archival post-production.',
       span: 'md:col-span-8',
-      img: 'https://images.unsplash.com/photo-1519225429980-715cb0215aed?auto=format&fit=crop&w=1200&q=85'
+      img: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85'
     }
   ];
 
@@ -580,19 +580,11 @@ export default function UKWeddingPhotographyPage() {
           <RevealOnScroll direction="up" delay={0.15}>
             <div className="bg-[#FAF9F5] p-8 md:p-12 border border-[#EAE6DF] shadow-md">
               {formState.submitted ? (
-                <div className="p-8 bg-[#F4F4F0] border border-[#141310] text-center space-y-4">
-                  <CheckCircle2 size={36} className="text-[#141310] mx-auto" />
-                  <h3 className="font-serif text-2xl text-[#141310]">Commission Dossier Received</h3>
-                  <p className="text-sm text-[#4A463F] max-w-md mx-auto leading-relaxed">
-                    Thank you, <strong>{formState.clientNames}</strong>. Our dedicated UK concierge director will contact you within 24 hours with confirmed dates and bespoke portfolio previews.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => setFormState(prev => ({ ...prev, submitted: false }))}
-                    className="px-6 py-2.5 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-wider"
-                  >
-                    Submit Another Inquiry
-                  </button>
+                <div className="studio-draft">
+                  <h3>Your studio request is ready</h3>
+                  <p>Review and send the details to the UK desk in your email app.</p>
+                  <a className="studio-link primary" href={studioEmail(document.title, Object.fromEntries(Object.entries(formState).filter(([key]) => key !== 'submitted')), 'uk@ultraaalbums.com')}>Open email draft</a>
+                  <button className="text-action" onClick={() => setFormState(prev => ({ ...prev, submitted:false }))}>Edit details</button>
                 </div>
               ) : (
                 <form onSubmit={handleFormSubmit} className="space-y-6">

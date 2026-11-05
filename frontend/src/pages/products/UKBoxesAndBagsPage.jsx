@@ -1,3 +1,4 @@
+import { studioEmail } from '../../utils/studioEmail';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
@@ -33,7 +34,6 @@ export default function UKBoxesAndBagsPage() {
   });
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     document.title = 'Keepsake Boxes & Velvet Folio Enclosures for UK Studios | Ultraa Albums';
   }, []);
 
@@ -609,11 +609,11 @@ export default function UKBoxesAndBagsPage() {
 
             <div className="lg:col-span-7 bg-[#FAF9F5] p-6 md:p-10 border border-[#EAE6DF] shadow-sm">
               {sampleForm.submitted ? (
-                <div className="p-6 bg-[#EFEEEA] border border-[#635E52] text-[#141310]">
-                  <h4 className="font-serif text-xl font-normal mb-2">Sample Box Request Logged</h4>
-                  <p className="text-xs text-[#4A463F] leading-relaxed">
-                    Our UK studio liaison will confirm your Royal Mail Tracked dispatch within 2 business hours. Check your inbox for the tracking pre-alert and invoice receipt.
-                  </p>
+                <div className="studio-draft">
+                  <h3>Your studio request is ready</h3>
+                  <p>Review and send the details to the UK desk in your email app.</p>
+                  <a className="studio-link primary" href={studioEmail(document.title, Object.fromEntries(Object.entries(sampleForm).filter(([key]) => key !== 'submitted')), 'uk@ultraaalbums.com')}>Open email draft</a>
+                  <button className="text-action" onClick={() => setSampleForm(prev => ({ ...prev, submitted:false }))}>Edit details</button>
                 </div>
               ) : (
                 <RevealOnScroll direction="right" delay={0.14} distance={20}>
@@ -821,6 +821,7 @@ export default function UKBoxesAndBagsPage() {
                     <div key={idx} className="bg-[#F4F4F0] border border-[#EAE6DF]">
                       <button
                         type="button"
+                        aria-expanded={isOpen}
                         onClick={() => setActiveFaq(isOpen ? null : idx)}
                         className="w-full p-5 text-left flex items-center justify-between gap-4"
                       >

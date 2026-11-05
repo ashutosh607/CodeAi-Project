@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import ProductGallery from '../../components/ProductGallery';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import RevealOnScroll from '../../components/motion/RevealOnScroll';
 import TextReveal from '../../components/motion/TextReveal';
@@ -30,11 +31,7 @@ export default function SlipInAlbumsPage() {
     }
   ];
 
-  const [activeImgIndex, setActiveImgIndex] = useState(0);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   const handleEnquire = () => {
     navigate(`/enquire?product=${encodeURIComponent('Slip-In Albums & Matted Folios')}`);
@@ -76,41 +73,7 @@ export default function SlipInAlbumsPage() {
             
             {/* Left 7 Cols: Image Gallery */}
             <RevealOnScroll direction="left" style={{ gridColumn: 'span 12' }} className="pay-col-left">
-              <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3', background: '#EFEEEA', overflow: 'hidden', border: '1px solid #EAE6DF', marginBottom: '1rem' }}>
-                <img
-                  src={galleryImages[activeImgIndex].src}
-                  alt={galleryImages[activeImgIndex].label}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'opacity 0.4s ease' }}
-                />
-                <div style={{ position: 'absolute', bottom: '1rem', left: '1rem', background: 'rgba(250, 249, 245, 0.94)', backdropFilter: 'blur(4px)', padding: '0.4rem 0.85rem', fontSize: '0.72rem', color: '#141310' }}>
-                  <strong style={{ textTransform: 'uppercase', letterSpacing: '0.1em', marginRight: '0.4rem' }}>Specimen:</strong>
-                  <span>{galleryImages[activeImgIndex].desc}</span>
-                </div>
-              </div>
-
-              {/* Thumbnails */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.75rem' }}>
-                {galleryImages.map((img, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => setActiveImgIndex(idx)}
-                    style={{
-                      aspectRatio: '1',
-                      background: '#EFEEEA',
-                      border: '1px solid',
-                      borderColor: activeImgIndex === idx ? '#141310' : '#EAE6DF',
-                      padding: 0,
-                      cursor: 'pointer',
-                      overflow: 'hidden',
-                      opacity: activeImgIndex === idx ? 1 : 0.7,
-                      transition: 'all 0.2s ease'
-                    }}
-                  >
-                    <img src={img.src} alt={img.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  </button>
-                ))}
-              </div>
+              <ProductGallery images={galleryImages}/>
             </RevealOnScroll>
 
             {/* Right 5 Cols: Spec Dossier */}
@@ -234,7 +197,7 @@ export default function SlipInAlbumsPage() {
             </div>
           </RevealOnScroll>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: '1.5rem' }}>
             {[
               { num: '01', title: 'Zero Adhesive Mounting', desc: 'Eliminate sprays, tapes, heat presses, and wet glues entirely. Lab-processed prints slide firmly through hidden top entry channels, self-centering in seconds.', sub: 'Turnaround: Under 60 Seconds' },
               { num: '02', title: '4-Ply Museum Bevels', desc: 'Every aperture features a crisp 45-degree hand-calibrated bevel cut with white or metallic gold fillet core, elevating flat prints with architectural depth.', sub: 'Optical Depth & Shadow' },

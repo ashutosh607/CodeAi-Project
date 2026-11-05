@@ -17,7 +17,6 @@ export default function UKSlipInAlbumsPage() {
   const [activeFaq, setActiveFaq] = useState(null);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     document.title = 'Bespoke Slip-In Albums & Matted Folios for UK Portrait Studios | Ultraa Albums';
   }, []);
 
@@ -638,6 +637,7 @@ export default function UKSlipInAlbumsPage() {
               <div key={idx} className="bg-[#F4F4F0] border border-[#EAE6DF]">
                 <button
                   type="button"
+                  aria-expanded={activeFaq === idx}
                   onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
                   className="w-full p-6 text-left flex items-center justify-between gap-4 font-serif text-base sm:text-lg text-[#141310]"
                 >

@@ -1,0 +1,36 @@
+{
+  "rewrites": [
+    {
+      "source": "/about/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/products/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/services/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/for-uk/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/resources/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/contact/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/enquire/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/pay-online/:path*",
+      "destination": "/index.html"
+    }
+  ]
+}

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { studioEmail } from '../utils/studioEmail';
+import React, { useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import TextReveal from '../components/motion/TextReveal';
 import RevealOnScroll from '../components/motion/RevealOnScroll';
@@ -30,7 +31,7 @@ export default function ProductEnquiryPage() {
   const [clientEmail, setClientEmail] = useState('');
   const [clientPhone, setClientPhone] = useState('');
   const [clientLocation, setClientLocation] = useState('UK');
-  
+
   // Product Family selection
   const determineInitialFamily = (param) => {
     const p = param.toLowerCase();
@@ -48,16 +49,18 @@ export default function ProductEnquiryPage() {
   const [coverMaterial, setCoverMaterial] = useState('italian_leather');
   const [upgrades, setUpgrades] = useState(['gold_foil', 'wooden_chest']);
   const [deliveryDate, setDeliveryDate] = useState('');
-  const [specialNotes, setSpecialNotes] = useState(
-    initialProductParam ? `Inquiring about ${initialProductParam}. Please include bespoke finishes and sample swatch options.` : ''
-  );
+  const [specialNotes, setSpecialNotes] = useState(() => {
+    const rows = initialProductParam ? ['Enquiry about ' + initialProductParam] : [];
+    const parameters = {archetype:'Album', dim:'Dimensions', mat:'Cover', box:'Enclosure', finish:'Finish', spreads:'Requested spreads', paper:'Paper', specimen:'Design', case:'Reference'};
+    for (const [key, label] of Object.entries(parameters)) {
+      if (searchParams.has(key)) rows.push(label + ': ' + searchParams.get(key));
+    }
+    return rows.join('\n');
+  });
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+
 
   const handleUpgradeToggle = (val) => {
     setUpgrades((prev) => 
@@ -73,12 +76,8 @@ export default function ProductEnquiryPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-      window.scrollTo({ top: 120, behavior: 'smooth' });
-    }, 1200);
+    setIsSubmitted(true);
+    window.scrollTo({top:0, behavior:'instant'});
   };
 
   return (
@@ -99,7 +98,7 @@ export default function ProductEnquiryPage() {
         <div className="section-container" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 1.5rem' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: '2rem', alignItems: 'baseline' }}>
             {/* Left 2 Cols: Origin Seal */}
-            <div style={{ gridColumn: 'span 2', display: 'none', '@media(min-width: 992px)': { display: 'block' } }} className="hidden-mobile">
+            <div style={{ gridColumn: 'span 2', display: 'none' }} className="hidden-mobile">
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
                 <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#635E52' }}></span>
                 <span style={{ fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#635E52' }}>
@@ -112,7 +111,7 @@ export default function ProductEnquiryPage() {
             </div>
 
             {/* Middle 8 Cols: Main Heading & Lead */}
-            <div style={{ gridColumn: 'span 12', '@media(min-width: 992px)': { gridColumn: 'span 8' } }} className="enquiry-masthead-center">
+            <div style={{ gridColumn: 'span 12' }} className="enquiry-masthead-center">
               <span style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', color: '#635E52', marginBottom: '0.75rem' }}>
                 Commission An Heirloom
               </span>
@@ -129,7 +128,7 @@ export default function ProductEnquiryPage() {
             </div>
 
             {/* Right 2 Cols: Direct Studio Line */}
-            <div style={{ gridColumn: 'span 12', '@media(min-width: 992px)': { gridColumn: 'span 2' } }} className="enquiry-masthead-right">
+            <div style={{ gridColumn: 'span 12' }} className="enquiry-masthead-right">
               <div style={{ background: '#FFFFFF', border: '1px solid #EAE6DF', padding: '1.25rem' }}>
                 <span style={{ display: 'block', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#635E52' }}>
                   Direct Studio Line
@@ -154,37 +153,42 @@ export default function ProductEnquiryPage() {
             <div style={{ maxWidth: '780px', margin: '0 auto', background: '#FFFFFF', border: '1px solid #EAE6DF', padding: '3.5rem 2.5rem', textAlign: 'center' }}>
               <CheckCircle2 size={56} color="#141310" style={{ margin: '0 auto 1.5rem auto' }} />
               <span style={{ fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#635E52', display: 'block', marginBottom: '0.5rem' }}>
-                Dossier Lodged with Senior Binder
+                Studio enquiry
               </span>
               <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '2.25rem', color: '#141310', marginBottom: '1rem' }}>
-                Enquiry Successfully Registered
+                Your enquiry is ready
               </h2>
               <p style={{ color: '#635E52', fontSize: '1rem', lineHeight: 1.65, maxWidth: '600px', margin: '0 auto 2rem auto' }}>
-                Thank you, <strong style={{ color: '#141310' }}>{clientName}</strong>. Your dossier for the <strong style={{ color: '#141310' }}>{productType.replace('_', ' ').toUpperCase()}</strong> specification has been forwarded to our Santacruz West studio director. A custom quotation PDF and binding timeline will be dispatched to <em>{clientEmail}</em> within 24 hours.
+                Open your email draft to send the specifications to the atelier. {uploadedFiles.length > 0 && 'Attach your selected reference files in your email app.'}
               </p>
 
               <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <a
-                  href={`https://wa.me/919322254315?text=Hello%20Ultraa%20Albums%2C%20I%20have%20submitted%20an%20enquiry%20for%20${encodeURIComponent(clientName)}%20(${encodeURIComponent(productType)}).`}
+                  href={studioEmail('Bespoke album enquiry', {
+                    Name:clientName, Studio:studioName, Email:clientEmail, Phone:clientPhone,
+                    Location:clientLocation, Product:initialProductParam || productType, Family:productType,
+                    Size:sizeSpec, Spreads:spreadCount, Cover:coverMaterial, Upgrades:upgrades, Delivery:deliveryDate,
+                    Notes:specialNotes, References:uploadedFiles.map(file => file.name)
+                  })}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ background: '#141310', color: '#FFFFFF', padding: '0.9rem 1.75rem', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', textDecoration: 'none' }}
                 >
-                  Message Concierge On WhatsApp
+                  Open email draft
                 </a>
                 <button
                   type="button"
                   onClick={() => setIsSubmitted(false)}
                   style={{ background: '#F4F4F0', color: '#141310', border: '1px solid #EAE6DF', padding: '0.9rem 1.75rem', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', cursor: 'pointer' }}
                 >
-                  Submit Another Project
+                  Edit enquiry
                 </button>
               </div>
             </div>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: '2.5rem', alignItems: 'start' }}>
               {/* LEFT COLUMN: The Commission Journey & Material Preview (5 Cols) */}
-              <aside style={{ gridColumn: 'span 12', '@media(min-width: 992px)': { gridColumn: 'span 5' } }} className="enquiry-col-left">
+              <aside style={{ gridColumn: 'span 12' }} className="enquiry-col-left">
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                   {/* Card 1: Atelier Archival Overview Card */}
                   <div style={{ background: '#F4F4F0', border: '1px solid #EAE6DF', padding: '2rem' }}>
@@ -302,7 +306,7 @@ export default function ProductEnquiryPage() {
                       <div style={{ background: '#FFFFFF', border: '1px solid #EAE6DF', padding: '0.75rem' }}>
                         <div style={{ width: '100%', height: '80px', background: '#D8D2C4', marginBottom: '0.5rem', overflow: 'hidden' }}>
                           <img 
-                            src="https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&w=300&q=80" 
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwryRIbv6mXTCtu4P6zur0mppmvnc-8y4WwIJvKCOI5FhjIndUg26eIeI56LiSh01k5_MmaNX2PyY88iic6jfGV3g_e0JxgcD_129L_wVPYkWohpRBYyZi5f15ogZk--B55g0sSjjje5FUNf9_vlznga45HAufb2I1o5YUxTeDHrS6xHo3h10lgx_D4fqBRu_NczTwfxGFdZA3hi0xBgmWKf2Al3jB5OCYKwUAnQBq"
                             alt="Japanese Silk" 
                             style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                           />
@@ -384,7 +388,7 @@ export default function ProductEnquiryPage() {
               </aside>
 
               {/* RIGHT COLUMN: Comprehensive Product Enquiry Form (7 Cols) */}
-              <main style={{ gridColumn: 'span 12', '@media(min-width: 992px)': { gridColumn: 'span 7' } }} className="enquiry-col-right">
+              <div style={{ gridColumn: 'span 12' }} className="enquiry-col-right">
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                   {/* STEP 01: Client Details */}
                   <div style={{ background: '#FFFFFF', border: '1px solid #EAE6DF', padding: 'clamp(1.5rem, 3vw, 2.5rem)' }}>
@@ -400,7 +404,7 @@ export default function ProductEnquiryPage() {
                       <BadgeCheck size={26} color="#635E52" />
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '1.25rem' }}>
                       <div>
                         <label style={{ display: 'block', fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#635E52', marginBottom: '0.35rem' }}>
                           Principal Contact / Full Name *
@@ -497,7 +501,7 @@ export default function ProductEnquiryPage() {
                     </p>
 
                     {/* Radio Grid Cards */}
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '0.85rem', marginBottom: '0.85rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: '0.85rem', marginBottom: '0.85rem' }}>
                       {/* Option 1: Flush Mount */}
                       <label style={{ cursor: 'pointer' }}>
                         <input
@@ -506,7 +510,7 @@ export default function ProductEnquiryPage() {
                           value="flush_mount"
                           checked={productType === 'flush_mount'}
                           onChange={() => setProductType('flush_mount')}
-                          style={{ display: 'none' }}
+                          className="visually-hidden-input"
                         />
                         <div
                           style={{
@@ -543,7 +547,7 @@ export default function ProductEnquiryPage() {
                           value="luxury_heirloom"
                           checked={productType === 'luxury_heirloom'}
                           onChange={() => setProductType('luxury_heirloom')}
-                          style={{ display: 'none' }}
+                          className="visually-hidden-input"
                         />
                         <div
                           style={{
@@ -580,7 +584,7 @@ export default function ProductEnquiryPage() {
                           value="layflat_book"
                           checked={productType === 'layflat_book'}
                           onChange={() => setProductType('layflat_book')}
-                          style={{ display: 'none' }}
+                          className="visually-hidden-input"
                         />
                         <div
                           style={{
@@ -617,7 +621,7 @@ export default function ProductEnquiryPage() {
                           value="boxes_slipcases"
                           checked={productType === 'boxes_slipcases'}
                           onChange={() => setProductType('boxes_slipcases')}
-                          style={{ display: 'none' }}
+                          className="visually-hidden-input"
                         />
                         <div
                           style={{
@@ -655,7 +659,7 @@ export default function ProductEnquiryPage() {
                         value="full_suite"
                         checked={productType === 'full_suite'}
                         onChange={() => setProductType('full_suite')}
-                        style={{ display: 'none' }}
+                        className="visually-hidden-input"
                       />
                       <div
                         style={{
@@ -726,7 +730,7 @@ export default function ProductEnquiryPage() {
                               value={sz.val}
                               checked={sizeSpec === sz.val}
                               onChange={() => setSizeSpec(sz.val)}
-                              style={{ display: 'none' }}
+                              className="visually-hidden-input"
                             />
                             <div
                               style={{
@@ -748,7 +752,7 @@ export default function ProductEnquiryPage() {
                     </div>
 
                     {/* Spreads & Cover Row */}
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem', marginBottom: '1.75rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '1.25rem', marginBottom: '1.75rem' }}>
                       <div>
                         <label style={{ display: 'block', fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#635E52', marginBottom: '0.35rem' }}>
                           Estimated Spread Count
@@ -789,7 +793,7 @@ export default function ProductEnquiryPage() {
                       <label style={{ display: 'block', fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#635E52', marginBottom: '0.6rem' }}>
                         Atelier Customization Upgrades (Select all that apply)
                       </label>
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.75rem' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: '0.75rem' }}>
                         {[
                           { id: 'gold_foil', name: 'Gold Foil Debossing', desc: 'Custom brass die stamping on spine & cover' },
                           { id: 'wooden_chest', name: 'Wooden Keepsake Box', desc: 'Handcrafted Teak wood with matching lining' },
@@ -895,14 +899,14 @@ export default function ProductEnquiryPage() {
                             type="file"
                             multiple
                             onChange={handleFileUpload}
-                            style={{ display: 'none' }}
+                            className="visually-hidden-input"
                           />
                           <UploadCloud size={32} color="#635E52" style={{ margin: '0 auto 0.5rem auto' }} />
                           <p style={{ fontSize: '0.9rem', fontWeight: 600, color: '#141310', margin: 0 }}>
-                            Drop design brief, spread PDF or monogram die SVG
+                            Choose reference files for your enquiry
                           </p>
                           <p style={{ fontSize: '0.75rem', color: '#635E52', margin: '0.25rem 0 0 0' }}>
-                            PDF, AI, PSD, ZIP, or high-res JPG up to 100MB
+                            Attach the files when you send the email draft.
                           </p>
 
                           {uploadedFiles.length > 0 && (
@@ -935,7 +939,7 @@ export default function ProductEnquiryPage() {
                     <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
                       <button
                         type="submit"
-                        disabled={isSubmitting}
+
                         style={{
                           flex: 1,
                           minWidth: '220px',
@@ -947,14 +951,14 @@ export default function ProductEnquiryPage() {
                           fontWeight: 600,
                           letterSpacing: '0.18em',
                           textTransform: 'uppercase',
-                          cursor: isSubmitting ? 'wait' : 'pointer',
+                          cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           gap: '0.75rem'
                         }}
                       >
-                        <span>{isSubmitting ? 'Registering Dossier...' : 'Submit Bespoke Enquiry'}</span>
+                        <span>Prepare email enquiry</span>
                         <Send size={15} />
                       </button>
 
@@ -993,7 +997,7 @@ export default function ProductEnquiryPage() {
                     </div>
                   </div>
                 </form>
-              </main>
+              </div>
             </div>
           )}
         </div>
@@ -1011,7 +1015,7 @@ export default function ProductEnquiryPage() {
             </h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.75rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '1.75rem' }}>
             {/* Spec 1 */}
             <div style={{ background: '#FFFFFF', border: '1px solid #EAE6DF', padding: '2rem' }}>
               <span style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#635E52', display: 'block', marginBottom: '0.75rem' }}>

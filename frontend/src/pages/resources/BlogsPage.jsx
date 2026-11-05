@@ -1,3 +1,4 @@
+import { studioEmail } from '../../utils/studioEmail';
 import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import RevealOnScroll from '../../components/motion/RevealOnScroll';
@@ -569,6 +570,7 @@ export default function BlogsPage() {
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
+                    window.location.href = studioEmail('Quarterly monograph subscription request', Object.fromEntries(new FormData(e.currentTarget)));
                     setNewsletterSubscribed(true);
                   }}
                   className="bg-white p-8 border border-[#CCC5BC] shadow-sm space-y-4 text-[#141310]"
@@ -581,7 +583,7 @@ export default function BlogsPage() {
                       <input
                         type="text"
                         required
-                        placeholder="e.g. Julian Hayes Studio"
+                        name="Studio" placeholder="e.g. Julian Hayes Studio"
                         className="w-full bg-[#FAF9F5] border border-[#CCC5BC] p-3 text-[13px] text-[#141310] focus:outline-none focus:border-[#141310]"
                       />
                     </div>
@@ -592,7 +594,7 @@ export default function BlogsPage() {
                       <input
                         type="email"
                         required
-                        placeholder="julian@hayesphotography.co.uk"
+                        name="Email" placeholder="julian@hayesphotography.co.uk"
                         className="w-full bg-[#FAF9F5] border border-[#CCC5BC] p-3 text-[13px] text-[#141310] focus:outline-none focus:border-[#141310]"
                       />
                     </div>
@@ -600,7 +602,7 @@ export default function BlogsPage() {
 
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
                     <label className="flex items-center gap-2 cursor-pointer text-[12px] text-[#4A463F]">
-                      <input type="checkbox" defaultChecked className="accent-[#141310]" />
+                      <input type="checkbox" name="Swatch alerts" value="Requested" defaultChecked className="accent-[#141310]" />
                       <span>Include sample kit swatch alerts &amp; ICC profile updates</span>
                     </label>
 
@@ -615,7 +617,7 @@ export default function BlogsPage() {
                   {newsletterSubscribed && (
                     <div className="p-3 bg-[#DCE5DA] text-[#292824] border border-[#CCC5BC] text-[12px] flex items-center gap-2">
                       <CheckCircle size={16} />
-                      <span>Thank you. Your dispatch reservation has been recorded at the Mumbai atelier.</span>
+                      <span>Send your subscription request from your email app.</span>
                     </div>
                   )}
                 </form>
@@ -661,13 +663,9 @@ export default function BlogsPage() {
                   </div>
 
                   <a
-                    href="#download-wp1"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert('Monograph WP-01 download initiated. Check your downloads folder.');
-                    }}
+                    href={studioEmail("Whitepaper request", {Publication:"WP-01"})}
                     className="shrink-0 w-12 h-12 bg-[#141310] text-white hover:bg-[#292824] flex items-center justify-center transition-colors shadow-sm"
-                    title="Download PDF"
+                    title="Request PDF by email"
                   >
                     <Download size={20} />
                   </a>
@@ -693,13 +691,9 @@ export default function BlogsPage() {
                   </div>
 
                   <a
-                    href="#download-wp2"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert('Operations WP-02 download initiated. Check your downloads folder.');
-                    }}
+                    href={studioEmail("Whitepaper request", {Publication:"WP-02"})}
                     className="shrink-0 w-12 h-12 bg-[#141310] text-white hover:bg-[#292824] flex items-center justify-center transition-colors shadow-sm"
-                    title="Download PDF"
+                    title="Request PDF by email"
                   >
                     <Download size={20} />
                   </a>

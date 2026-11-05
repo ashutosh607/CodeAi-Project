@@ -14,7 +14,6 @@ export default function UKLuxuryHeirloomPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     document.title = 'Sovereign Heirloom Tomes for UK Celebrations | Ultraa Albums';
   }, []);
 

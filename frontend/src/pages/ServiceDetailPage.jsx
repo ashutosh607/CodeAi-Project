@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { CheckCircle2, Clock, ArrowRight, ShieldCheck, ChevronRight } from 'lucide-react';
 import RevealOnScroll from '../components/motion/RevealOnScroll';
@@ -12,9 +12,6 @@ export default function ServiceDetailPage() {
 
   const service = SERVICES_CATALOG.find((s) => s.slug === slug);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [slug]);
 
   // If visited at /services or invalid slug, show all services
   if (!service) {

@@ -405,7 +405,7 @@ export const SHOWROOM_ALBUMS = [
         id: 1,
         title: 'Milestone Portraits & Detail Vignettes',
         left: {
-          image: 'https://images.unsplash.com/photo-1519225433281-96db8b3260e5?auto=format&fit=crop&w=1000&q=85',
+          image: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1000&q=85',
           caption: 'Panel 01 • The Laughter & Champagne Toast'
         },
         right: {

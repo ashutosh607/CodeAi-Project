@@ -93,7 +93,7 @@ export const PRODUCTS_CATALOG = [
     image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1000&q=85',
     gallery: [
       'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1200&q=85',
-      'https://images.unsplash.com/photo-1519225433281-96db8b3260e5?auto=format&fit=crop&w=1200&q=85'
+      'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1200&q=85'
     ],
     sizes: [
       { name: '8.5 x 11 in (Portrait)', desc: 'Editorial monograph' },
@@ -323,7 +323,7 @@ export const UK_CATALOG = [
     name: 'Photography for UK',
     shortDesc: 'Documentary and editorial wedding photography across London, the Cotswolds, Scotland, and destination Europe.',
     badge: 'UK Team',
-    image: 'https://images.unsplash.com/photo-1519225433281-96db8b3260e5?auto=format&fit=crop&w=800&q=85'
+    image: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=85'
   }
 ];
 

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { studioEmail } from '../utils/studioEmail';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import RevealOnScroll from '../components/motion/RevealOnScroll';
 import TextReveal from '../components/motion/TextReveal';
@@ -31,9 +32,6 @@ export default function ContactPage() {
 
   const [submitted, setSubmitted] = useState(false);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -45,6 +43,7 @@ export default function ContactPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    window.location.href = studioEmail('Atelier contact · ' + formData.subject, formData);
     setSubmitted(true);
   };
 
@@ -424,11 +423,11 @@ export default function ContactPage() {
                         className="w-full py-4 bg-[#141310] text-[#FFFFFF] font-semibold text-[11px] uppercase tracking-[0.2em] hover:bg-[#635E52] transition-all duration-200 flex items-center justify-center gap-3 rounded-none border-none cursor-pointer"
                         type="submit"
                       >
-                        <span>Send Message to Concierge</span>
+                        <span>Open email draft</span>
                         <ArrowRight size={18} />
                       </button>
                       <p className="text-[12px] text-[#4A463F] text-center mt-3 leading-relaxed">
-                        Encrypted submission. Your studio identity and client images remain strictly protected under our strict non-disclosure charter.
+                        Review your message in your email app before sending.
                       </p>
                     </div>
                   </form>
@@ -438,10 +437,10 @@ export default function ContactPage() {
                       <CheckCircle2 size={24} className="text-[#141310] shrink-0 mt-1" />
                       <div>
                         <h4 className="font-serif text-[20px] text-[#141310] font-normal">
-                          Inquiry Transmitted to Mumbai Atelier
+                          Send your message from your email app
                         </h4>
                         <p className="text-[13px] text-[#4A463F] mt-1 leading-relaxed">
-                          A senior binding specialist has received your docket. We will reach out via WhatsApp and email within 2 business hours.
+                          You can also write directly to info@ultraaalbums.com.
                         </p>
                       </div>
                     </div>
@@ -451,7 +450,7 @@ export default function ContactPage() {
                 <div className="mt-8 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-[#4A463F] border-t border-[#EAE6DF]">
                   <div className="flex items-center gap-2">
                     <Lock size={15} className="text-[#635E52]" />
-                    <span className="text-[12px]">256-Bit SSL Encrypted Dispatch</span>
+                    <span className="text-[12px]">Studio correspondence</span>
                   </div>
                   <div className="flex items-center gap-4 text-[12px]">
                     <span>GST: 27AABCU1234F1ZX</span>

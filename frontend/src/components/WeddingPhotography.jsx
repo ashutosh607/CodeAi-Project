@@ -13,7 +13,7 @@ const GALLERIES = [
     title: 'Sophie & James',
     venue: 'Kew Royal Botanic Gardens, London',
     category: 'Contemporary English Wedding',
-    cover: 'https://images.unsplash.com/photo-1519225433281-96db8b3260e5?auto=format&fit=crop&w=1200&q=85',
+    cover: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1200&q=85',
     notes: 'Intimate greenhouse vows framed with lush Victorian botanicals and evening jazz reception.'
   },
   {

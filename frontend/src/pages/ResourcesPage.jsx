@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React from 'react';
+import { useParams, Navigate } from 'react-router-dom';
 
 import AlbumDesignsPage from './resources/AlbumDesignsPage';
 import WeddingPhotoAlbumsPage from './resources/WeddingPhotoAlbumsPage';
@@ -19,9 +19,6 @@ import CatalogSpecifierPage from './resources/CatalogSpecifierPage';
 export default function ResourcesPage() {
   const { slug } = useParams();
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [slug]);
 
   switch (slug) {
     case 'album-designs':
@@ -35,6 +32,9 @@ export default function ResourcesPage() {
 
     case 'faq':
       return <FAQKnowledgeBasePage />;
+
+    case 'how-to-order':
+      return <Navigate replace to="/about#how-we-work" />;
 
     case 'catalog':
       return <CatalogSpecifierPage />;

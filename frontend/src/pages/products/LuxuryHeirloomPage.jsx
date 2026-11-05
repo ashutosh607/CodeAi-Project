@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import ProductGallery from '../../components/ProductGallery';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import RevealOnScroll from '../../components/motion/RevealOnScroll';
 import TextReveal from '../../components/motion/TextReveal';
@@ -30,12 +31,8 @@ export default function LuxuryHeirloomPage() {
     }
   ];
 
-  const [activeImgIndex, setActiveImgIndex] = useState(0);
   const [selectedSize, setSelectedSize] = useState('14x18');
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   const handleEnquire = () => {
     navigate(`/enquire?product=${encodeURIComponent('Luxury Heirloom Album')}`);
@@ -75,43 +72,7 @@ export default function LuxuryHeirloomPage() {
             
             {/* Left 7 Cols: Image Gallery */}
             <RevealOnScroll direction="left" style={{ gridColumn: 'span 12' }} className="pay-col-left">
-              <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3', background: '#EFEEEA', overflow: 'hidden', border: '1px solid #EAE6DF', marginBottom: '1rem' }}>
-                <img
-                  src={galleryImages[activeImgIndex].src}
-                  alt={galleryImages[activeImgIndex].plate}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'opacity 0.4s ease' }}
-                />
-                <div style={{ position: 'absolute', bottom: '1rem', left: '1rem', background: 'rgba(20, 19, 16, 0.9)', color: '#FFFFFF', padding: '0.4rem 0.9rem', fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase' }}>
-                  {galleryImages[activeImgIndex].plate}
-                </div>
-                <div style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'rgba(250, 249, 245, 0.92)', backdropFilter: 'blur(4px)', padding: '0.35rem 0.85rem', fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#141310' }}>
-                  Generational Masterwork
-                </div>
-              </div>
-
-              {/* Thumbnails */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.75rem', marginBottom: '1.5rem' }}>
-                {galleryImages.map((img, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => setActiveImgIndex(idx)}
-                    style={{
-                      aspectRatio: '1',
-                      background: '#EFEEEA',
-                      border: '1px solid',
-                      borderColor: activeImgIndex === idx ? '#141310' : '#EAE6DF',
-                      padding: 0,
-                      cursor: 'pointer',
-                      overflow: 'hidden',
-                      opacity: activeImgIndex === idx ? 1 : 0.65,
-                      transition: 'all 0.2s ease'
-                    }}
-                  >
-                    <img src={img.src} alt={img.plate} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  </button>
-                ))}
-              </div>
+              <ProductGallery images={galleryImages}/>
 
               {/* Master Guild Seal Banner */}
               <div style={{ background: '#F4F4F0', border: '1px solid #EAE6DF', padding: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -291,7 +252,7 @@ export default function LuxuryHeirloomPage() {
             </div>
           </RevealOnScroll>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '2rem' }}>
             <div style={{ background: '#FFFFFF', border: '1px solid #EAE6DF', padding: '2rem' }}>
               <span style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#635E52' }}>Element 01</span>
               <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.35rem', color: '#141310', margin: '0.5rem 0 0.75rem 0', fontWeight: 500 }}>

@@ -274,7 +274,7 @@ export default function WeddingPhotoAlbumsPage() {
               ))}
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <span className="text-[10px] uppercase tracking-[0.14em] font-semibold text-[#635E52] mr-2">Format:</span>
               {[
                 { key: 'all', label: 'All Formats' },
@@ -667,7 +667,7 @@ export default function WeddingPhotoAlbumsPage() {
 
                 <div className="pt-4 border-t border-[#CCC5BC] space-y-3">
                   <Link
-                    to={`/enquire?product=Flush Mount Album&archetype=${encodeURIComponent(builderArchetype)}&dim=${encodeURIComponent(builderDimension)}&mat=${encodeURIComponent(builderTextile)}&box=${encodeURIComponent(builderEnclosure)}`}
+                    to={`/enquire?product=Flush Mount Album&archetype=${encodeURIComponent(builderArchetype)}&dim=${encodeURIComponent(builderDimension)}&mat=${encodeURIComponent(builderTextile)}&finish=${encodeURIComponent(builderPersonalization)}&spreads=${encodeURIComponent(builderSpreads)}&box=${encodeURIComponent(builderEnclosure)}`}
                     className="w-full py-4 bg-[#141310] text-white hover:bg-[#292824] transition-colors text-[11px] uppercase tracking-widest font-semibold flex items-center justify-center gap-2"
                   >
                     <span>Transfer Specification to Studio Dossier</span>

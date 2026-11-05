@@ -1,3 +1,4 @@
+import { studioEmail } from '../../utils/studioEmail';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
@@ -31,7 +32,6 @@ export default function UKFlushMountAlbumPage() {
   });
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     document.title = 'Bespoke Flush Mount Albums for UK Wedding Photographers | Ultraa Albums';
   }, []);
 
@@ -603,13 +603,13 @@ export default function UKFlushMountAlbumPage() {
 
             {/* Quick Request Form */}
             {swatchFormState.submitted ? (
-              <div className="p-6 bg-[#FAF9F5] border border-[#635E52] text-[#141310]">
-                <h4 className="font-serif text-lg font-normal mb-2">Thank you for your swatch request</h4>
-                <p className="text-xs text-[#4A463F]">
-                  Our UK studio liaison will confirm your Royal Mail dispatch details and send the tracking confirmation directly to your email.
-                </p>
-              </div>
-            ) : (
+                <div className="studio-draft">
+                  <h3>Your studio request is ready</h3>
+                  <p>Review and send the details to the UK desk in your email app.</p>
+                  <a className="studio-link primary" href={studioEmail(document.title, Object.fromEntries(Object.entries(swatchFormState).filter(([key]) => key !== 'submitted')), 'uk@ultraaalbums.com')}>Open email draft</a>
+                  <button className="text-action" onClick={() => setSwatchFormState(prev => ({ ...prev, submitted:false }))}>Edit details</button>
+                </div>
+              ) : (
               <RevealOnScroll direction="up" delay={0.2} distance={20}>
                 <form onSubmit={handleSwatchSubmit} className="space-y-4 max-w-xl">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -868,6 +868,7 @@ export default function UKFlushMountAlbumPage() {
                 <div key={idx} className="bg-[#FAF9F5] border border-[#EAE6DF] shadow-sm">
                   <button
                     type="button"
+                    aria-expanded={isOpen}
                     onClick={() => setActiveFaq(isOpen ? null : idx)}
                     className="w-full p-6 text-left flex items-center justify-between gap-4"
                   >

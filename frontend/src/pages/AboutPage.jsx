@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import RevealOnScroll from '../components/motion/RevealOnScroll';
 import TextReveal from '../components/motion/TextReveal';
@@ -139,8 +139,8 @@ const MAP_LOCATIONS = [
     role: 'Pan-Asian Studio Logistics & Curated Sample Vault',
     address: 'Marina Bay Financial Centre, Singapore',
     sla: '2–3 Days Priority Air Transit',
-    x: 78.4,
-    y: 52.9
+    x: 76.1,
+    y: 49.1
   },
   {
     id: 'sydney',
@@ -212,7 +212,7 @@ const FLIGHT_PATHS = [
   { to: 'New York', d: 'M 675 218 Q 440 90 271 143' },
   { to: 'Vancouver', d: 'M 675 218 Q 400 80 167 120' },
   { to: 'California', d: 'M 675 218 Q 390 120 174 168' },
-  { to: 'Singapore', d: 'M 675 218 Q 730 240 784 265' },
+  { to: 'Singapore', d: 'M 675 218 Q 720 230 761 246' },
   { to: 'Sydney', d: 'M 675 218 Q 800 320 901 370' },
   { to: 'Auckland', d: 'M 675 218 Q 830 350 962 397' },
   { to: 'Cape Town', d: 'M 675 218 Q 580 340 536 385' },
@@ -223,9 +223,6 @@ export default function AboutPage() {
   const [selectedPin, setSelectedPin] = useState('mumbai');
   const [hoveredPin, setHoveredPin] = useState(null);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   const activeLocation = MAP_LOCATIONS.find(loc => loc.id === (hoveredPin || selectedPin)) || MAP_LOCATIONS[0];
 
@@ -507,7 +504,7 @@ export default function AboutPage() {
             <TextReveal
               as="h2"
               delay={0.08}
-              className="font-serif text-[32px] md:text-[44px] lg:text-[48px] font-normal leading-[1.14] tracking-tight mt-1 mb-3"
+              className="font-serif text-[32px] md:text-[44px] lg:text-[48px] font-normal leading-[1.14] tracking-tight mt-1 mb-3 !text-[#FAF7F2]"
               style={{ color: '#FAF7F2' }}
             >
               From Digital Master to Bound Volume
@@ -809,27 +806,60 @@ export default function AboutPage() {
               </div>
 
               {/* Active Selected Studio Spotlight Box */}
-              <div className="p-5 rounded-xl bg-[#201E1B] text-[#FAF7F2] border border-[#3E3A33] shadow-md text-left">
+              <div
+                className="p-5 sm:p-6 rounded-2xl border shadow-xl text-left transition-all duration-300"
+                style={{
+                  backgroundColor: '#201E1B',
+                  borderColor: '#3E3A33',
+                  boxShadow: '0 20px 40px -12px rgba(0,0,0,0.45)'
+                }}
+              >
                 <div className="flex items-center justify-between gap-2 mb-2">
-                  <span className="font-sans text-[10px] uppercase font-semibold tracking-[0.2em] text-[#D4AF37]">
+                  <span
+                    className="font-sans text-[10px] uppercase font-bold tracking-[0.22em]"
+                    style={{ color: '#D4AF37' }}
+                  >
                     ACTIVE STUDIO SPOTLIGHT
                   </span>
-                  <span className="font-sans text-[10px] text-[#A69E92] bg-white/10 px-2 py-0.5 rounded">
+                  <span
+                    className="font-sans text-[10px] font-medium px-2.5 py-0.5 rounded-full"
+                    style={{ color: '#FAF7F2', backgroundColor: 'rgba(255, 255, 255, 0.15)' }}
+                  >
                     {activeLocation.country}
                   </span>
                 </div>
-                <h4 className="font-serif text-[20px] text-[#FAF7F2] font-normal mb-1">
+                <h4
+                  className="font-serif text-[22px] sm:text-[24px] font-semibold leading-snug mb-1.5 !text-[#FFFFFF]"
+                  style={{ color: '#FFFFFF', display: 'block' }}
+                >
                   {activeLocation.name}
                 </h4>
-                <p className="text-[12.5px] text-[#C8BEAE] leading-relaxed mb-3">
+                <p
+                  className="font-sans text-[13px] leading-relaxed mb-2.5 font-normal !text-[#D5CDBF]"
+                  style={{ color: '#D5CDBF' }}
+                >
                   {activeLocation.role}
                 </p>
-                <div className="pt-2.5 border-t border-white/15 flex items-center justify-between text-[11px] text-[#D4AF37]">
-                  <span className="flex items-center gap-1.5">
-                    <Clock size={12} />
+                <p
+                  className="font-sans text-[11.5px] leading-snug mb-3.5 font-normal flex items-center gap-1.5 !text-[#A89F91]"
+                  style={{ color: '#A89F91' }}
+                >
+                  <MapPin size={12} className="text-[#B99A69] shrink-0" />
+                  <span>{activeLocation.address}</span>
+                </p>
+                <div
+                  className="pt-3 border-t flex items-center justify-between text-[11.5px]"
+                  style={{ borderColor: 'rgba(255, 255, 255, 0.15)' }}
+                >
+                  <span className="flex items-center gap-1.5 font-medium !text-[#D4AF37]" style={{ color: '#D4AF37' }}>
+                    <Clock size={13} />
                     <span>{activeLocation.sla}</span>
                   </span>
-                  <Link to="/contact" className="hover:text-white underline text-[10.5px] tracking-wider uppercase font-semibold">
+                  <Link
+                    to="/contact"
+                    className="underline text-[11px] tracking-wider uppercase font-semibold transition-colors hover:text-white !text-[#FAF7F2]"
+                    style={{ color: '#FAF7F2' }}
+                  >
                     Contact Liaison →
                   </Link>
                 </div>
@@ -935,34 +965,100 @@ export default function AboutPage() {
                           <span className="w-2.5 h-0.5 bg-black/30 rounded-full blur-[0.6px] -mt-0.5" />
                         </div>
 
-                        {/* Interactive Floating Hover Tooltip Card */}
+                        {/* Interactive Floating Hover Tooltip Card (High-Contrast Luxury Ivory) */}
                         <div
-                          className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 sm:w-52 p-3 bg-[#1A1815] text-[#FAF7F2] rounded-xl shadow-2xl border border-[#B99A69]/40 transition-all duration-200 pointer-events-none text-left z-50 ${
+                          style={{
+                            left: loc.x < 25 ? '0%' : loc.x > 75 ? '100%' : '50%',
+                            transform: loc.x < 25
+                              ? (isActive ? 'translate(0%, 0)' : 'translate(0%, 4px)')
+                              : loc.x > 75
+                              ? (isActive ? 'translate(-100%, 0)' : 'translate(-100%, 4px)')
+                              : (isActive ? 'translate(-50%, 0)' : 'translate(-50%, 4px)')
+                          }}
+                          className={`absolute bottom-full mb-3 w-56 sm:w-64 p-3.5 bg-white text-[#201E1B] rounded-xl shadow-[0_20px_48px_-8px_rgba(20,19,16,0.28)] border-2 border-[#B99A69]/70 transition-all duration-200 pointer-events-none text-left z-50 ${
                             isActive
-                              ? 'opacity-100 translate-y-0 visible'
-                              : 'opacity-0 translate-y-1 invisible group-hover:opacity-100 group-hover:translate-y-0 group-hover:visible'
+                              ? 'opacity-100 visible'
+                              : 'opacity-0 invisible group-hover:opacity-100 group-hover:visible'
                           }`}
                         >
-                          <div className="flex items-center justify-between gap-1 mb-1">
-                            <span className="text-[9px] uppercase font-semibold tracking-wider text-[#D4AF37]">
+                          {/* Top Meta: Country + Status Badge */}
+                          <div className="flex items-center justify-between gap-1.5 pb-1 mb-1.5 border-b border-[#F2ECE3]">
+                            <span
+                              className="text-[10px] uppercase font-bold tracking-[0.2em]"
+                              style={{ color: '#9E7D4B' }}
+                            >
                               {loc.country}
                             </span>
-                            {loc.isHQ && (
-                              <span className="text-[8px] uppercase font-bold tracking-widest bg-[#B99A69] text-[#1A1815] px-1.5 py-0.2 rounded">
-                                HQ
+                            {loc.isHQ ? (
+                              <span
+                                className="text-[8.5px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full"
+                                style={{ backgroundColor: '#B99A69', color: '#FAF7F2' }}
+                              >
+                                GLOBAL HQ
+                              </span>
+                            ) : (
+                              <span
+                                className="text-[8.5px] uppercase font-bold tracking-wider px-2 py-0.2 rounded-full"
+                                style={{ backgroundColor: '#EAE2D2', color: '#635E52' }}
+                              >
+                                {loc.hubCategory === 'hub' ? 'PRIMARY HUB' : 'PARTNER STUDIO'}
                               </span>
                             )}
                           </div>
-                          <p className="font-serif text-[13px] font-normal leading-tight text-[#FAF7F2] mb-1">
+
+                          {/* High-Contrast Clear Studio Title */}
+                          <h5
+                            className="font-serif text-[15px] sm:text-[16px] font-semibold leading-tight mb-1 !text-[#141310]"
+                            style={{ color: '#141310' }}
+                          >
                             {loc.name}
-                          </p>
-                          <p className="text-[10px] text-[#C8BEAE] leading-snug mb-1.5">
+                          </h5>
+
+                          {/* Clear High-Contrast Role Description */}
+                          <p
+                            className="font-sans text-[11.5px] leading-snug mb-2 font-normal !text-[#4A463F]"
+                            style={{ color: '#4A463F' }}
+                          >
                             {loc.role}
                           </p>
-                          <div className="pt-1.5 border-t border-white/10 flex items-center justify-between text-[9px] text-[#D4AF37]">
-                            <span>{loc.sla}</span>
-                            <span>⚡ Priority</span>
+
+                          {/* Address / Location Line */}
+                          <p
+                            className="font-sans text-[10.5px] leading-snug mb-2 flex items-center gap-1.5 font-normal !text-[#777066]"
+                            style={{ color: '#777066' }}
+                          >
+                            <span style={{ color: '#B99A69' }}>📍</span>
+                            <span>{loc.address}</span>
+                          </p>
+
+                          {/* Transit SLA Footer */}
+                          <div
+                            className="pt-2 border-t flex items-center justify-between text-[10.5px]"
+                            style={{ borderColor: '#EAE3D6' }}
+                          >
+                            <span
+                              className="flex items-center gap-1 font-sans font-medium !text-[#9E7D4B]"
+                              style={{ color: '#9E7D4B' }}
+                            >
+                              <Clock size={11} />
+                              <span>{loc.sla}</span>
+                            </span>
+                            <span
+                              className="text-[9.5px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full !text-[#15803D]"
+                              style={{ backgroundColor: '#DCFCE7', color: '#15803D' }}
+                            >
+                              ● Direct Flight
+                            </span>
                           </div>
+
+                          {/* Downward Pointer Triangle */}
+                          <span
+                            className="absolute -bottom-1.5 w-3 h-3 bg-white border-r-2 border-b-2 border-[#B99A69]/70 rotate-45 pointer-events-none"
+                            style={{
+                              left: loc.x < 25 ? '16px' : loc.x > 75 ? 'calc(100% - 24px)' : '50%',
+                              transform: loc.x < 25 || loc.x > 75 ? 'rotate(45deg)' : 'translateX(-50%) rotate(45deg)'
+                            }}
+                          />
                         </div>
                       </div>
                     );

@@ -17,15 +17,8 @@ export default function IntroSection() {
         <div className="intro-two-column-layout">
           {/* Left Column: Text & Editorial Manifesto */}
           <div className="intro-text-column">
-            <RevealOnScroll direction="down" delay={0.05} distance={12} blur={false}>
-              <div className="section-eyebrow-chip">
-                <span>BESPOKE BINDERY &amp; FINE PRINTING</span>
-              </div>
-            </RevealOnScroll>
-
             <TextReveal as="h2" className="intro-main-title" delay={0.08}>
-              Build Your Wedding Photo Book With Us
-              <span className="intro-subtitle-display">Give wings to your imagination.</span>
+              Inside the bindery
             </TextReveal>
 
             <RevealOnScroll direction="up" delay={0.18} distance={20}>
@@ -35,15 +28,6 @@ export default function IntroSection() {
                 </p>
                 <p>
                   Every photography collection receives meticulous care. From hand-torn deckle edges and genuine full-grain leather cases to custom brass die foil debossing and layflat panoramic double-page spreads, we combine historical bookbinding discipline with modern museum-grade archival chemistry.
-                </p>
-              </div>
-            </RevealOnScroll>
-
-            {/* Stylized Quote Callout Box */}
-            <RevealOnScroll direction="up" delay={0.26} distance={24}>
-              <div className="intro-quote-card">
-                <p className="quote-text-body">
-                  “Life brings celebrations. Photo books transform moments into memories, making them an essential part of preserving your special family milestones.”
                 </p>
               </div>
             </RevealOnScroll>

@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Truck, ShieldCheck, Package, ArrowRight, Check, Sparkles } from 'lucide-react';
+import { Truck, ShieldCheck, Package, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -307,34 +307,6 @@ export default function UKDeskSection() {
                     loading="lazy"
                   />
 
-                  {/* Floating Luxury Tag Badge in Top-Left Corner */}
-                  <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#FAF7F2]/90 backdrop-blur-md border border-[#E0D5C3] shadow-xs z-10">
-                    <span className="font-sans text-[9px] sm:text-[9.5px] font-semibold tracking-[0.16em] uppercase text-[#8C734B]">
-                      {col.tag}
-                    </span>
-                  </div>
-
-                  {/* SLIDING HOVER INCLUSIONS OVERLAY */}
-                  <div className="absolute inset-0 bg-[#1A1815]/95 backdrop-blur-md p-4 sm:p-5 flex flex-col justify-between opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 z-20 pointer-events-none">
-                    <div>
-                      <div className="flex items-center gap-1.5 text-[9px] uppercase tracking-[0.18em] font-semibold text-[#D4AF37] mb-2.5">
-                        <Sparkles size={11} />
-                        <span>WHAT THIS INCLUDES</span>
-                      </div>
-                      <ul className="space-y-1.5 text-left">
-                        {col.includes.map((inc, iIdx) => (
-                          <li key={iIdx} className="flex items-start gap-2 text-[10.5px] sm:text-[11px] text-[#FAF7F2] leading-snug">
-                            <Check size={11} className="text-[#D4AF37] shrink-0 mt-0.5" />
-                            <span>{inc}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="pt-2 border-t border-white/10 flex items-center justify-between text-[9px] text-[#C8BEAE] uppercase tracking-wider">
-                      <span>UK Certified Specification</span>
-                      <ArrowRight size={10} className="text-[#D4AF37]" />
-                    </div>
-                  </div>
                 </div>
 
                 {/* Editorial Title */}
@@ -346,6 +318,7 @@ export default function UKDeskSection() {
                 <p className="font-sans text-[12px] sm:text-[12.5px] text-[#777066] leading-[1.65] mb-6 text-left font-normal">
                   {col.desc}
                 </p>
+                <details className="studio-inclusions"><summary>Specifications</summary><ul>{col.includes.map(line => <li key={line}>{line}</li>)}</ul></details>
               </div>
 
               {/* Action Link: "View UK Specifications →" */}

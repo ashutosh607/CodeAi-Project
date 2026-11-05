@@ -1,10 +1,10 @@
+import { studioEmail } from '../../utils/studioEmail';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import RevealOnScroll from '../../components/motion/RevealOnScroll';
 import TextReveal from '../../components/motion/TextReveal';
 import {
   ChevronRight,
-  Download,
   CheckCircle,
   ArrowRight,
   ArrowLeft,
@@ -49,7 +49,6 @@ export default function CatalogSpecifierPage() {
   const [spreadIndex, setSpreadIndex] = useState(1);
   const [kitSelection, setKitSelection] = useState('complete');
   const [orderSubmitted, setOrderSubmitted] = useState(false);
-  const [downloadSuccess, setDownloadSuccess] = useState(false);
 
   // Form states
   const [studioName, setStudioName] = useState('');
@@ -71,23 +70,10 @@ export default function CatalogSpecifierPage() {
     setSpreadIndex((prev) => (prev + 1) % CATALOG_SPREADS.length);
   };
 
-  const handleDownloadDossier = () => {
-    setDownloadSuccess(true);
-    setTimeout(() => setDownloadSuccess(false), 4500);
-  };
-
   const handleOrderSubmit = (e) => {
     e.preventDefault();
+    window.location.href = studioEmail('Swatch kit request', {Studio:studioName, Portfolio:portfolioUrl, Email:email, Phone:phone, Address:address, Region:region, Postcode:postalCode, Kit:kitSelection, Method:payChannel});
     setOrderSubmitted(true);
-    setTimeout(() => {
-      setOrderSubmitted(false);
-      setStudioName('');
-      setPortfolioUrl('');
-      setEmail('');
-      setPhone('');
-      setAddress('');
-      setPostalCode('');
-    }, 6000);
   };
 
   return (
@@ -210,26 +196,11 @@ export default function CatalogSpecifierPage() {
             {/* Digital Actions */}
             <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mt-auto border-t border-[#EAE6DF]">
               <div className="space-y-0.5">
-                <p className="font-semibold text-[#141310] text-[13px]">Download Studio Specification Dossier</p>
-                <p className="text-[12px] text-[#635E52]">Includes high-res ICC profiles, spread templates, and paper gamuts (PDF, 18.4 MB).</p>
+                <p className="font-semibold text-[#141310] text-[13px]">Studio specification dossier</p>
+                <p className="text-[12px] text-[#635E52]">Request the current profiles, spread templates and paper specifications from the studio.</p>
               </div>
-              <button
-                type="button"
-                onClick={handleDownloadDossier}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#201E1B] !text-[#FAF7F2] hover:bg-[#B99A69] transition-all text-[11px] uppercase tracking-widest font-semibold whitespace-nowrap shadow-sm cursor-pointer"
-                style={{ color: '#FAF7F2', backgroundColor: '#201E1B' }}
-              >
-                <Download size={15} />
-                <span>Download Dossier (18.4 MB)</span>
-              </button>
+              <a className="studio-link primary" href={studioEmail('Studio specification dossier', {Request:'Please send the current catalogue and studio specifications.'})}>Request dossier by email</a>
             </div>
-
-            {downloadSuccess && (
-              <div className="mt-4 p-3 bg-[#DCE5DA] text-[#292824] border border-[#CCC5BC] text-[12px] flex items-center gap-2">
-                <CheckCircle size={16} />
-                <span>Atelier Dossier download initiated. Check your downloads directory.</span>
-              </div>
-            )}
           </div>
 
           {/* Right: Physical Studio Specimen Box (5 Cols) */}
@@ -724,14 +695,7 @@ export default function CatalogSpecifierPage() {
                   </p>
                 </div>
 
-                {orderSubmitted && (
-                  <div className="p-4 bg-[#DCE5DA] text-[#292824] border border-[#CCC5BC] text-[13px] flex items-center gap-2.5">
-                    <CheckCircle size={18} />
-                    <span>
-                      <strong>Dispatch Request Recorded:</strong> Thank you, {studioName || 'Studio'}. Your order has been registered at our Mumbai atelier. You will receive an invoice and courier booking confirmation shortly.
-                    </span>
-                  </div>
-                )}
+                {orderSubmitted && <p role="status">Send your swatch request from your email app.</p>}
               </form>
             </div>
           </div>

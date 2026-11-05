@@ -8,7 +8,6 @@ import ProcessSection from '../components/ProcessSection';
 import WhyChooseUs from '../components/WhyChooseUs';
 import UKDeskSection from '../components/UKDeskSection';
 import Testimonials from '../components/Testimonials';
-import FinalCTA from '../components/FinalCTA';
 import ContactSection from '../components/ContactSection';
 
 export default function HomePage({ onSelectProduct, prefilledProduct }) {
@@ -17,11 +16,8 @@ export default function HomePage({ onSelectProduct, prefilledProduct }) {
       {/* 1. Hero with 3D Living Album Centerpiece */}
       <HeroSection />
 
-      {/* 2. Build Your Wedding Photo Book With Us */}
-      <IntroSection />
-
-      {/* 3. Our Products (4-Column Catalogue) */}
       <ProductShowcase onSelectProduct={onSelectProduct} />
+      <IntroSection />
 
       {/* 4. Services We Offer */}
       <ServicesSection />
@@ -41,8 +37,6 @@ export default function HomePage({ onSelectProduct, prefilledProduct }) {
       {/* 8. Testimonial */}
       <Testimonials />
 
-      {/* 9. Final CTA */}
-      <FinalCTA />
 
       {/* 10. Contact & Studio Inquiries Form */}
       <ContactSection prefilledProduct={prefilledProduct} />

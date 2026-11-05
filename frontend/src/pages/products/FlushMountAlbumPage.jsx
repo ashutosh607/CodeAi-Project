@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import ProductGallery from '../../components/ProductGallery';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import RevealOnScroll from '../../components/motion/RevealOnScroll';
 import TextReveal from '../../components/motion/TextReveal';
@@ -34,11 +35,7 @@ export default function FlushMountAlbumPage() {
     }
   ];
 
-  const [activeImgIndex, setActiveImgIndex] = useState(0);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   const handleEnquire = () => {
     navigate(`/enquire?product=${encodeURIComponent('Flush Mount Album')}`);
@@ -77,48 +74,12 @@ export default function FlushMountAlbumPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: 'clamp(1.5rem, 3vw, 3rem)', alignItems: 'start' }}>
             
             {/* Left 7 Cols: Image Gallery */}
-            <RevealOnScroll direction="left" style={{ gridColumn: 'span 12', '@media(min-width: 992px)': { gridColumn: 'span 7' } }} className="pay-col-left">
-              <div style={{ position: 'relative', width: '100%', aspectRatio: '16/10', background: '#EFEEEA', overflow: 'hidden', border: '1px solid #EAE6DF', marginBottom: '1rem' }}>
-                <img
-                  src={galleryImages[activeImgIndex].src}
-                  alt={galleryImages[activeImgIndex].label}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'opacity 0.4s ease' }}
-                />
-                <div style={{ position: 'absolute', top: '1rem', left: '1rem', background: '#141310', color: '#FFFFFF', padding: '0.35rem 0.85rem', fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase' }}>
-                  Zero-Split Panoramic Spread
-                </div>
-                <div style={{ position: 'absolute', bottom: '1rem', right: '1rem', background: 'rgba(250, 249, 245, 0.92)', backdropFilter: 'blur(4px)', padding: '0.35rem 0.85rem', fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#141310' }}>
-                  12" × 18" (30 × 45 cm) Open Specimen
-                </div>
-              </div>
-
-              {/* Thumbnails */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.75rem' }}>
-                {galleryImages.map((img, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => setActiveImgIndex(idx)}
-                    style={{
-                      aspectRatio: '1',
-                      background: '#EFEEEA',
-                      border: '1px solid',
-                      borderColor: activeImgIndex === idx ? '#141310' : '#EAE6DF',
-                      padding: 0,
-                      cursor: 'pointer',
-                      overflow: 'hidden',
-                      opacity: activeImgIndex === idx ? 1 : 0.7,
-                      transition: 'all 0.2s ease'
-                    }}
-                  >
-                    <img src={img.src} alt={img.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  </button>
-                ))}
-              </div>
+            <RevealOnScroll direction="left" style={{ gridColumn: 'span 12' }} className="pay-col-left">
+              <ProductGallery images={galleryImages}/>
             </RevealOnScroll>
 
             {/* Right 5 Cols: Commercial Spec Dossier */}
-            <RevealOnScroll direction="right" style={{ gridColumn: 'span 12', '@media(min-width: 992px)': { gridColumn: 'span 5' } }} className="pay-col-right">
+            <RevealOnScroll direction="right" style={{ gridColumn: 'span 12' }} className="pay-col-right">
               <div>
                 <span style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#635E52', display: 'block', marginBottom: '0.5rem' }}>
                   Flagship Tome Series
@@ -249,7 +210,7 @@ export default function FlushMountAlbumPage() {
             </h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: '1.5rem' }}>
             {[
               { num: '01', title: 'Continuous Silver Halide', desc: 'Printed using continuous-tone RGB laser lasers directly onto genuine photo paper—producing smooth tonal transitions that digital halftone dots cannot match.' },
               { num: '02', title: 'Zero-Split Crease', desc: 'Each double-page spread is gently micro-scored along the center line without cutting through the paper fibers, preserving full uninterrupted horizontal horizons.' },
@@ -278,7 +239,7 @@ export default function FlushMountAlbumPage() {
             </h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: '1.5rem' }}>
             {[
               { dim: '12" × 18"', name: 'Grand Royal Panorama', desc: 'The majestic choice for high-profile multi-day weddings with grand banquets and dramatic architectural venues.' },
               { dim: '12" × 12"', name: 'Flagship Square', desc: 'Our most universally acclaimed format, creating a timeless balance for paired portrait and landscape layouts.' },

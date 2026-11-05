@@ -12,7 +12,7 @@ import { Link, useLocation } from 'react-router-dom';
 import AnnouncementTicker from './AnnouncementTicker';
 import TextReveal from './motion/TextReveal';
 
-export default function Header({ onOpenPayOnline }) {
+export default function Header() {
   const [activeMenu, setActiveMenu] = useState(null); // 'albums' | 'services' | 'uk' | 'about' | 'resources'
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileAccordion, setMobileAccordion] = useState(null);
@@ -21,6 +21,36 @@ export default function Header({ onOpenPayOnline }) {
   const navRef = useRef(null);
   const megaMenuPaneRef = useRef(null);
   const location = useLocation();
+  const drawer = useRef(null);
+  const menuTrigger = useRef(null);
+  const keyboardTrigger = useRef(null);
+  const clickedMenu = useRef(null);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const dialog = drawer.current;
+    if (!dialog) return;
+    try {
+      if (!dialog.open) dialog.showModal();
+    } catch (_) {}
+    const oldOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const desktop = window.matchMedia('(min-width:1280px)');
+    const onResize = () => { if (desktop.matches) setMobileMenuOpen(false); };
+    desktop.addEventListener('change', onResize);
+    return () => {
+      desktop.removeEventListener('change', onResize);
+      document.body.style.overflow = oldOverflow;
+      try {
+        if (dialog && dialog.open) dialog.close();
+      } catch (_) {}
+      menuTrigger.current?.focus({preventScroll:true});
+    };
+  }, [mobileMenuOpen]);
+
+  useEffect(() => {
+    if (activeMenu && keyboardTrigger.current) megaMenuPaneRef.current?.querySelector('a')?.focus();
+  }, [activeMenu]);
 
   // Scroll detection for sticky elevated styling
   useEffect(() => {
@@ -104,6 +134,8 @@ export default function Header({ onOpenPayOnline }) {
 
   const handleMouseEnter = (menuKey) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    keyboardTrigger.current = null;
+    if (activeMenu !== menuKey) clickedMenu.current = null;
     setActiveMenu(menuKey);
   };
 
@@ -113,19 +145,26 @@ export default function Header({ onOpenPayOnline }) {
     }, 180);
   };
 
-  const handleMenuClick = (menuKey) => {
-    setActiveMenu((prev) => (prev === menuKey ? null : menuKey));
+  const handleMenuClick = (menuKey, event) => {
+    if (event.detail === 0) keyboardTrigger.current = event.currentTarget;
+    const closing = clickedMenu.current === menuKey && activeMenu === menuKey;
+    clickedMenu.current = closing ? null : menuKey;
+    setActiveMenu(closing ? null : menuKey);
   };
 
   // Close dropdowns on route changes, outside clicks or Escape key
   useEffect(() => {
     setActiveMenu(null);
     setMobileMenuOpen(false);
+    clickedMenu.current = null;
+    keyboardTrigger.current = null;
   }, [location.pathname]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
+        keyboardTrigger.current?.focus();
+        keyboardTrigger.current = null;
         setActiveMenu(null);
         setMobileMenuOpen(false);
       }
@@ -185,7 +224,7 @@ export default function Header({ onOpenPayOnline }) {
           </div>
 
           {/* Desktop Primary Nav */}
-          <nav className="hidden xl:flex items-center gap-7 lg:gap-8 h-full text-[11px] font-medium tracking-[0.16em] uppercase text-[#777066]">
+          <nav className="hidden xl:flex items-center gap-5 2xl:gap-8 h-full text-[11px] font-medium tracking-[0.16em] uppercase text-[#777066]">
             {/* HOME */}
             <Link
               to="/"
@@ -212,7 +251,7 @@ export default function Header({ onOpenPayOnline }) {
                     ? 'text-[#201E1B] font-semibold'
                     : ''
                 }`}
-                onClick={() => handleMenuClick('albums')}
+                onClick={event => handleMenuClick('albums', event)}
                 aria-expanded={activeMenu === 'albums'}
               >
                 <span>Albums</span>
@@ -238,7 +277,7 @@ export default function Header({ onOpenPayOnline }) {
                     ? 'text-[#201E1B] font-semibold'
                     : ''
                 }`}
-                onClick={() => handleMenuClick('services')}
+                onClick={event => handleMenuClick('services', event)}
                 aria-expanded={activeMenu === 'services'}
               >
                 <span>Services</span>
@@ -264,7 +303,7 @@ export default function Header({ onOpenPayOnline }) {
                     ? 'text-[#201E1B] font-semibold'
                     : ''
                 }`}
-                onClick={() => handleMenuClick('uk')}
+                onClick={event => handleMenuClick('uk', event)}
                 aria-expanded={activeMenu === 'uk'}
               >
                 <span>For UK</span>
@@ -315,7 +354,7 @@ export default function Header({ onOpenPayOnline }) {
                     ? 'text-[#201E1B] font-semibold'
                     : ''
                 }`}
-                onClick={() => handleMenuClick('resources')}
+                onClick={event => handleMenuClick('resources', event)}
                 aria-expanded={activeMenu === 'resources'}
               >
                 <span>Resources</span>
@@ -373,7 +412,10 @@ export default function Header({ onOpenPayOnline }) {
               type="button"
               className="xl:hidden p-2 text-[#201E1B] bg-transparent border-none cursor-pointer flex items-center justify-center"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle navigation menu"
+              ref={menuTrigger}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="studio-menu"
+              aria-label="Open navigation menu"
             >
               {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
@@ -384,7 +426,7 @@ export default function Header({ onOpenPayOnline }) {
         {activeMenu && (
           <div
             ref={megaMenuPaneRef}
-            className="atelier-dropdown-full-pane"
+            className="atelier-dropdown-full-pane" data-lenis-prevent
             onMouseEnter={() => handleMouseEnter(activeMenu)}
             onMouseLeave={handleMouseLeave}
           >
@@ -846,15 +888,13 @@ export default function Header({ onOpenPayOnline }) {
 
       {/* 3. Mobile Navigation Drawer */}
       {mobileMenuOpen && (
-        <div
-          className={`fixed inset-0 ${isScrolled ? 'top-[106px]' : 'top-[110px]'} bg-black/35 z-40 xl:hidden backdrop-blur-xs transition-opacity`}
-          onClick={() => setMobileMenuOpen(false)}
-        >
+        <dialog ref={drawer} id="studio-menu" className="studio-drawer" aria-label="Navigation menu" onCancel={() => setMobileMenuOpen(false)} onClick={e => {if (e.target === drawer.current) setMobileMenuOpen(false);}}>
           <div
-            className="w-full max-w-sm bg-[#FAF7F2] h-full overflow-y-auto p-6 space-y-4 shadow-xl border-r border-[#DED5C9]"
+            data-lenis-prevent className="drawer-panel"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex flex-col space-y-1 border-b border-[#DED5C9] pb-4">
+            <button type="button" className="drawer-close" onClick={() => setMobileMenuOpen(false)} aria-label="Close navigation menu"><X size={20}/> Close</button>
+            <div className="drawer-items flex flex-col space-y-1 border-b border-[#DED5C9] pb-4">
               <Link
                 to="/"
                 className="py-2.5 text-[12px] font-semibold tracking-[0.16em] uppercase text-[#201E1B]"
@@ -868,6 +908,7 @@ export default function Header({ onOpenPayOnline }) {
                 <button
                   type="button"
                   className="w-full flex items-center justify-between py-2.5 text-[12px] font-semibold tracking-[0.16em] uppercase text-[#201E1B] bg-transparent border-none text-left cursor-pointer"
+                  aria-expanded={mobileAccordion === 'albums'}
                   onClick={() => toggleMobileAccordion('albums')}
                 >
                   <span>Albums</span>
@@ -895,6 +936,7 @@ export default function Header({ onOpenPayOnline }) {
                 <button
                   type="button"
                   className="w-full flex items-center justify-between py-2.5 text-[12px] font-semibold tracking-[0.16em] uppercase text-[#201E1B] bg-transparent border-none text-left cursor-pointer"
+                  aria-expanded={mobileAccordion === 'services'}
                   onClick={() => toggleMobileAccordion('services')}
                 >
                   <span>Services</span>
@@ -920,6 +962,7 @@ export default function Header({ onOpenPayOnline }) {
                 <button
                   type="button"
                   className="w-full flex items-center justify-between py-2.5 text-[12px] font-semibold tracking-[0.16em] uppercase text-[#201E1B] bg-transparent border-none text-left cursor-pointer"
+                  aria-expanded={mobileAccordion === 'uk'}
                   onClick={() => toggleMobileAccordion('uk')}
                 >
                   <span>For UK</span>
@@ -990,7 +1033,7 @@ export default function Header({ onOpenPayOnline }) {
               </Link>
             </div>
           </div>
-        </div>
+        </dialog>
       )}
     </div>
   );

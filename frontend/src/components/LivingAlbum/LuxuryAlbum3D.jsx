@@ -39,7 +39,7 @@ export const LUXURY_SPREADS = [
     title: 'The Stately Banquet & Speeches',
     venue: 'Hedsor House, Buckinghamshire',
     left: {
-      image: 'https://images.unsplash.com/photo-1519225433281-96db8b3260e5?auto=format&fit=crop&w=1000&q=85',
+      image: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1000&q=85',
       caption: 'Plate 05 • The Grand Dining Hall under Victorian Chandeliers'
     },
     right: {
@@ -56,7 +56,7 @@ export const LUXURY_SPREADS = [
       caption: 'Plate 07 • Waltzing beneath Starlight & Cascading Florals'
     },
     right: {
-      image: 'https://images.unsplash.com/photo-1519225433281-96db8b3260e5?auto=format&fit=crop&w=1000&q=85',
+      image: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1000&q=85',
       caption: 'Plate 08 • Farewell Sparklers & Handcrafted Heirloom Volume'
     }
   }

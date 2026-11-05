@@ -1,3 +1,4 @@
+import { studioEmail } from '../../utils/studioEmail';
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
@@ -38,7 +39,6 @@ export default function UKImageEditingPage() {
   });
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     document.title = 'Master RAW Image Editing & Color Grading for UK Photographers | Ultraa Albums';
 
     const updateDimensions = () => {
@@ -729,6 +729,7 @@ export default function UKImageEditingPage() {
               <div key={idx} className="bg-[#F4F4F0] border border-[#EAE6DF]">
                 <button
                   type="button"
+                  aria-expanded={activeFaq === idx}
                   onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
                   className="w-full p-6 text-left flex items-center justify-between gap-4 font-serif text-base sm:text-lg text-[#141310]"
                 >
@@ -798,14 +799,13 @@ export default function UKImageEditingPage() {
                 {/* Form Area */}
                 <div className="lg:col-span-7">
                   {formState.submitted ? (
-                    <div className="p-8 bg-[#F4F4F0] border border-[#141310] text-center space-y-4">
-                      <CheckCircle2 size={36} className="text-[#141310] mx-auto" />
-                      <h3 className="font-serif text-2xl text-[#141310]">Test Calibration Dossier Transmitted</h3>
-                      <p className="text-sm text-[#4A463F] max-w-md mx-auto leading-relaxed">
-                        Our UK Digital Lab desk will review your frames and return the calibrated Lightroom catalog within 24 hours to <strong>{formState.email}</strong>.
-                      </p>
-                    </div>
-                  ) : (
+                <div className="studio-draft">
+                  <h3>Your studio request is ready</h3>
+                  <p>Review and send the details to the UK desk in your email app.</p>
+                  <a className="studio-link primary" href={studioEmail(document.title, Object.fromEntries(Object.entries(formState).filter(([key]) => key !== 'submitted')), 'uk@ultraaalbums.com')}>Open email draft</a>
+                  <button className="text-action" onClick={() => setFormState(prev => ({ ...prev, submitted:false }))}>Edit details</button>
+                </div>
+              ) : (
                     <form onSubmit={handleFormSubmit} className="space-y-4">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>

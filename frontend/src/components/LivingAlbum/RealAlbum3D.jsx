@@ -45,7 +45,7 @@ export const ALBUM_SPREADS = [
     venue: 'Hedsor House, Buckinghamshire',
     date: 'Candlelit Evening',
     left: {
-      image: 'https://images.unsplash.com/photo-1519225433281-96db8b3260e5?auto=format&fit=crop&w=1200&q=85',
+      image: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1200&q=85',
       caption: 'Plate 05 • The Grand Dining Hall under Victorian Chandeliers'
     },
     right: {

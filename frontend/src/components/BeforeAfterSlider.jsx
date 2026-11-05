@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { Sliders, Sparkles } from 'lucide-react';
 import RevealOnScroll from './motion/RevealOnScroll';
 import TextReveal from './motion/TextReveal';
+import './Showroom.css';
 
 const COMPARISONS = [
   {
@@ -36,60 +37,37 @@ const COMPARISONS = [
 export default function BeforeAfterSlider() {
   const [activeTab, setActiveTab] = useState('outdoor-silhouette');
   const [sliderPos, setSliderPos] = useState(50);
-  const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef(null);
+  const isDraggingRef = useRef(false);
 
-  const activeItem = COMPARISONS.find((c) => c.id === activeTab) || COMPARISONS[0];
-
-  // Reset slider position when tab changes
-  useEffect(() => {
-    setSliderPos(50);
-  }, [activeTab]);
-
-  // Smooth dragging handler with window event listeners
-  const updateSlider = (clientX) => {
+  const updatePosFromPointer = useCallback((clientX) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
-    const percent = Math.max(2, Math.min(98, (x / rect.width) * 100));
-    setSliderPos(percent);
+    const newPos = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+    setSliderPos(Math.round(newPos * 10) / 10);
+  }, []);
+
+  const handlePointerDown = (e) => {
+    isDraggingRef.current = true;
+    updatePosFromPointer(e.clientX);
+    try {
+      e.currentTarget.setPointerCapture?.(e.pointerId);
+    } catch (_) {}
   };
 
-  const handleMouseDown = (e) => {
-    setIsDragging(true);
-    updateSlider(e.clientX);
+  const handlePointerMove = (e) => {
+    if (!isDraggingRef.current) return;
+    updatePosFromPointer(e.clientX);
   };
 
-  const handleTouchStart = (e) => {
-    setIsDragging(true);
-    updateSlider(e.touches[0].clientX);
+  const handlePointerUp = (e) => {
+    isDraggingRef.current = false;
+    try {
+      e.currentTarget.releasePointerCapture?.(e.pointerId);
+    } catch (_) {}
   };
 
-  useEffect(() => {
-    const handleGlobalMove = (e) => {
-      if (!isDragging) return;
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      updateSlider(clientX);
-    };
-
-    const handleGlobalUp = () => {
-      setIsDragging(false);
-    };
-
-    if (isDragging) {
-      window.addEventListener('mousemove', handleGlobalMove);
-      window.addEventListener('mouseup', handleGlobalUp);
-      window.addEventListener('touchmove', handleGlobalMove);
-      window.addEventListener('touchend', handleGlobalUp);
-    }
-
-    return () => {
-      window.removeEventListener('mousemove', handleGlobalMove);
-      window.removeEventListener('mouseup', handleGlobalUp);
-      window.removeEventListener('touchmove', handleGlobalMove);
-      window.removeEventListener('touchend', handleGlobalUp);
-    };
-  }, [isDragging]);
+  const activeItem = COMPARISONS.find((c) => c.id === activeTab) || COMPARISONS[0];
 
   return (
     <section id="before-after" className="before-after-section py-16 sm:py-24 bg-[#FAF7F2] border-b border-[#DED5C9]">
@@ -125,7 +103,8 @@ export default function BeforeAfterSlider() {
                 <button
                   key={cat.id}
                   type="button"
-                  onClick={() => setActiveTab(cat.id)}
+                  aria-pressed={isActive}
+                  onClick={() => { setActiveTab(cat.id); setSliderPos(50); }}
                   className={`px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full font-sans text-[11px] sm:text-[12px] uppercase tracking-[0.12em] font-medium transition-all duration-300 cursor-pointer whitespace-nowrap shrink-0 ${
                     isActive
                       ? 'bg-[#201E1B] !text-[#FAF7F2] shadow-sm font-semibold'
@@ -145,17 +124,19 @@ export default function BeforeAfterSlider() {
           <div className="bg-[#FAF7F2] p-2 sm:p-3 rounded-xl border border-[#DED5C9] shadow-md">
             <div
               ref={containerRef}
-              className="relative w-full aspect-[16/10] sm:aspect-[16/10] rounded-lg overflow-hidden select-none cursor-ew-resize bg-[#201E1B]"
-              onMouseDown={handleMouseDown}
-              onTouchStart={handleTouchStart}
+              onPointerDown={handlePointerDown}
+              onPointerMove={handlePointerMove}
+              onPointerUp={handlePointerUp}
+              onPointerCancel={handlePointerUp}
+              className="relative w-full aspect-[16/10] sm:aspect-[16/10] rounded-lg overflow-hidden select-none cursor-ew-resize bg-[#201E1B] touch-none"
             >
               {/* AFTER Layer (Full Width Background) */}
               <div className="absolute inset-0 w-full h-full">
                 <img
                   src={activeItem.afterImg}
                   alt={`${activeItem.title} Master Retouch`}
-                  className="w-full h-full object-cover block will-change-transform"
-                  loading="eager"
+                  className="w-full h-full object-cover block "
+                  loading="lazy"
                 />
                 <span className="absolute bottom-3 right-3 px-2.5 py-1 rounded-sm bg-[#201E1B]/85 backdrop-blur-xs text-white text-[9px] sm:text-[10px] font-sans font-semibold uppercase tracking-[0.16em] border border-white/10 pointer-events-none">
                   AFTER MASTER
@@ -170,20 +151,21 @@ export default function BeforeAfterSlider() {
                 <img
                   src={activeItem.beforeImg}
                   alt={`${activeItem.title} RAW Unedited`}
-                  className={`w-full h-full object-cover block will-change-transform ${
+                  className={`w-full h-full object-cover block  ${
                     activeItem.isBW
                       ? 'filter-bw'
                       : activeItem.isTone
                       ? 'filter-underexposed'
                       : 'filter-raw-skin'
                   }`}
-                  loading="eager"
+                  loading="lazy"
                 />
                 <span className="absolute bottom-3 left-3 px-2.5 py-1 rounded-sm bg-black/75 backdrop-blur-xs text-white text-[9px] sm:text-[10px] font-sans font-semibold uppercase tracking-[0.16em] border border-white/10 pointer-events-none">
                   BEFORE RAW
                 </span>
               </div>
 
+              <input type="range" min="0" max="100" value={sliderPos} aria-label="Before and after divider" className="comparison-range" onChange={e => setSliderPos(Number(e.target.value))}/>
               {/* Interactive Divider Line with Luxury Knob */}
               <div
                 className="absolute top-0 bottom-0 w-[2px] bg-white pointer-events-none z-20"

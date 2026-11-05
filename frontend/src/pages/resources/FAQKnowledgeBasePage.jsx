@@ -511,6 +511,7 @@ export default function FAQKnowledgeBasePage() {
                     >
                       <button
                         type="button"
+                        aria-expanded={isOpen}
                         onClick={() => toggleAccordion(faq.id)}
                         className="w-full p-6 text-left flex items-start justify-between gap-4 focus:outline-none"
                       >

@@ -23,6 +23,15 @@ export default function Album3DCard({
   const bookVolumeRef = useRef(null);
   const shadowRef = useRef(null);
 
+  const handleOpenCollection = (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    navigate(`/products/${album.slug}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleOpen3D = (e) => {
     if (e) {
       e.preventDefault();
@@ -31,25 +40,12 @@ export default function Album3DCard({
     if (onOpenViewer) {
       onOpenViewer(album);
     } else {
-      navigate(`/products/${album.slug}`);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      handleOpenCollection(e);
     }
   };
 
-  const handleExplore = handleOpen3D;
-
-  const handleViewSpecs = (e) => {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    if (onOpenViewer) {
-      onOpenViewer(album);
-    } else {
-      navigate(`/products/${album.slug}`);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
+  const handleExplore = handleOpenCollection;
+  const handleViewSpecs = handleOpenCollection;
 
   const getSpreadPhoto = () => {
     return (
@@ -155,20 +151,20 @@ export default function Album3DCard({
   return (
     <div
       ref={podiumRef}
-      onClick={handleOpen3D}
+      onClick={handleOpenCollection}
       className="album-product-podium cursor-pointer"
     >
       {/* 3D Physical Album Stage */}
       <div
         className="album-3d-stage"
-        onClick={handleOpen3D}
+        onClick={handleOpenCollection}
         role="button"
         tabIndex={0}
-        aria-label={`Open 3D ${album.name}`}
+        aria-label={`Open ${album.name} collection`}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            handleOpen3D();
+            handleOpenCollection(e);
           }
         }}
       >
@@ -274,9 +270,16 @@ export default function Album3DCard({
           </div>
 
           {/* Hover Hint Pill */}
-          <div className="album-open-hint" onClick={handleOpen3D}>
-            <span>Open 3D Album</span>
-            <ArrowRight size={10} className="text-[#B99A69]" />
+          <div
+            className="album-open-hint"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleOpen3D(e);
+            }}
+            title="Inspect 3D spread preview"
+          >
+            <Sparkles size={10} className="text-[#D4AF37]" />
+            <span>3D PREVIEW</span>
           </div>
         </div>
       </div>
@@ -286,7 +289,10 @@ export default function Album3DCard({
         <span className="album-card-caption-category">
           {album.category}
         </span>
-        <h3 className="album-card-caption-title">
+        <h3
+          className="album-card-caption-title cursor-pointer"
+          onClick={handleOpenCollection}
+        >
           {album.name}
         </h3>
         <p className="album-card-caption-desc">
@@ -319,11 +325,11 @@ export default function Album3DCard({
 
         <button
           type="button"
-          onClick={handleOpen3D}
+          onClick={handleOpenCollection}
           className="album-card-cta-btn"
-          aria-label={`Open and explore ${album.name}`}
+          aria-label={`Open ${album.name} collection`}
         >
-          <span>EXPLORE</span>
+          <span>EXPLORE COLLECTION</span>
           <ArrowRight size={12} />
         </button>
       </div>

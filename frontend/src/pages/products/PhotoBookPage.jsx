@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import ProductGallery from '../../components/ProductGallery';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import RevealOnScroll from '../../components/motion/RevealOnScroll';
 import TextReveal from '../../components/motion/TextReveal';
@@ -27,7 +28,6 @@ export default function PhotoBookPage() {
     }
   ];
 
-  const [activeImgIndex, setActiveImgIndex] = useState(0);
 
   // Configurator
   const [selectedFormat, setSelectedFormat] = useState('a4');
@@ -35,9 +35,6 @@ export default function PhotoBookPage() {
   const [spreadCount, setSpreadCount] = useState(40);
   const [selectedJacket, setSelectedJacket] = useState('vellum');
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   const calculateTotal = () => {
     let base = 8500;
@@ -99,41 +96,7 @@ export default function PhotoBookPage() {
             
             {/* Left 7 Cols: Image Gallery */}
             <RevealOnScroll direction="left" style={{ gridColumn: 'span 12' }} className="pay-col-left">
-              <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3', background: '#EFEEEA', overflow: 'hidden', border: '1px solid #EAE6DF', marginBottom: '1rem' }}>
-                <img
-                  src={galleryImages[activeImgIndex].src}
-                  alt={galleryImages[activeImgIndex].plate}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'opacity 0.4s ease' }}
-                />
-                <div style={{ position: 'absolute', bottom: '1rem', left: '1rem', background: 'rgba(250, 249, 245, 0.94)', backdropFilter: 'blur(4px)', padding: '0.4rem 0.85rem', fontSize: '0.72rem', color: '#141310' }}>
-                  <strong style={{ textTransform: 'uppercase', letterSpacing: '0.1em', marginRight: '0.4rem' }}>Specimen:</strong>
-                  <span>{galleryImages[activeImgIndex].plate}</span>
-                </div>
-              </div>
-
-              {/* Thumbnails */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.75rem' }}>
-                {galleryImages.map((img, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => setActiveImgIndex(idx)}
-                    style={{
-                      aspectRatio: '4/3',
-                      background: '#EFEEEA',
-                      border: '1px solid',
-                      borderColor: activeImgIndex === idx ? '#141310' : '#EAE6DF',
-                      padding: 0,
-                      cursor: 'pointer',
-                      overflow: 'hidden',
-                      opacity: activeImgIndex === idx ? 1 : 0.7,
-                      transition: 'all 0.2s ease'
-                    }}
-                  >
-                    <img src={img.src} alt={img.plate} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  </button>
-                ))}
-              </div>
+              <ProductGallery images={galleryImages}/>
             </RevealOnScroll>
 
             {/* Right 5 Cols: Product Narrative & Specs */}
@@ -256,7 +219,7 @@ export default function PhotoBookPage() {
             </div>
           </RevealOnScroll>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: '1.5rem' }}>
             {[
               { num: '01', title: 'High-Volume Capacity', desc: 'Binds comfortably from 40 up to 250 individual pages. Document complete weekend sangeets, haldi ceremonies, and reception banquets in a single continuous literary sequence.', badge: '250 Page Limit' },
               { num: '02', title: 'Artisanal Paper Stocks', desc: 'Selection of Mohawk Superfine Eggshell for soft micro-textured tooth, Italian Fedrigoni Tintoretto Gesso for delicate felt mark, or Lustre Silk Archival for rich skin depth.', badge: 'Fine-Art Paper' },
@@ -293,7 +256,7 @@ export default function PhotoBookPage() {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: '2rem' }}>
             <div style={{ background: '#F4F4F0', border: '1px solid #EAE6DF', padding: '2rem' }}>
               <span style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#635E52' }}>Substrate 01</span>
               <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.35rem', color: '#141310', margin: '0.5rem 0 0.75rem 0', fontWeight: 500 }}>
@@ -343,7 +306,7 @@ export default function PhotoBookPage() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: 'clamp(1.5rem, 3vw, 3rem)' }}>
               
               {/* Left 5 Cols: Overview */}
-              <div style={{ gridColumn: 'span 12', '@media(min-width: 992px)': { gridColumn: 'span 5' } }} className="pay-col-left">
+              <div style={{ gridColumn: 'span 12' }} className="pay-col-left">
                 <span style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#635E52', display: 'block', marginBottom: '0.5rem' }}>
                   Live Studio Estimator
                 </span>
@@ -386,7 +349,7 @@ export default function PhotoBookPage() {
               </div>
 
               {/* Right 7 Cols: Controls */}
-              <div style={{ gridColumn: 'span 12', '@media(min-width: 992px)': { gridColumn: 'span 7' } }} className="pay-col-right">
+              <div style={{ gridColumn: 'span 12' }} className="pay-col-right">
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
                   
                   {/* Step 1: Format */}
@@ -394,7 +357,7 @@ export default function PhotoBookPage() {
                     <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#141310', marginBottom: '0.75rem' }}>
                       1. Select Journal Dimension
                     </label>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: '0.5rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 110px), 1fr))', gap: '0.5rem' }}>
                       {[
                         { id: 'a4', name: '8.3" × 11.7"', sub: 'A4 Monograph' },
                         { id: 'square', name: '10" × 10"', sub: 'Grand Square' },
@@ -428,7 +391,7 @@ export default function PhotoBookPage() {
                     <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#141310', marginBottom: '0.75rem' }}>
                       2. Select Paper Substrate
                     </label>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.5rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 160px), 1fr))', gap: '0.5rem' }}>
                       {[
                         { id: 'mohawk', name: 'Mohawk Eggshell', sub: '216gsm Uncoated' },
                         { id: 'fedrigoni', name: 'Fedrigoni Tintoretto', sub: '200gsm Felt-Marked' },
@@ -487,7 +450,7 @@ export default function PhotoBookPage() {
                     <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#141310', marginBottom: '0.75rem' }}>
                       4. Outer Dust Jacket & Presentation
                     </label>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.5rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 160px), 1fr))', gap: '0.5rem' }}>
                       {[
                         { id: 'vellum', name: 'Frosted Vellum Wrap' },
                         { id: 'hardcover_slip', name: 'Belgian Linen Slipcase' },

@@ -27,10 +27,10 @@ function wrapWordsRecursively(node, keyPrefix = 'tw') {
       return (
         <span
           key={`${keyPrefix}-${i}`}
-          className="inline-block overflow-hidden align-top"
-          style={{ verticalAlign: 'top' }}
+          className="inline-block align-baseline"
+
         >
-          <span className="text-reveal-word inline-block will-change-transform">
+          <span className="text-reveal-word inline-block">
             {token}
           </span>
         </span>
@@ -41,8 +41,8 @@ function wrapWordsRecursively(node, keyPrefix = 'tw') {
   // Number: render as a word
   if (typeof node === 'number') {
     return (
-      <span key={`${keyPrefix}-num`} className="inline-block overflow-hidden align-top">
-        <span className="text-reveal-word inline-block will-change-transform">
+      <span key={`${keyPrefix}-num`} className="inline-block align-baseline">
+        <span className="text-reveal-word inline-block">
           {node}
         </span>
       </span>
@@ -107,9 +107,9 @@ export default function TextReveal({
 
     const isMobile = isMobileViewport();
     const effectiveStagger = stagger !== undefined ? stagger : isMobile ? 0.032 : 0.046;
-    const effectiveDistance = distance !== undefined ? distance : isMobile ? 18 : 26;
+    const effectiveDistance = distance !== undefined ? distance : isMobile ? 10 : 16;
     const effectiveDuration = duration !== undefined ? duration : isMobile ? 0.72 : 0.92;
-    const blurAmount = isMobile ? 'blur(5px)' : 'blur(8px)';
+    const blurAmount = isMobile ? 'blur(0px)' : 'blur(3px)';
 
     let initX = 0;
     let initY = 0;

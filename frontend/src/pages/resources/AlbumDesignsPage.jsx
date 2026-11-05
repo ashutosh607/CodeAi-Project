@@ -1,3 +1,4 @@
+import { studioEmail } from '../../utils/studioEmail';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import RevealOnScroll from '../../components/motion/RevealOnScroll';
@@ -8,7 +9,6 @@ import {
   Maximize2,
   X,
   Download,
-  CheckCircle,
   FileCheck,
   Compass,
   ArrowRight,
@@ -146,7 +146,6 @@ export default function AlbumDesignsPage() {
   const [activeHotspot, setActiveHotspot] = useState('hotspot-gutter');
   const [activeSpecimenModal, setActiveSpecimenModal] = useState(null);
   const [blueprintMode, setBlueprintMode] = useState('layflat'); // 'layflat' or 'matted'
-  const [downloadSuccess, setDownloadSuccess] = useState(false);
 
   // Filtered specimen list
   const filteredSpecimens = SPREAD_SPECIMENS.filter((item) => {
@@ -156,10 +155,7 @@ export default function AlbumDesignsPage() {
     return true;
   });
 
-  const handleDownloadToolkit = () => {
-    setDownloadSuccess(true);
-    setTimeout(() => setDownloadSuccess(false), 4500);
-  };
+
 
   return (
     <div className="w-full bg-[#FAF9F5] text-[#141310] font-sans">
@@ -757,11 +753,11 @@ export default function AlbumDesignsPage() {
               </div>
               <button
                 type="button"
-                onClick={handleDownloadToolkit}
+                onClick={e => { window.location.href = studioEmail('Design toolkit request', {Request:e.currentTarget.textContent}); }}
                 className="w-full py-3 bg-[#141310] text-white hover:bg-[#292824] transition-colors text-[11px] uppercase tracking-widest font-semibold flex items-center justify-center gap-2"
               >
                 <Download size={14} />
-                <span>Download InDesign Suite (14 MB)</span>
+                <span>Request InDesign suite</span>
               </button>
             </div>
 
@@ -778,11 +774,11 @@ export default function AlbumDesignsPage() {
               </div>
               <button
                 type="button"
-                onClick={handleDownloadToolkit}
+                onClick={e => { window.location.href = studioEmail('Design toolkit request', {Request:e.currentTarget.textContent}); }}
                 className="w-full py-3 bg-[#141310] text-white hover:bg-[#292824] transition-colors text-[11px] uppercase tracking-widest font-semibold flex items-center justify-center gap-2"
               >
                 <Download size={14} />
-                <span>Download ICC Package (6 MB)</span>
+                <span>Request ICC package</span>
               </button>
             </div>
 
@@ -799,23 +795,16 @@ export default function AlbumDesignsPage() {
               </div>
               <button
                 type="button"
-                onClick={handleDownloadToolkit}
+                onClick={e => { window.location.href = studioEmail('Design toolkit request', {Request:e.currentTarget.textContent}); }}
                 className="w-full py-3 bg-[#141310] text-white hover:bg-[#292824] transition-colors text-[11px] uppercase tracking-widest font-semibold flex items-center justify-center gap-2"
               >
                 <Download size={14} />
-                <span>Download Software Presets</span>
+                <span>Request software presets</span>
               </button>
             </div>
           </div>
 
-          {downloadSuccess && (
-            <div className="mt-6 p-4 bg-[#DCE5DA] text-[#292824] border border-[#CCC5BC] flex items-center gap-3 text-[13px]">
-              <CheckCircle size={18} className="text-[#635E52]" />
-              <span>
-                <strong>Toolkit Archive Initiated:</strong> Your pre-press specifications and ICC calibration package have been queued. If your browser blocks popups, check your downloads directory.
-              </span>
-            </div>
-          )}
+
         </div>
       </section>
 

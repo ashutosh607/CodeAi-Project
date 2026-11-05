@@ -1,9 +1,5 @@
-import React, { useState } from 'react';
-import { ArrowRight, Check, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import RevealOnScroll from './motion/RevealOnScroll';
-import TextReveal from './motion/TextReveal';
-import StaggerBoxes from './motion/StaggerBoxes';
 
 const SERVICES = [
   {
@@ -54,98 +50,17 @@ const SERVICES = [
 ];
 
 export default function ServicesSection() {
-  const [hoveredService, setHoveredService] = useState(null);
-
-  return (
-    <section id="services" className="services-section bg-[#FAF9F5] py-20 lg:py-28 border-b border-[#EAE3D6]">
-      <div className="section-container max-w-[1440px] mx-auto px-5 md:px-12">
-        <div className="services-header-center text-center max-w-2xl mx-auto mb-16">
-          <RevealOnScroll direction="down" delay={0.05} distance={12} blur={false}>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#B99A69]/40 bg-[#B99A69]/10 text-[10px] uppercase font-sans font-medium tracking-[0.22em] text-[#B99A69] mb-3">
-              <Sparkles size={12} />
-              <span>COMPLETE POST-PRODUCTION &amp; STORYTELLING</span>
-            </div>
-          </RevealOnScroll>
-          <TextReveal as="h2" className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#201E1B] font-normal tracking-tight" delay={0.08}>
-            Services We Offer
-          </TextReveal>
-          <p className="font-sans text-sm md:text-base text-[#777066] mt-4 leading-relaxed">
-            Hover over any service below to inspect complete studio inclusions, deliverables, and turnaround protocols.
-          </p>
-        </div>
-
-        <StaggerBoxes className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch" stagger={0.12}>
-          {SERVICES.map((srv, idx) => (
-            <div
-              key={srv.id}
-              onMouseEnter={() => setHoveredService(idx)}
-              onMouseLeave={() => setHoveredService(null)}
-              className="service-editorial-card group relative bg-white border border-[#EAE3D6] hover:border-[#B99A69] rounded-2xl overflow-hidden shadow-[0_10px_30px_-8px_rgba(32,30,27,0.06)] hover:shadow-[0_20px_45px_-10px_rgba(185,154,105,0.22)] transition-all duration-500 flex flex-col justify-between"
-            >
-              <div>
-                {/* Photo Header with Zoom & Inclusions Hover Overlay */}
-                <div className="service-card-photo-wrapper relative aspect-[16/11] overflow-hidden bg-[#EFEEEA]">
-                  <img
-                    src={srv.image}
-                    alt={srv.title}
-                    className="service-card-img w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108 will-change-transform"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-70" />
-
-                  {/* Top Badge */}
-                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-[#201E1B]/80 backdrop-blur-md border border-[#B99A69]/40 z-10">
-                    <span className="font-sans text-[9px] font-semibold tracking-[0.16em] uppercase text-[#D4AF37]">
-                      {srv.badge}
-                    </span>
-                  </div>
-
-                  {/* SLIDING HOVER INCLUSIONS OVERLAY */}
-                  <div className="absolute inset-0 bg-[#1A1815]/95 backdrop-blur-md p-6 flex flex-col justify-between opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 z-20">
-                    <div>
-                      <div className="flex items-center gap-1.5 text-[9.5px] uppercase tracking-[0.2em] font-semibold text-[#D4AF37] mb-3">
-                        <Sparkles size={11} />
-                        <span>WHAT THIS SERVICE INCLUDES</span>
-                      </div>
-                      <ul className="space-y-2.5 text-left">
-                        {srv.includes.map((inc, iIdx) => (
-                          <li key={iIdx} className="flex items-start gap-2.5 text-[11.5px] text-[#FAF7F2] leading-snug">
-                            <Check size={13} className="text-[#D4AF37] shrink-0 mt-0.5" />
-                            <span>{inc}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[10px] text-[#C8BEAE] uppercase tracking-wider">
-                      <span>Full studio specifications</span>
-                      <ArrowRight size={12} className="text-[#D4AF37]" />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="service-card-content p-6 text-left">
-                  <h3 className="service-card-title font-serif text-[22px] sm:text-[24px] text-[#201E1B] font-normal leading-snug mb-2.5 group-hover:text-[#B99A69] transition-colors">
-                    {srv.title}
-                  </h3>
-                  <p className="service-card-desc font-sans text-[13px] text-[#777066] leading-relaxed mb-6 font-normal">
-                    {srv.desc}
-                  </p>
-                </div>
-              </div>
-
-              <div className="p-6 pt-0 border-t border-[#F2ECE3] flex items-center justify-between mt-auto">
-                <Link to={`/services/${srv.slug}`} className="service-card-link inline-flex items-center gap-2 text-[11px] font-sans font-semibold tracking-[0.16em] uppercase text-[#201E1B] group-hover:text-[#B99A69] transition-colors">
-                  <span>{srv.cta}</span>
-                  <ArrowRight size={13} className="transition-transform duration-300 group-hover:translate-x-1" />
-                </Link>
-                <span className="text-[10px] text-[#9D8357] uppercase font-sans tracking-wider hidden sm:inline">
-                  Hover to view inclusions
-                </span>
-              </div>
-            </div>
-          ))}
-        </StaggerBoxes>
+  return <section id="services" className="editorial-section">
+    <div className="section-container">
+      <h2>Studio services</h2>
+      <div className="editorial-items cols-3">
+        {SERVICES.map(item => <article key={item.title}>
+          <img src={item.image} alt={item.title} loading="lazy"/>
+          <h3>{item.title}</h3><p>{item.desc}</p>
+          <details><summary>Service inclusions</summary><ul>{item.includes.map(line=><li key={line}>{line}</li>)}</ul></details>
+          <Link className="text-action" to={'/services/' + item.slug}>View service <ArrowRight size={15}/></Link>
+        </article>)}
       </div>
-    </section>
-  );
+    </div>
+  </section>;
 }

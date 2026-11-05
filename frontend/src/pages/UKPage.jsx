@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Truck, ShieldCheck, CreditCard, ArrowRight, CheckCircle2, Phone, Mail } from 'lucide-react';
 import RevealOnScroll from '../components/motion/RevealOnScroll';
@@ -19,9 +19,6 @@ export default function UKPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [slug]);
 
   // Route to dedicated UK Stitch designs
   if (slug === 'flush-mount-album-uk' || slug === 'flush-mount-for-uk' || slug === 'flush-mount-album') {

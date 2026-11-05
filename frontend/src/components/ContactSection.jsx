@@ -1,3 +1,4 @@
+import { studioEmail } from '../utils/studioEmail';
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Send,
@@ -24,7 +25,6 @@ export default function ContactSection({ prefilledProduct }) {
   });
 
   const [submitted, setSubmitted] = useState(false);
-  const [refCode, setRefCode] = useState('');
   const formRef = useRef(null);
 
   useEffect(() => {
@@ -46,8 +46,9 @@ export default function ContactSection({ prefilledProduct }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const generatedRef = `UA-${Math.floor(100000 + Math.random() * 900000)}`;
-    setRefCode(generatedRef);
+    try {
+      window.location.href = studioEmail('Studio quote enquiry · ' + formData.service, formData);
+    } catch (_) {}
     setSubmitted(true);
   };
 
@@ -137,30 +138,24 @@ export default function ContactSection({ prefilledProduct }) {
             {submitted ? (
               <div className="inquiry-success-panel">
                 <CheckCircle size={44} className="success-icon-gold" />
-                <h3 className="success-heading">Commission Inquiry Received</h3>
-                <p className="success-message">
-                  Thank you, <strong>{formData.name}</strong>. Your bespoke inquiry reference is <strong>{refCode}</strong>.
-                </p>
-                <p className="success-subtext">
-                  Our atelier representative has received your request for <strong>{formData.service}</strong> and will follow up with complete pricing, paper swatches, and turnaround schedule within 24 hours.
-                </p>
-
+                <h3 className="success-heading">Your quote request is ready</h3>
+                <p className="success-message">Send your specifications to the atelier from your email app.</p>
                 <div className="success-buttons-group">
                   <a
-                    href={`https://wa.me/919820088200?text=Hi%20Ultraa%20Albums%2C%20I%20just%20submitted%20inquiry%20${refCode}%20for%20${encodeURIComponent(formData.service)}`}
+                    href={studioEmail('Quote request · ' + formData.service, formData)}
                     target="_blank"
                     rel="noreferrer"
                     className="whatsapp-action-pill"
                   >
                     <MessageCircle size={15} />
-                    <span>Chat on WhatsApp</span>
+                    <span>Open email draft</span>
                   </a>
                   <button
                     type="button"
                     className="new-inquiry-button"
                     onClick={() => setSubmitted(false)}
                   >
-                    Submit Another Commission
+                    Edit request
                   </button>
                 </div>
               </div>
@@ -285,7 +280,7 @@ export default function ContactSection({ prefilledProduct }) {
 
                 <button type="submit" className="form-submit-pill-btn">
                   <Send size={15} />
-                  <span>TRANSMIT COMMISSION REQUEST</span>
+                  <span>Prepare email enquiry</span>
                 </button>
               </form>
             )}
