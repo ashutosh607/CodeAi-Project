@@ -90,6 +90,8 @@ export default function TextReveal({
   threshold = 'top 92%',
   distance = undefined,
   duration = undefined,
+  direction = 'up', // 'up' | 'left' | 'right' | 'down'
+  playOnMount = false,
   ...restProps
 }) {
   const elRef = useRef(null);
@@ -104,26 +106,36 @@ export default function TextReveal({
     }
 
     const isMobile = isMobileViewport();
-    const effectiveStagger = stagger !== undefined ? stagger : isMobile ? 0.028 : 0.042;
+    const effectiveStagger = stagger !== undefined ? stagger : isMobile ? 0.032 : 0.046;
     const effectiveDistance = distance !== undefined ? distance : isMobile ? 18 : 26;
-    const effectiveDuration = duration !== undefined ? duration : isMobile ? 0.68 : 0.88;
+    const effectiveDuration = duration !== undefined ? duration : isMobile ? 0.72 : 0.92;
+    const blurAmount = isMobile ? 'blur(5px)' : 'blur(8px)';
+
+    let initX = 0;
+    let initY = 0;
+    if (direction === 'left') initX = -effectiveDistance;
+    else if (direction === 'right') initX = effectiveDistance;
+    else if (direction === 'down') initY = -effectiveDistance;
+    else initY = effectiveDistance; // default 'up'
 
     const ctx = gsap.context(() => {
       const words = el.querySelectorAll('.text-reveal-word');
       if (words.length === 0) return;
 
       const rect = el.getBoundingClientRect();
-      const isAboveFold = rect.top < (window.innerHeight || document.documentElement.clientHeight) * 0.9;
+      const isAboveFold = playOnMount || rect.top < (window.innerHeight || document.documentElement.clientHeight) * 0.92;
 
       gsap.fromTo(
         words,
         {
           opacity: 0,
-          y: effectiveDistance,
-          filter: isMobile ? 'blur(3px)' : 'blur(6px)'
+          x: initX,
+          y: initY,
+          filter: blurAmount
         },
         {
           opacity: 1,
+          x: 0,
           y: 0,
           filter: 'blur(0px)',
           duration: effectiveDuration,
@@ -147,7 +159,7 @@ export default function TextReveal({
     return () => {
       ctx.revert();
     };
-  }, [delay, stagger, threshold, distance, duration]);
+  }, [delay, stagger, threshold, distance, duration, direction, playOnMount]);
 
   return (
     <Component ref={elRef} className={className} {...restProps}>

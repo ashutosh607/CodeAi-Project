@@ -4,11 +4,11 @@ import RevealOnScroll from './motion/RevealOnScroll';
 import TextReveal from './motion/TextReveal';
 
 export default function IntroSection() {
-  const [imgSrc, setImgSrc] = useState('https://ultraaalbums.com/wp-content/uploads/2022/07/Cover.jpg');
+  const [imgSrc, setImgSrc] = useState('https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1200&q=85');
 
   const handleImgError = () => {
     // Fallback if local network / external host blocks direct hotlinking
-    setImgSrc('https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1200&q=85');
+    setImgSrc('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85');
   };
 
   return (

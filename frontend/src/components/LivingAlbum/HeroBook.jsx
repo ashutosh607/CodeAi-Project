@@ -193,6 +193,14 @@ export default function HeroBook({
         display: 'block',
         zIndex: 60
       });
+      if (coverFrontFaceRef.current) {
+        coverFrontFaceRef.current.style.display = 'block';
+        gsap.set(coverFrontFaceRef.current, { opacity: 1, visibility: 'visible' });
+      }
+      if (coverBackFaceRef.current) {
+        coverBackFaceRef.current.style.display = 'none';
+        gsap.set(coverBackFaceRef.current, { opacity: 0, visibility: 'hidden' });
+      }
       gsap.set(leftWingRef.current, {
         opacity: 0,
         scaleX: 0.15
@@ -209,7 +217,7 @@ export default function HeroBook({
       gsap.set(coverLeafRef.current, {
         rotateY: -180,
         skewY: 0,
-        display: 'block',
+        display: 'none',
         zIndex: 15
       });
       gsap.set(leftWingRef.current, {
@@ -245,8 +253,14 @@ export default function HeroBook({
     // Ensure initial closed state before timeline: front face visible, back face hidden
     gsap.set(rig, { x: '-25%', rotateY: -12, rotateX: 3.5, rotateZ: 0.5 });
     gsap.set(cover, { rotateY: 0, skewY: 0, display: 'block', zIndex: 60 });
-    if (frontFace) gsap.set(frontFace, { opacity: 1, visibility: 'visible' });
-    if (backFace) gsap.set(backFace, { opacity: 0, visibility: 'hidden' });
+    if (frontFace) {
+      frontFace.style.display = 'block';
+      gsap.set(frontFace, { opacity: 1, visibility: 'visible' });
+    }
+    if (backFace) {
+      backFace.style.display = 'none';
+      gsap.set(backFace, { opacity: 0, visibility: 'hidden' });
+    }
     gsap.set(leftWing, { opacity: 0, scaleX: 0.15, transformOrigin: 'right center' });
 
     const tl = gsap.timeline({
@@ -254,19 +268,20 @@ export default function HeroBook({
         setIsOpen(true);
         setCurrentSpreadIndex(0);
         // Hide the cover leaf once docked at -180deg so left wing spread is 100% visible & crisp
+        if (cover) cover.style.display = 'none';
         gsap.set(cover, { display: 'none' });
         setIsAnimating(false);
       }
     });
 
-    // 1. The whole book centers and levels
+    // 1. The whole book centers and levels with synchronized easing
     tl.to(rig, {
       x: '0%',
       rotateY: 0,
       rotateX: 3,
       rotateZ: 0,
       duration: 1.15,
-      ease: 'power2.inOut'
+      ease: 'power3.inOut'
     }, 0);
 
     // 2. Ambient shadow expands to encompass full open spread
@@ -276,7 +291,7 @@ export default function HeroBook({
         maxWidth: '460px',
         opacity: 0.4,
         duration: 1.15,
-        ease: 'power2.inOut'
+        ease: 'power3.inOut'
       }, 0);
     }
 
@@ -284,25 +299,44 @@ export default function HeroBook({
     tl.to(leftWing, {
       opacity: 1,
       scaleX: 1,
-      duration: 1.0,
-      ease: 'power2.out'
-    }, 0.1);
+      duration: 1.1,
+      ease: 'power3.inOut'
+    }, 0.05);
 
     // 4. Front cover leaf swings 180 degrees from spine hinge
     tl.to(cover, {
       rotateY: -180,
       duration: 1.15,
-      ease: 'power3.inOut'
+      ease: 'power3.inOut',
+      onUpdate: () => {
+        const curRot = parseFloat(gsap.getProperty(cover, 'rotateY')) || 0;
+        // Midpoint face toggle: when passing perpendicular (-88deg), completely toggle display
+        // to prevent Chromium 3D compositing from ever showing reversed/mirrored monogram text
+        if (curRot <= -88) {
+          if (frontFace && frontFace.style.display !== 'none') {
+            frontFace.style.display = 'none';
+          }
+          if (backFace && backFace.style.display !== 'block') {
+            backFace.style.display = 'block';
+            gsap.set(backFace, { opacity: 1, visibility: 'visible' });
+          }
+        } else {
+          if (frontFace && frontFace.style.display !== 'block') {
+            frontFace.style.display = 'block';
+            gsap.set(frontFace, { opacity: 1, visibility: 'visible' });
+          }
+          if (backFace && backFace.style.display !== 'none') {
+            backFace.style.display = 'none';
+          }
+        }
+      }
     }, 0);
 
-    // Midpoint switch: when cover passes perpendicular (90deg), front face hides and back face reveals
-    // This physically prevents reversed mirrored text from ever appearing
-    if (frontFace) {
-      tl.set(frontFace, { opacity: 0, visibility: 'hidden' }, 0.52);
-    }
-    if (backFace) {
-      tl.set(backFace, { opacity: 1, visibility: 'visible' }, 0.52);
-    }
+    // Timeline deterministic face swap at exact perpendicular midpoint (t = 0.55s)
+    if (frontFace) tl.set(frontFace, { display: 'none', visibility: 'hidden' }, 0.55);
+    if (backFace) tl.set(backFace, { display: 'block', visibility: 'visible', opacity: 1 }, 0.55);
+    // At swing completion, hide cover leaf completely so leftWing page is 100% visible
+    tl.set(cover, { display: 'none' }, 1.15);
 
     // 5. Authentic cover flexion during swing
     tl.to(cover, { skewY: -2.6, duration: 0.52, ease: 'power2.in' }, 0);
@@ -347,8 +381,14 @@ export default function HeroBook({
 
     // Ensure cover is visible at -180deg with back face visible, front face hidden
     gsap.set(cover, { display: 'block', rotateY: -180, zIndex: 60 });
-    if (frontFace) gsap.set(frontFace, { opacity: 0, visibility: 'hidden' });
-    if (backFace) gsap.set(backFace, { opacity: 1, visibility: 'visible' });
+    if (frontFace) {
+      frontFace.style.display = 'none';
+      gsap.set(frontFace, { opacity: 0, visibility: 'hidden' });
+    }
+    if (backFace) {
+      backFace.style.display = 'block';
+      gsap.set(backFace, { opacity: 1, visibility: 'visible' });
+    }
 
     const tl = gsap.timeline({
       onComplete: () => {
@@ -361,30 +401,47 @@ export default function HeroBook({
     // 1. Front cover swings shut from -180deg back to 0deg
     tl.to(cover, {
       rotateY: 0,
-      duration: 1.05,
-      ease: 'power3.inOut'
+      duration: 1.1,
+      ease: 'power3.inOut',
+      onUpdate: () => {
+        const curRot = parseFloat(gsap.getProperty(cover, 'rotateY')) || 0;
+        // When rotation swings forward past -92deg, reveal front face and hide back face
+        if (curRot >= -92) {
+          if (frontFace && frontFace.style.display !== 'block') {
+            frontFace.style.display = 'block';
+            gsap.set(frontFace, { opacity: 1, visibility: 'visible' });
+          }
+          if (backFace && backFace.style.display !== 'none') {
+            backFace.style.display = 'none';
+          }
+        } else {
+          if (frontFace && frontFace.style.display !== 'none') {
+            frontFace.style.display = 'none';
+          }
+          if (backFace && backFace.style.display !== 'block') {
+            backFace.style.display = 'block';
+            gsap.set(backFace, { opacity: 1, visibility: 'visible' });
+          }
+        }
+      }
     }, 0);
 
-    // Midpoint switch when closing: when rotation swings forward past 90deg, reveal front face and hide back face
-    if (frontFace) {
-      tl.set(frontFace, { opacity: 1, visibility: 'visible' }, 0.52);
-    }
-    if (backFace) {
-      tl.set(backFace, { opacity: 0, visibility: 'hidden' }, 0.52);
-    }
+    // Timeline deterministic face swap at exact perpendicular midpoint (t = 0.55s)
+    if (backFace) tl.set(backFace, { display: 'none', visibility: 'hidden' }, 0.55);
+    if (frontFace) tl.set(frontFace, { display: 'block', visibility: 'visible', opacity: 1 }, 0.55);
 
     // 2. Cover flex during closing swing
     tl.to(cover, { skewY: 2.2, duration: 0.48, ease: 'power2.in' }, 0);
     tl.to(cover, { skewY: 0, duration: 0.57, ease: 'power2.out' }, 0.48);
 
-    // 3. Rig shifts back to centered closed position
+    // 3. Rig shifts back to centered closed position with identical ease
     tl.to(rig, {
       x: '-25%',
       rotateY: -12,
       rotateX: 3.5,
       rotateZ: 0.5,
-      duration: 1.05,
-      ease: 'power2.inOut'
+      duration: 1.1,
+      ease: 'power3.inOut'
     }, 0);
 
     // 4. Ambient shadow contracts to closed book footprint
@@ -393,8 +450,8 @@ export default function HeroBook({
         width: '240px',
         maxWidth: '260px',
         opacity: 0.28,
-        duration: 1.05,
-        ease: 'power2.inOut'
+        duration: 1.1,
+        ease: 'power3.inOut'
       }, 0);
     }
 
@@ -402,9 +459,9 @@ export default function HeroBook({
     tl.to(leftWing, {
       opacity: 0,
       scaleX: 0.15,
-      duration: 0.85,
+      duration: 0.95,
       ease: 'power2.in'
-    }, 0.2);
+    }, 0.1);
 
     // 6. Lighting sweeps across back and front
     if (backShadow) {
@@ -420,12 +477,12 @@ export default function HeroBook({
       rotateX: 5,
       duration: 0.12,
       ease: 'power1.out'
-    }, 1.05);
+    }, 1.1);
     tl.to(rig, {
       rotateX: 3.5,
       duration: 0.28,
       ease: 'bounce.out'
-    }, 1.17);
+    }, 1.22);
   }, [isOpen, isAnimating, prefersReducedMotion, setIsOpen, resumeFloating]);
 
   // 6. SILKY SMOOTH PAGE TURN NEXT (0.76s Timeline)
@@ -863,19 +920,20 @@ export default function HeroBook({
             style={{
               left: '50%',
               transformOrigin: 'left center',
-              display: isOpen && !isAnimating ? 'none' : 'block'
+              display: isOpen ? 'none' : 'block'
             }}
           >
             {/* FRONT FACE OF COVER (Facing user when closed at rotateY: 0deg) */}
             <div
               ref={coverFrontFaceRef}
-              className="absolute inset-0 backface-hidden overflow-hidden rounded-r-xs flex items-center justify-center p-3 sm:p-5 shadow-2xl transition-colors duration-500"
+              className="absolute inset-0 backface-hidden rounded-r-xs flex items-center justify-center p-3 sm:p-5 shadow-2xl transition-colors duration-500"
               style={{
                 backgroundColor: displayMaterial.color,
                 boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.15), 0 16px 36px rgba(32,30,27,0.22)',
                 backfaceVisibility: 'hidden',
                 WebkitBackfaceVisibility: 'hidden',
-                transform: 'rotateY(0deg) translateZ(1px)'
+                transform: 'rotateY(0deg) translateZ(1px)',
+                display: 'block'
               }}
             >
               <div
@@ -937,11 +995,12 @@ export default function HeroBook({
             {/* BACK FACE OF COVER (Inside front cover / Plate 01 resting on left stack at rotateY: -180deg) */}
             <div
               ref={coverBackFaceRef}
-              className="absolute inset-0 backface-hidden overflow-hidden rounded-l-xs shadow-2xl"
+              className="absolute inset-0 backface-hidden rounded-l-xs shadow-2xl"
               style={{
                 transform: 'rotateY(180deg) translateZ(1px)',
                 backfaceVisibility: 'hidden',
-                WebkitBackfaceVisibility: 'hidden'
+                WebkitBackfaceVisibility: 'hidden',
+                display: 'none'
               }}
             >
               <BookPage

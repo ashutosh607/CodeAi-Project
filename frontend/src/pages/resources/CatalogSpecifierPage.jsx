@@ -797,7 +797,7 @@ export default function CatalogSpecifierPage() {
 
               {/* Crisp High-Contrast White Heading */}
               <h3
-                className="font-serif text-[28px] sm:text-[32px] md:text-[38px] font-normal leading-[1.16] tracking-[-0.01em] m-0"
+                className="font-serif text-[28px] sm:text-[32px] md:text-[38px] font-normal leading-[1.16] tracking-[-0.01em] m-0 !text-[#FAF7F2]"
                 style={{ color: '#FAF7F2' }}
               >
                 Need a Custom Cover Deboss Die or Bespoke Dimensions?
@@ -805,7 +805,7 @@ export default function CatalogSpecifierPage() {
 
               {/* High-Readability Warm Linen Paragraph */}
               <p
-                className="font-sans text-[13.5px] sm:text-[14.5px] leading-[1.7] font-normal m-0 pt-1"
+                className="font-sans text-[13.5px] sm:text-[14.5px] leading-[1.7] font-normal m-0 pt-1 !text-[#C8BEAE]"
                 style={{ color: '#C8BEAE' }}
               >
                 Speak directly with our Master Bookbinders in Mumbai or our UK Studio Liaison in London for custom foil brass dies, exotic leather sourcing, or exhibition display tomes.
@@ -817,7 +817,7 @@ export default function CatalogSpecifierPage() {
               {/* Primary Mumbai Direct Studio Call */}
               <a
                 href="tel:+919322254315"
-                className="inline-flex items-center justify-center gap-2.5 px-6 sm:px-7 py-3.5 sm:py-4 rounded-full font-sans font-medium text-[11px] sm:text-[12px] uppercase tracking-[0.18em] transition-all duration-300 hover:bg-[#B99A69] hover:!text-[#FAF7F2] shadow-sm hover:shadow-md cursor-pointer group whitespace-nowrap"
+                className="inline-flex items-center justify-center gap-2.5 px-6 sm:px-7 py-3.5 sm:py-4 rounded-full font-sans font-semibold text-[11px] sm:text-[12px] uppercase tracking-[0.18em] transition-all duration-300 hover:bg-[#B99A69] hover:!text-[#FAF7F2] shadow-sm hover:shadow-md cursor-pointer group whitespace-nowrap !text-[#201E1B]"
                 style={{
                   backgroundColor: '#FAF7F2',
                   color: '#201E1B',
@@ -825,7 +825,7 @@ export default function CatalogSpecifierPage() {
                 }}
               >
                 <Phone size={14} className="text-[#B99A69] group-hover:text-[#FAF7F2] transition-colors" />
-                <span style={{ color: 'inherit' }}>Mumbai +91 93222 54315</span>
+                <span className="!text-[#201E1B] font-semibold" style={{ color: '#201E1B' }}>Mumbai +91 93222 54315</span>
               </a>
 
               {/* Secondary London WhatsApp Desk */}

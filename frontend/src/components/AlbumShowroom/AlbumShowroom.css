@@ -255,6 +255,137 @@
   transform: translateX(-50%) translateY(0);
 }
 
+/* Floating Photo Preview of Inside Spread on Hover */
+.album-hover-spread-peek {
+  position: absolute;
+  top: -15px;
+  right: -30px;
+  width: 140px;
+  height: 95px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(185, 154, 105, 0.5);
+  background-color: #201E1B;
+  opacity: 0;
+  transform: translateY(12px) scale(0.92);
+  transition: all 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 60;
+}
+
+@media (max-width: 640px) {
+  .album-hover-spread-peek {
+    right: -10px;
+    width: 120px;
+    height: 80px;
+  }
+}
+
+.album-product-podium:hover .album-hover-spread-peek {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.album-spread-peek-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.album-spread-peek-tag {
+  position: absolute;
+  bottom: 0;
+  inset-x: 0;
+  padding: 3px 6px;
+  background: linear-gradient(to top, rgba(20, 19, 16, 0.95), rgba(20, 19, 16, 0.6) 70%, transparent);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #FAF7F2;
+}
+
+/* Inclusions Drawer Revealed on Hover */
+.album-hover-inclusions-drawer {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transform: translateY(6px);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-bottom: 0;
+  text-align: left;
+  background-color: #FAF7F2;
+  border: 1px solid rgba(222, 213, 201, 0.8);
+  border-radius: 8px;
+  padding: 0 10px;
+  box-shadow: 0 8px 20px -6px rgba(32, 30, 27, 0.08);
+}
+
+.album-product-podium:hover .album-hover-inclusions-drawer {
+  max-height: 240px;
+  opacity: 1;
+  transform: translateY(0);
+  margin-bottom: 12px;
+  padding: 10px 12px;
+}
+
+.album-inclusions-title {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #B99A69;
+  margin-bottom: 6px;
+}
+
+.album-inclusions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 6px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.album-inclusions-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 10.5px;
+  line-height: 1.35;
+  color: #4A463F;
+}
+
+.album-sizes-pill-row {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  padding-top: 5px;
+  border-top: 1px dashed rgba(222, 213, 201, 0.9);
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 9.5px;
+}
+
+.album-sizes-label {
+  font-weight: 700;
+  color: #B99A69;
+  letter-spacing: 0.12em;
+}
+
+.album-sizes-val {
+  color: #777066;
+  font-weight: 500;
+}
+
 /* Showroom Card Footnote */
 .album-card-caption {
   margin-top: 26px;

@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Truck, ShieldCheck, CreditCard, ArrowRight, CheckCircle2, Phone, Mail } from 'lucide-react';
 import RevealOnScroll from '../components/motion/RevealOnScroll';
 import TextReveal from '../components/motion/TextReveal';
+import StaggerBoxes from '../components/motion/StaggerBoxes';
 import { UK_CATALOG } from '../data/catalogData';
 
 // Dedicated UK Stitch Product Implementations
@@ -181,33 +182,46 @@ export default function UKPage() {
       <section className="py-16 md:py-24 px-4 md:px-16 border-b border-[#EAE6DF]">
         <div className="max-w-[1440px] mx-auto">
           <div className="mb-12">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#635E52]">HANDCRAFTED VOLUMES FOR UK</span>
-            <h2 className="font-serif text-3xl md:text-4xl text-[#141310] font-normal mt-1">UK Wedding Albums &amp; Presentation</h2>
-            <p className="text-sm text-[#4A463F] max-w-xl mt-2">
-              Precision-mounted albums and clamshell boxes engineered to meet the highest British wedding photography standards.
-            </p>
+            <RevealOnScroll direction="down" delay={0.02} distance={12} blur={false}>
+              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#635E52] block mb-2">
+                HANDCRAFTED VOLUMES FOR UK
+              </span>
+            </RevealOnScroll>
+            <TextReveal
+              as="h2"
+              delay={0.06}
+              direction="up"
+              className="font-serif text-3xl md:text-4xl text-[#141310] font-normal mt-1"
+            >
+              UK Wedding Albums &amp; Presentation
+            </TextReveal>
+            <RevealOnScroll direction="up" delay={0.14} distance={16}>
+              <p className="text-sm text-[#4A463F] max-w-xl mt-2">
+                Precision-mounted albums and clamshell boxes engineered to meet the highest British wedding photography standards.
+              </p>
+            </RevealOnScroll>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <StaggerBoxes className="grid grid-cols-1 md:grid-cols-3 gap-6" stagger={0.12}>
             {ukAlbums.map((item) => (
-              <div key={item.id} className="bg-[#FAF9F5] border border-[#EAE6DF] p-6 flex flex-col justify-between shadow-sm group">
+              <div key={item.id} className="bg-[#FAF9F5] border border-[#EAE6DF] p-6 flex flex-col justify-between shadow-sm group hover:shadow-md transition-shadow">
                 <div>
                   <div className="aspect-[4/3] bg-[#EFEEEA] overflow-hidden mb-5 relative">
                     <img src={item.image} alt={item.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     <span className="absolute top-3 left-3 bg-[#FAF9F5]/90 px-2 py-1 text-[10px] font-semibold uppercase text-[#141310]">{item.badge}</span>
                   </div>
-                  <h3 className="font-serif text-xl text-[#141310] mb-2 font-normal">{item.name}</h3>
+                  <h3 className="font-serif text-xl text-[#141310] mb-2 font-normal group-hover:text-[#B99A69] transition-colors">{item.name}</h3>
                   <p className="text-xs text-[#4A463F] leading-relaxed mb-6">{item.shortDesc}</p>
                 </div>
                 <div className="pt-4 border-t border-[#EAE6DF]">
-                  <Link to={`/for-uk/${item.slug}`} className="text-xs font-semibold uppercase tracking-wider text-[#141310] hover:text-[#635E52] transition-colors inline-flex items-center gap-1.5">
+                  <Link to={`/for-uk/${item.slug}`} className="text-xs font-semibold uppercase tracking-wider text-[#141310] hover:text-[#B99A69] transition-colors inline-flex items-center gap-1.5 group/link">
                     <span>View Specifications</span>
-                    <ArrowRight size={13} />
+                    <ArrowRight size={13} className="text-[#B99A69] group-hover/link:translate-x-1 transition-transform" />
                   </Link>
                 </div>
               </div>
             ))}
-          </div>
+          </StaggerBoxes>
         </div>
       </section>
 
@@ -215,13 +229,24 @@ export default function UKPage() {
       <section className="py-16 md:py-24 px-4 md:px-16 bg-[#F4F4F0] border-b border-[#EAE6DF]">
         <div className="max-w-[1440px] mx-auto">
           <div className="mb-12">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#635E52]">POST-PRODUCTION &amp; CINEMA</span>
-            <h2 className="font-serif text-3xl md:text-4xl text-[#141310] font-normal mt-1">UK Services &amp; Image Editing</h2>
+            <RevealOnScroll direction="down" delay={0.02} distance={12} blur={false}>
+              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#635E52] block mb-2">
+                POST-PRODUCTION &amp; CINEMA
+              </span>
+            </RevealOnScroll>
+            <TextReveal
+              as="h2"
+              delay={0.06}
+              direction="up"
+              className="font-serif text-3xl md:text-4xl text-[#141310] font-normal mt-1"
+            >
+              UK Services &amp; Image Editing
+            </TextReveal>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <StaggerBoxes className="grid grid-cols-1 md:grid-cols-2 gap-6" stagger={0.14}>
             {ukServices.map((item) => (
-              <div key={item.id} className="bg-[#FAF9F5] border border-[#EAE6DF] p-6 flex flex-col sm:flex-row gap-6 shadow-sm">
+              <div key={item.id} className="bg-[#FAF9F5] border border-[#EAE6DF] p-6 flex flex-col sm:flex-row gap-6 shadow-sm hover:shadow-md transition-shadow">
                 <div className="w-full sm:w-1/2 aspect-square bg-[#EFEEEA] overflow-hidden shrink-0">
                   <img src={item.image} alt={item.name} loading="lazy" className="w-full h-full object-cover" />
                 </div>
@@ -233,7 +258,7 @@ export default function UKPage() {
                   </div>
                   <button
                     type="button"
-                    className="px-5 py-2.5 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-wider hover:bg-[#292724] transition-colors self-start"
+                    className="px-5 py-2.5 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-wider hover:bg-[#B99A69] transition-colors self-start cursor-pointer"
                     onClick={() => handleEnquire(item.name)}
                   >
                     COMMISSION THIS SERVICE
@@ -241,7 +266,7 @@ export default function UKPage() {
                 </div>
               </div>
             ))}
-          </div>
+          </StaggerBoxes>
         </div>
       </section>
 
@@ -249,9 +274,17 @@ export default function UKPage() {
       <section className="py-16 md:py-24 px-4 md:px-16">
         <div className="max-w-[1440px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 bg-[#FAF9F5] p-8 md:p-12 border border-[#EAE6DF]">
-            <div className="lg:col-span-7 space-y-6">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#635E52]">SEAMLESS GLOBAL TRANSIT</span>
-              <h2 className="font-serif text-3xl text-[#141310] font-normal">Frictionless UK Studio Integration</h2>
+            <RevealOnScroll direction="left" className="lg:col-span-7 space-y-6">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#635E52] block">
+                SEAMLESS GLOBAL TRANSIT
+              </span>
+              <TextReveal
+                as="h2"
+                direction="left"
+                className="font-serif text-3xl text-[#141310] font-normal"
+              >
+                Frictionless UK Studio Integration
+              </TextReveal>
               <p className="text-sm text-[#4A463F] leading-relaxed">
                 Working with an overseas bindery should never mean customs headaches, slow transit, or unpredictable exchange fees. Ultraa Albums handles complete logistics with British studios.
               </p>
@@ -269,7 +302,7 @@ export default function UKPage() {
                   <p className="text-xs text-[#4A463F] mt-1">All import documentation, VAT classification, and carrier protocols are managed end-to-end under DDP terms.</p>
                 </div>
               </div>
-            </div>
+            </RevealOnScroll>
 
             <div className="lg:col-span-5 bg-[#EFEEEA] p-6 border border-[#EAE6DF] flex flex-col justify-between">
               <div>

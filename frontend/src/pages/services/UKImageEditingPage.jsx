@@ -14,6 +14,9 @@ import {
   Sparkles,
   MessageSquare
 } from 'lucide-react';
+import TextReveal from '../../components/motion/TextReveal';
+import RevealOnScroll from '../../components/motion/RevealOnScroll';
+import StaggerBoxes from '../../components/motion/StaggerBoxes';
 
 export default function UKImageEditingPage() {
   const navigate = useNavigate();
@@ -132,23 +135,27 @@ export default function UKImageEditingPage() {
         <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           {/* Text Column */}
           <div className="lg:col-span-6 flex flex-col items-start">
-            <div className="inline-flex items-center gap-2 mb-4 px-3 py-1 bg-[#EFEEEA] border border-[#EAE6DF]">
-              <span className="w-1.5 h-1.5 bg-[#635E52] rounded-full"></span>
-              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#141310]">
-                Fine Art Color Science // UK Digital Lab
-              </span>
-            </div>
+            <RevealOnScroll direction="down" delay={0.02} distance={14}>
+              <div className="inline-flex items-center gap-2 mb-4 px-3 py-1 bg-[#EFEEEA] border border-[#EAE6DF]">
+                <span className="w-1.5 h-1.5 bg-[#635E52] rounded-full"></span>
+                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#141310]">
+                  Fine Art Color Science // UK Digital Lab
+                </span>
+              </div>
+            </RevealOnScroll>
 
-            <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#141310] font-normal tracking-tight leading-[1.1] mb-6">
+            <TextReveal as="h1" direction="up" delay={0.08} className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#141310] font-normal tracking-tight leading-[1.1] mb-6">
               Master RAW Image Editing &amp; Color Grading for Discerning UK Photographers
-            </h1>
+            </TextReveal>
 
-            <p className="text-base lg:text-lg text-[#4A463F] max-w-xl mb-8 leading-relaxed">
-              Handcrafted color profiles, natural skin-tone frequency separation, and precise filmic tonality tailored specifically for British weather, historic stone churches, and atmospheric country estates. Zero loss, 12-bit RAW workflows, and seamless Smart Preview hand-offs.
-            </p>
+            <RevealOnScroll direction="up" delay={0.18} distance={18}>
+              <p className="text-base lg:text-lg text-[#4A463F] max-w-xl mb-8 leading-relaxed">
+                Handcrafted color profiles, natural skin-tone frequency separation, and precise filmic tonality tailored specifically for British weather, historic stone churches, and atmospheric country estates. Zero loss, 12-bit RAW workflows, and seamless Smart Preview hand-offs.
+              </p>
+            </RevealOnScroll>
 
             {/* Badges Strip */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full mb-8 pb-6 border-b border-[#EAE6DF]">
+            <StaggerBoxes className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full mb-8 pb-6 border-b border-[#EAE6DF]" stagger={0.08} direction="up">
               <div className="flex flex-col bg-[#F4F4F0] p-3 border border-[#EAE6DF]">
                 <span className="text-[10px] font-semibold tracking-widest uppercase text-[#635E52]">Starting At</span>
                 <span className="font-serif text-lg text-[#141310] font-bold mt-0.5">£0.08 <span className="text-xs font-normal text-[#635E52]">/ frame</span></span>
@@ -165,86 +172,90 @@ export default function UKImageEditingPage() {
                 <span className="text-[10px] font-semibold tracking-widest uppercase text-[#635E52]">Introductory</span>
                 <span className="font-serif text-lg text-[#141310] font-bold mt-0.5">5 Free RAWs</span>
               </div>
-            </div>
+            </StaggerBoxes>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto">
-              <a
-                href="#test-calibration"
-                className="px-8 py-4 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest hover:bg-[#292724] text-center transition-colors"
-              >
-                Submit 5 Free RAW Test Images
-              </a>
-              <a
-                href="#british-aesthetic"
-                className="px-8 py-4 border border-[#7B766F] text-[#141310] text-xs font-semibold uppercase tracking-widest hover:bg-[#EFEEEA] text-center transition-colors"
-              >
-                View UK Studio Grading Profiles
-              </a>
-            </div>
+            <RevealOnScroll direction="up" delay={0.28} distance={16}>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto">
+                <a
+                  href="#test-calibration"
+                  className="px-8 py-4 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest hover:bg-[#292724] text-center transition-colors"
+                >
+                  Submit 5 Free RAW Test Images
+                </a>
+                <a
+                  href="#british-aesthetic"
+                  className="px-8 py-4 border border-[#7B766F] text-[#141310] text-xs font-semibold uppercase tracking-widest hover:bg-[#EFEEEA] text-center transition-colors"
+                >
+                  View UK Studio Grading Profiles
+                </a>
+              </div>
+            </RevealOnScroll>
           </div>
 
           {/* Before / After Interactive Visual Presentation */}
           <div className="lg:col-span-6 mt-8 lg:mt-0">
-            <div
-              ref={stageRef}
-              className="relative w-full aspect-[4/5] bg-[#EFEEEA] overflow-hidden select-none shadow-xl border border-[#EAE6DF] cursor-ew-resize"
-              onMouseDown={() => (isDragging.current = true)}
-              onMouseUp={() => (isDragging.current = false)}
-              onMouseLeave={() => (isDragging.current = false)}
-              onMouseMove={(e) => {
-                if (!isDragging.current) return;
-                handleSliderMove(e.clientX);
-              }}
-              onTouchMove={handleTouchMove}
-            >
-              {/* "After" Graded Image (Background) */}
-              <img
-                src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85"
-                alt="Color-graded luxury UK wedding portrait with warm luminous skin tones"
-                className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-              />
-              <div className="absolute top-5 right-5 z-20 bg-[#141310]/85 backdrop-blur-sm text-[#FAF9F5] px-3 py-1 text-[10px] font-semibold uppercase tracking-widest">
-                Ultraa Studio Atelier Color
-              </div>
-
-              {/* "Before" RAW Image (Clipped Overlay) */}
+            <RevealOnScroll direction="right" delay={0.2} distance={28}>
               <div
-                className="absolute inset-0 overflow-hidden"
-                style={{ width: `${sliderPos}%` }}
+                ref={stageRef}
+                className="relative w-full aspect-[4/5] bg-[#EFEEEA] overflow-hidden select-none shadow-xl border border-[#EAE6DF] cursor-ew-resize"
+                onMouseDown={() => (isDragging.current = true)}
+                onMouseUp={() => (isDragging.current = false)}
+                onMouseLeave={() => (isDragging.current = false)}
+                onMouseMove={(e) => {
+                  if (!isDragging.current) return;
+                  handleSliderMove(e.clientX);
+                }}
+                onTouchMove={handleTouchMove}
               >
+                {/* "After" Graded Image (Background) */}
                 <img
                   src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85"
-                  alt="Flat unedited RAW wedding photograph"
-                  className="absolute inset-0 h-full object-cover max-w-none pointer-events-none filter saturate-50 contrast-75 brightness-90"
-                  style={{ width: `${stageWidth}px` }}
+                  alt="Color-graded luxury UK wedding portrait with warm luminous skin tones"
+                  className="absolute inset-0 w-full h-full object-cover pointer-events-none"
                 />
-                <div className="absolute top-5 left-5 z-20 bg-[#FAF9F5]/90 text-[#141310] px-3 py-1 text-[10px] font-semibold uppercase tracking-widest border border-[#EAE6DF]">
-                  Dull Camera RAW (Overcast UK)
+                <div className="absolute top-5 right-5 z-20 bg-[#141310]/85 backdrop-blur-sm text-[#FAF9F5] px-3 py-1 text-[10px] font-semibold uppercase tracking-widest">
+                  Ultraa Studio Atelier Color
+                </div>
+
+                {/* "Before" RAW Image (Clipped Overlay) */}
+                <div
+                  className="absolute inset-0 overflow-hidden"
+                  style={{ width: `${sliderPos}%` }}
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=85"
+                    alt="Flat unedited RAW wedding photograph"
+                    className="absolute inset-0 h-full object-cover max-w-none pointer-events-none filter saturate-50 contrast-75 brightness-90"
+                    style={{ width: `${stageWidth}px` }}
+                  />
+                  <div className="absolute top-5 left-5 z-20 bg-[#FAF9F5]/90 text-[#141310] px-3 py-1 text-[10px] font-semibold uppercase tracking-widest border border-[#EAE6DF]">
+                    Dull Camera RAW (Overcast UK)
+                  </div>
+                </div>
+
+                {/* Split Divider Handle */}
+                <div
+                  className="absolute top-0 bottom-0 z-30 flex items-center justify-center -translate-x-1/2 pointer-events-none"
+                  style={{ left: `${sliderPos}%` }}
+                >
+                  <div className="w-[2px] h-full bg-[#FAF9F5] shadow-[0_0_10px_rgba(0,0,0,0.5)]"></div>
+                  <div className="absolute w-8 h-8 rounded-full bg-[#FAF9F5] shadow-md flex items-center justify-center border border-[#7B766F]">
+                    <span className="text-[#141310] text-xs font-bold">⇄</span>
+                  </div>
+                </div>
+
+                {/* Bottom Floating Caption */}
+                <div className="absolute bottom-4 left-4 right-4 z-20 bg-[#FAF9F5]/90 backdrop-blur-md p-3 border border-[#EAE6DF] flex items-center justify-between">
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-[#635E52]">
+                    Specimen: Cotswolds Manor • Overcast 5600K
+                  </span>
+                  <span className="text-[9px] font-semibold uppercase tracking-widest text-[#141310]">
+                    Drag slider to inspect grading →
+                  </span>
                 </div>
               </div>
-
-              {/* Split Divider Handle */}
-              <div
-                className="absolute top-0 bottom-0 z-30 flex items-center justify-center -translate-x-1/2 pointer-events-none"
-                style={{ left: `${sliderPos}%` }}
-              >
-                <div className="w-[2px] h-full bg-[#FAF9F5] shadow-[0_0_10px_rgba(0,0,0,0.5)]"></div>
-                <div className="absolute w-8 h-8 rounded-full bg-[#FAF9F5] shadow-md flex items-center justify-center border border-[#7B766F]">
-                  <span className="text-[#141310] text-xs font-bold">⇄</span>
-                </div>
-              </div>
-
-              {/* Bottom Floating Caption */}
-              <div className="absolute bottom-4 left-4 right-4 z-20 bg-[#FAF9F5]/90 backdrop-blur-md p-3 border border-[#EAE6DF] flex items-center justify-between">
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-[#635E52]">
-                  Specimen: Cotswolds Manor • Overcast 5600K
-                </span>
-                <span className="text-[9px] font-semibold uppercase tracking-widest text-[#141310]">
-                  Drag slider to inspect grading →
-                </span>
-              </div>
-            </div>
+            </RevealOnScroll>
           </div>
         </div>
       </section>
@@ -256,15 +267,17 @@ export default function UKImageEditingPage() {
             <span className="text-[11px] font-semibold uppercase tracking-widest text-[#635E52] block mb-2">
               Regional Mastery &amp; Climate Nuance
             </span>
-            <h2 className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal tracking-tight mb-4">
+            <TextReveal as="h2" direction="left" delay={0.06} className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal tracking-tight mb-4">
               Calibrated Specifically for the British Aesthetic &amp; Venues
-            </h2>
-            <p className="text-sm md:text-base text-[#4A463F] leading-relaxed">
-              United Kingdom light is singular: heavy diffused skies, sudden damp downpours, and ancient indoor masonry. Generic US or Mediterranean presets oversaturate English greens and turn historic limestone muddy. We construct tailored profiles designed for the UK climate.
-            </p>
+            </TextReveal>
+            <RevealOnScroll direction="up" delay={0.12}>
+              <p className="text-sm md:text-base text-[#4A463F] leading-relaxed">
+                United Kingdom light is singular: heavy diffused skies, sudden damp downpours, and ancient indoor masonry. Generic US or Mediterranean presets oversaturate English greens and turn historic limestone muddy. We construct tailored profiles designed for the UK climate.
+              </p>
+            </RevealOnScroll>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <StaggerBoxes className="grid grid-cols-1 md:grid-cols-3 gap-8" stagger={0.1} direction="up">
             {/* Feature 1 */}
             <div className="flex flex-col bg-[#FAF9F5] p-8 border border-[#EAE6DF]">
               <div className="w-12 h-12 bg-[#F4F4F0] flex items-center justify-center mb-6 border border-[#EAE6DF]">
@@ -312,7 +325,7 @@ export default function UKImageEditingPage() {
                 <span>Clean Dynamic Range</span>
               </div>
             </div>
-          </div>
+          </StaggerBoxes>
         </div>
       </section>
 
@@ -324,16 +337,18 @@ export default function UKImageEditingPage() {
               <span className="text-[11px] font-semibold uppercase tracking-widest text-[#635E52] block mb-2">
                 Transparent Production Tiers
               </span>
-              <h2 className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal tracking-tight">
+              <TextReveal as="h2" direction="left" delay={0.06} className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal tracking-tight">
                 Laboratory Capabilities &amp; Retouching Disciplines
-              </h2>
+              </TextReveal>
             </div>
-            <p className="text-sm md:text-base text-[#4A463F] max-w-md leading-relaxed">
-              Modular, per-frame pricing tailored to full wedding ceremonies, editorial previews, or bespoke heirloom coffee-table albums.
-            </p>
+            <RevealOnScroll direction="right" delay={0.12}>
+              <p className="text-sm md:text-base text-[#4A463F] max-w-md leading-relaxed">
+                Modular, per-frame pricing tailored to full wedding ceremonies, editorial previews, or bespoke heirloom coffee-table albums.
+              </p>
+            </RevealOnScroll>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <StaggerBoxes className="grid grid-cols-1 lg:grid-cols-3 gap-8" stagger={0.1} direction="up">
             {/* Tier 01 */}
             <div className="bg-[#F4F4F0] p-8 flex flex-col justify-between border border-[#EAE6DF]">
               <div>
@@ -465,7 +480,7 @@ export default function UKImageEditingPage() {
                 Order Master Retouching
               </button>
             </div>
-          </div>
+          </StaggerBoxes>
         </div>
       </section>
 
@@ -476,14 +491,14 @@ export default function UKImageEditingPage() {
             <span className="text-[11px] font-semibold uppercase tracking-widest text-[#635E52] block mb-2">
               Frictionless Studio Operations
             </span>
-            <h2 className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal tracking-tight mb-6">
+            <TextReveal as="h2" direction="left" delay={0.06} className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal tracking-tight mb-6">
               Lightroom Smart Preview Protocol
-            </h2>
+            </TextReveal>
             <p className="text-sm md:text-base text-[#4A463F] mb-8 leading-relaxed">
               Eliminate massive 60GB RAW cloud uploads over congested broadband. Our protocol operates exclusively through Adobe Lightroom Smart Previews: ultra-compact, high-fidelity DNG proxies that fit inside a sub-2GB file.
             </p>
 
-            <div className="space-y-4">
+            <StaggerBoxes className="space-y-4" stagger={0.08} direction="left">
               <div className="flex items-start gap-4 p-4 bg-[#FAF9F5] border border-[#EAE6DF]">
                 <span className="font-serif text-xl text-[#635E52] font-bold">01</span>
                 <div>
@@ -505,60 +520,62 @@ export default function UKImageEditingPage() {
                   <p className="text-xs text-[#4A463F] mt-1 leading-relaxed">We grade on Eizo monitors and email back a tiny 30MB catalog file. Open it, and all edits instantly connect to your original full RAWs.</p>
                 </div>
               </div>
-            </div>
+            </StaggerBoxes>
           </div>
 
           <div className="lg:col-span-7 mt-8 lg:mt-0">
-            <div className="bg-[#292724] text-[#FAF9F5] p-8 lg:p-12 shadow-2xl relative">
-              <div className="flex items-center justify-between border-b border-[#FFFFFF]/15 pb-4 mb-6">
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#BA1A1A]"></span>
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#EAE2D2]"></span>
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#DBDAD6]"></span>
-                  <span className="text-[11px] text-[#CDC6B7] uppercase tracking-wider ml-2">Lightroom Classic Catalog Transfer</span>
-                </div>
-                <span className="text-[10px] text-[#CDC6B7] uppercase tracking-widest">Protocol v4.2 UK</span>
-              </div>
-
-              {/* Bandwidth Comparison Visualizer */}
-              <div className="space-y-6">
-                <div>
-                  <div className="flex justify-between text-xs mb-2">
-                    <span className="text-[#CDC6B7]">Traditional RAW Upload (1,000 files)</span>
-                    <span className="text-[#BA1A1A] font-mono">~58,400 MB (4+ hours)</span>
+            <RevealOnScroll direction="right" delay={0.16} distance={24}>
+              <div className="bg-[#292724] text-[#FAF9F5] p-8 lg:p-12 shadow-2xl relative">
+                <div className="flex items-center justify-between border-b border-[#FFFFFF]/15 pb-4 mb-6">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#BA1A1A]"></span>
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#EAE2D2]"></span>
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#DBDAD6]"></span>
+                    <span className="text-[11px] text-[#CDC6B7] uppercase tracking-wider ml-2">Lightroom Classic Catalog Transfer</span>
                   </div>
-                  <div className="w-full h-2.5 bg-[#FFFFFF]/10 rounded-none overflow-hidden">
-                    <div className="h-full bg-[#BA1A1A] w-[95%]"></div>
-                  </div>
+                  <span className="text-[10px] text-[#CDC6B7] uppercase tracking-widest">Protocol v4.2 UK</span>
                 </div>
 
-                <div>
-                  <div className="flex justify-between text-xs mb-2">
-                    <span className="text-[#FAF9F5] font-bold">Ultraa Smart Preview Workflow</span>
-                    <span className="text-[#EAE2D2] font-mono font-bold">~1,180 MB (3.5 mins)</span>
+                {/* Bandwidth Comparison Visualizer */}
+                <div className="space-y-6">
+                  <div>
+                    <div className="flex justify-between text-xs mb-2">
+                      <span className="text-[#CDC6B7]">Traditional RAW Upload (1,000 files)</span>
+                      <span className="text-[#BA1A1A] font-mono">~58,400 MB (4+ hours)</span>
+                    </div>
+                    <div className="w-full h-2.5 bg-[#FFFFFF]/10 rounded-none overflow-hidden">
+                      <div className="h-full bg-[#BA1A1A] w-[95%]"></div>
+                    </div>
                   </div>
-                  <div className="w-full h-2.5 bg-[#FFFFFF]/10 rounded-none overflow-hidden">
-                    <div className="h-full bg-[#EAE2D2] w-[12%]"></div>
+
+                  <div>
+                    <div className="flex justify-between text-xs mb-2">
+                      <span className="text-[#FAF9F5] font-bold">Ultraa Smart Preview Workflow</span>
+                      <span className="text-[#EAE2D2] font-mono font-bold">~1,180 MB (3.5 mins)</span>
+                    </div>
+                    <div className="w-full h-2.5 bg-[#FFFFFF]/10 rounded-none overflow-hidden">
+                      <div className="h-full bg-[#EAE2D2] w-[12%]"></div>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="mt-8 pt-6 border-t border-[#FFFFFF]/15 grid grid-cols-2 gap-4 text-center">
-                <div className="p-4 bg-[#141310]/50 border border-[#FFFFFF]/10">
-                  <span className="font-serif text-3xl text-[#FAF9F5] block font-bold">98%</span>
-                  <span className="text-[10px] text-[#CDC6B7] uppercase tracking-wider">Bandwidth Conserved</span>
+                <div className="mt-8 pt-6 border-t border-[#FFFFFF]/15 grid grid-cols-2 gap-4 text-center">
+                  <div className="p-4 bg-[#141310]/50 border border-[#FFFFFF]/10">
+                    <span className="font-serif text-3xl text-[#FAF9F5] block font-bold">98%</span>
+                    <span className="text-[10px] text-[#CDC6B7] uppercase tracking-wider">Bandwidth Conserved</span>
+                  </div>
+                  <div className="p-4 bg-[#141310]/50 border border-[#FFFFFF]/10">
+                    <span className="font-serif text-3xl text-[#FAF9F5] block font-bold">12-Bit</span>
+                    <span className="text-[10px] text-[#CDC6B7] uppercase tracking-wider">Color Fidelity Preserved</span>
+                  </div>
                 </div>
-                <div className="p-4 bg-[#141310]/50 border border-[#FFFFFF]/10">
-                  <span className="font-serif text-3xl text-[#FAF9F5] block font-bold">12-Bit</span>
-                  <span className="text-[10px] text-[#CDC6B7] uppercase tracking-wider">Color Fidelity Preserved</span>
-                </div>
-              </div>
 
-              <div className="mt-6 flex items-center gap-3 text-[#CDC6B7] text-xs">
-                <ShieldCheck size={18} className="text-[#EAE2D2] shrink-0" />
-                <span>Zero compression loss when applied back to camera RAWs (Sony ARW, Canon CR3, Nikon NEF, Fuji RAF).</span>
+                <div className="mt-6 flex items-center gap-3 text-[#CDC6B7] text-xs">
+                  <ShieldCheck size={18} className="text-[#EAE2D2] shrink-0" />
+                  <span>Zero compression loss when applied back to camera RAWs (Sony ARW, Canon CR3, Nikon NEF, Fuji RAF).</span>
+                </div>
               </div>
-            </div>
+            </RevealOnScroll>
           </div>
         </div>
       </section>
@@ -570,9 +587,9 @@ export default function UKImageEditingPage() {
             <span className="text-[11px] font-semibold uppercase tracking-widest text-[#635E52] block mb-2">
               British Financial Compliance
             </span>
-            <h2 className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal tracking-tight mb-4">
+            <TextReveal as="h2" direction="left" delay={0.06} className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal tracking-tight mb-4">
               Transparent Sterling Rates &amp; HMRC Billing
-            </h2>
+            </TextReveal>
             <p className="text-sm text-[#4A463F] leading-relaxed mb-6">
               We operate an established UK billing entity. Every invoice is issued directly in GBP (£), fully itemised, and formatted for straightforward reconciliation with HMRC accounting software like Xero and FreeAgent.
             </p>
@@ -590,7 +607,7 @@ export default function UKImageEditingPage() {
           <div className="lg:col-span-8">
             <div className="bg-[#F4F4F0] p-8 border border-[#EAE6DF]">
               <h3 className="font-serif text-xl text-[#141310] font-normal mb-6">UK Peak Season Retainer Packages (May – October)</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <StaggerBoxes className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6" stagger={0.1} direction="up">
                 {/* Plan A */}
                 <div className="bg-[#FAF9F5] p-6 flex flex-col justify-between border border-[#EAE6DF]">
                   <div>
@@ -632,7 +649,7 @@ export default function UKImageEditingPage() {
                     Reserve Tier II Slot
                   </button>
                 </div>
-              </div>
+              </StaggerBoxes>
 
               <div className="flex flex-wrap items-center justify-between text-[#635E52] text-xs pt-4 border-t border-[#EAE6DF]">
                 <span>All rates quoted net of VAT where applicable. Full VAT invoices generated.</span>
@@ -650,12 +667,12 @@ export default function UKImageEditingPage() {
             <span className="text-[11px] font-semibold uppercase tracking-widest text-[#635E52] block mb-2">
               Voices from the UK Industry
             </span>
-            <h2 className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal tracking-tight">
+            <TextReveal as="h2" direction="up" delay={0.06} className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal tracking-tight">
               Endorsements from British Master Photographers
-            </h2>
+            </TextReveal>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <StaggerBoxes className="grid grid-cols-1 md:grid-cols-3 gap-8" stagger={0.1} direction="up">
             <div className="bg-[#FAF9F5] p-8 border border-[#EAE6DF] flex flex-col justify-between">
               <div>
                 <p className="font-serif text-sm text-[#141310] italic mb-6 leading-relaxed">
@@ -691,7 +708,7 @@ export default function UKImageEditingPage() {
                 <p className="text-[10px] tracking-wider uppercase text-[#635E52]">The Mayfair Editorial Lab, London</p>
               </div>
             </div>
-          </div>
+          </StaggerBoxes>
         </div>
       </section>
 
@@ -702,9 +719,9 @@ export default function UKImageEditingPage() {
             <span className="text-[11px] font-semibold uppercase tracking-widest text-[#635E52] block mb-2">
               Clarity &amp; Security
             </span>
-            <h2 className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal tracking-tight">
+            <TextReveal as="h2" direction="up" delay={0.06} className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal tracking-tight">
               Frequently Answered Inquiries
-            </h2>
+            </TextReveal>
           </div>
 
           <div className="space-y-4">
@@ -732,188 +749,181 @@ export default function UKImageEditingPage() {
       {/* 9. Complimentary Calibration Form */}
       <section className="w-full bg-[#EFEEEA] py-20 px-5 md:px-16 border-t border-[#EAE6DF]" id="test-calibration">
         <div className="max-w-[1440px] mx-auto">
-          <div className="bg-[#FAF9F5] p-8 lg:p-14 border border-[#EAE6DF] shadow-lg">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-              <div className="lg:col-span-5 flex flex-col justify-between">
-                <div>
-                  <span className="text-[11px] font-semibold uppercase tracking-widest text-[#635E52] block mb-2">
-                    Zero-Risk Trial
-                  </span>
-                  <h2 className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal tracking-tight mb-4">
-                    Submit 5 Free RAW Test Images
-                  </h2>
-                  <p className="text-sm text-[#4A463F] leading-relaxed mb-6">
-                    Experience our British atmospheric grading firsthand. Send 5 RAW files along with your finished JPEGs of those shots. We will match your color DNA and return the calibrated Lightroom catalog within 24 hours.
-                  </p>
-                  <div className="space-y-3 pt-4 border-t border-[#EAE6DF]">
-                    <div className="flex items-center gap-3 text-xs text-[#141310]">
-                      <Lock size={16} className="text-[#635E52]" />
-                      <span>100% Confidential under UK NDA standard</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-xs text-[#141310]">
-                      <CreditCard size={16} className="text-[#635E52]" />
-                      <span>No credit card required for test calibration</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-xs text-[#141310]">
-                      <Zap size={16} className="text-[#635E52]" />
-                      <span>Completed within 24 business hours</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-8 pt-6 border-t border-[#EAE6DF]">
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[#635E52] block mb-1">
-                    UK Direct Concierge Line
-                  </span>
-                  <a
-                    href="https://wa.me/919322254315"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="font-serif text-lg text-[#141310] font-bold hover:text-[#635E52] transition-colors flex items-center gap-2"
-                  >
-                    <MessageSquare size={16} />
-                    <span>+91 93222 54315 <span className="text-xs font-normal text-[#635E52]">(WhatsApp UK Liaison)</span></span>
-                  </a>
-                </div>
-              </div>
-
-              {/* Form Area */}
-              <div className="lg:col-span-7">
-                {formState.submitted ? (
-                  <div className="p-8 bg-[#F4F4F0] border border-[#141310] text-center space-y-4">
-                    <CheckCircle2 size={36} className="text-[#141310] mx-auto" />
-                    <h3 className="font-serif text-2xl text-[#141310]">Test Calibration Dossier Transmitted</h3>
-                    <p className="text-sm text-[#4A463F] max-w-md mx-auto leading-relaxed">
-                      Our UK Digital Lab desk will review your frames and return the calibrated Lightroom catalog within 24 hours to <strong>{formState.email}</strong>.
+          <RevealOnScroll direction="up" delay={0.06} distance={24}>
+            <div className="bg-[#FAF9F5] p-8 lg:p-14 border border-[#EAE6DF] shadow-lg">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                <div className="lg:col-span-5 flex flex-col justify-between">
+                  <div>
+                    <span className="text-[11px] font-semibold uppercase tracking-widest text-[#635E52] block mb-2">
+                      Zero-Risk Trial
+                    </span>
+                    <TextReveal as="h2" direction="left" delay={0.08} className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal tracking-tight mb-4">
+                      Submit 5 Free RAW Test Images
+                    </TextReveal>
+                    <p className="text-sm text-[#4A463F] leading-relaxed mb-6">
+                      Experience our British atmospheric grading firsthand. Send 5 RAW files along with your finished JPEGs of those shots. We will match your color DNA and return the calibrated Lightroom catalog within 24 hours.
                     </p>
-                    <button
-                      type="button"
-                      onClick={() => setFormState(prev => ({ ...prev, submitted: false }))}
-                      className="px-6 py-2.5 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-wider"
-                    >
-                      Submit Another Calibration
-                    </button>
+                    <div className="space-y-3 pt-4 border-t border-[#EAE6DF]">
+                      <div className="flex items-center gap-3 text-xs text-[#141310]">
+                        <Lock size={16} className="text-[#635E52]" />
+                        <span>100% Confidential under UK NDA standard</span>
+                      </div>
+                      <div className="flex items-center gap-3 text-xs text-[#141310]">
+                        <CreditCard size={16} className="text-[#635E52]" />
+                        <span>No credit card required for test calibration</span>
+                      </div>
+                      <div className="flex items-center gap-3 text-xs text-[#141310]">
+                        <Zap size={16} className="text-[#635E52]" />
+                        <span>Completed within 24 business hours</span>
+                      </div>
+                    </div>
                   </div>
-                ) : (
-                  <form onSubmit={handleFormSubmit} className="space-y-6">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#635E52] mb-2">
-                          Studio / Photographer Name *
-                        </label>
-                        <input
-                          type="text"
-                          required
-                          value={formState.studioName}
-                          onChange={(e) => setFormState({ ...formState, studioName: e.target.value })}
-                          placeholder="e.g. Harrington Fine Art Photography"
-                          className="w-full bg-[#F4F4F0] px-4 py-3 text-[#141310] text-sm border border-[#EAE6DF] focus:border-[#141310] focus:outline-none transition-colors"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#635E52] mb-2">
-                          Studio Email Address *
-                        </label>
-                        <input
-                          type="email"
-                          required
-                          value={formState.email}
-                          onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                          placeholder="studio@harringtonweddings.co.uk"
-                          className="w-full bg-[#F4F4F0] px-4 py-3 text-[#141310] text-sm border border-[#EAE6DF] focus:border-[#141310] focus:outline-none transition-colors"
-                        />
-                      </div>
-                    </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#635E52] mb-2">
-                          UK Phone / WhatsApp *
-                        </label>
-                        <input
-                          type="tel"
-                          required
-                          value={formState.phone}
-                          onChange={(e) => setFormState({ ...formState, phone: e.target.value })}
-                          placeholder="+44 7911 123456"
-                          className="w-full bg-[#F4F4F0] px-4 py-3 text-[#141310] text-sm border border-[#EAE6DF] focus:border-[#141310] focus:outline-none transition-colors"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#635E52] mb-2">
-                          Primary Style Aesthetic *
-                        </label>
-                        <select
-                          required
-                          value={formState.style}
-                          onChange={(e) => setFormState({ ...formState, style: e.target.value })}
-                          className="w-full bg-[#F4F4F0] px-4 py-3 text-[#141310] text-sm border border-[#EAE6DF] focus:border-[#141310] focus:outline-none transition-colors"
-                        >
-                          <option value="">Select Signature Style</option>
-                          <option value="moody">Moody Fine Art (Deep Tones, Muted Earth)</option>
-                          <option value="clean">Clean Light &amp; Airy (Luminous, Pastel Greens)</option>
-                          <option value="film">Nostalgic 35mm / Medium Format Film (Portra Emulation)</option>
-                          <option value="editorial">Modern High-Fashion Editorial (Crisp Contrast, True Black)</option>
-                          <option value="custom">Other Custom Studio Recipe</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#635E52] mb-2">
-                        Dropbox / WeTransfer / Google Drive Link (5 RAWs + 5 Reference JPEGs) *
-                      </label>
-                      <input
-                        type="url"
-                        required
-                        value={formState.cloudLink}
-                        onChange={(e) => setFormState({ ...formState, cloudLink: e.target.value })}
-                        placeholder="https://www.dropbox.com/scl/fo/..."
-                        className="w-full bg-[#F4F4F0] px-4 py-3 text-[#141310] text-sm border border-[#EAE6DF] focus:border-[#141310] focus:outline-none transition-colors"
-                      />
-                      <span className="text-[11px] text-[#635E52] mt-1 block">
-                        Please include 5 unedited RAWs + your finalized sample JPEGs so we can calibrate your custom profile.
-                      </span>
-                    </div>
-
-                    <div>
-                      <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#635E52] mb-2">
-                        Specific British Venues / Notes (Optional)
-                      </label>
-                      <textarea
-                        rows="3"
-                        value={formState.notes}
-                        onChange={(e) => setFormState({ ...formState, notes: e.target.value })}
-                        placeholder="Notes on typical weather, venue lighting, or particular skin-tone nuances..."
-                        className="w-full bg-[#F4F4F0] px-4 py-3 text-[#141310] text-sm border border-[#EAE6DF] focus:border-[#141310] focus:outline-none transition-colors"
-                      ></textarea>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        id="nda-agree"
-                        required
-                        checked={formState.gdprAgree}
-                        onChange={(e) => setFormState({ ...formState, gdprAgree: e.target.checked })}
-                        className="accent-[#141310] w-4 h-4 rounded-none"
-                      />
-                      <label htmlFor="nda-agree" className="text-xs text-[#4A463F]">
-                        I agree to standard UK GDPR terms and confidential workflow protocols.
-                      </label>
-                    </div>
-
-                    <button
-                      type="submit"
-                      className="w-full py-4 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest hover:bg-[#292724] transition-colors"
+                  <div className="mt-8 pt-6 border-t border-[#EAE6DF]">
+                    <span className="text-[10px] font-semibold uppercase tracking-widest text-[#635E52] block mb-1">
+                      UK Direct Concierge Line
+                    </span>
+                    <a
+                      href="https://wa.me/919322254315"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="font-serif text-lg text-[#141310] font-bold hover:text-[#635E52] transition-colors flex items-center gap-2"
                     >
-                      Transmit 5 Free Test RAW Images For Calibration
-                    </button>
-                  </form>
-                )}
+                      <MessageSquare size={16} />
+                      <span>+91 93222 54315 <span className="text-xs font-normal text-[#635E52]">(WhatsApp UK Liaison)</span></span>
+                    </a>
+                  </div>
+                </div>
+
+                {/* Form Area */}
+                <div className="lg:col-span-7">
+                  {formState.submitted ? (
+                    <div className="p-8 bg-[#F4F4F0] border border-[#141310] text-center space-y-4">
+                      <CheckCircle2 size={36} className="text-[#141310] mx-auto" />
+                      <h3 className="font-serif text-2xl text-[#141310]">Test Calibration Dossier Transmitted</h3>
+                      <p className="text-sm text-[#4A463F] max-w-md mx-auto leading-relaxed">
+                        Our UK Digital Lab desk will review your frames and return the calibrated Lightroom catalog within 24 hours to <strong>{formState.email}</strong>.
+                      </p>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleFormSubmit} className="space-y-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="text-[11px] font-semibold uppercase tracking-wider text-[#635E52] block mb-1.5">
+                            Studio / Business Name *
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            value={formState.studioName}
+                            onChange={(e) => setFormState(prev => ({ ...prev, studioName: e.target.value }))}
+                            placeholder="e.g. Mayfair Fine Art Portraits"
+                            className="w-full p-3.5 bg-[#FAF9F5] border border-[#EAE6DF] text-xs text-[#141310] focus:outline-none focus:border-[#141310]"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[11px] font-semibold uppercase tracking-wider text-[#635E52] block mb-1.5">
+                            UK Studio Email *
+                          </label>
+                          <input
+                            type="email"
+                            required
+                            value={formState.email}
+                            onChange={(e) => setFormState(prev => ({ ...prev, email: e.target.value }))}
+                            placeholder="hello@studio.co.uk"
+                            className="w-full p-3.5 bg-[#FAF9F5] border border-[#EAE6DF] text-xs text-[#141310] focus:outline-none focus:border-[#141310]"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="text-[11px] font-semibold uppercase tracking-wider text-[#635E52] block mb-1.5">
+                            Contact Phone / WhatsApp
+                          </label>
+                          <input
+                            type="tel"
+                            value={formState.phone}
+                            onChange={(e) => setFormState(prev => ({ ...prev, phone: e.target.value }))}
+                            placeholder="+44 7..."
+                            className="w-full p-3.5 bg-[#FAF9F5] border border-[#EAE6DF] text-xs text-[#141310] focus:outline-none focus:border-[#141310]"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[11px] font-semibold uppercase tracking-wider text-[#635E52] block mb-1.5">
+                            Primary Color Aesthetic *
+                          </label>
+                          <select
+                            required
+                            value={formState.style}
+                            onChange={(e) => setFormState(prev => ({ ...prev, style: e.target.value }))}
+                            className="w-full p-3.5 bg-[#FAF9F5] border border-[#EAE6DF] text-xs text-[#141310] focus:outline-none focus:border-[#141310]"
+                          >
+                            <option value="">Select Primary Grading Aesthetic</option>
+                            <option value="warm-editorial">Warm British Editorial (Portra 400 DNA)</option>
+                            <option value="cool-fineart">Cool Luminous Fine-Art (Fuji 400H)</option>
+                            <option value="moody-highland">Moody Contrast &amp; Highlands Earth</option>
+                            <option value="monochrome-archive">Ilford HP5 Master Monochrome</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="text-[11px] font-semibold uppercase tracking-wider text-[#635E52] block mb-1.5">
+                          Cloud Link to 5 RAWs + 5 Reference JPEGs *
+                        </label>
+                        <input
+                          type="url"
+                          required
+                          value={formState.cloudLink}
+                          onChange={(e) => setFormState(prev => ({ ...prev, cloudLink: e.target.value }))}
+                          placeholder="WeTransfer, Dropbox, Google Drive, or Pixieset link"
+                          className="w-full p-3.5 bg-[#FAF9F5] border border-[#EAE6DF] text-xs text-[#141310] focus:outline-none focus:border-[#141310]"
+                        />
+                        <span className="text-[10px] text-[#635E52] mt-1 block">
+                          Please ensure folder link is set to accessible/viewable without credentials.
+                        </span>
+                      </div>
+
+                      <div>
+                        <label className="text-[11px] font-semibold uppercase tracking-wider text-[#635E52] block mb-1.5">
+                          Color Notes &amp; Shadow/Skin Tone Preferences
+                        </label>
+                        <textarea
+                          rows={3}
+                          value={formState.notes}
+                          onChange={(e) => setFormState(prev => ({ ...prev, notes: e.target.value }))}
+                          placeholder="e.g. Please preserve warm peachy highlights on cheeks; keep foliage greens desaturated olive rather than neon."
+                          className="w-full p-3.5 bg-[#FAF9F5] border border-[#EAE6DF] text-xs text-[#141310] focus:outline-none focus:border-[#141310]"
+                        ></textarea>
+                      </div>
+
+                      <div className="flex items-start gap-2 pt-2">
+                        <input
+                          type="checkbox"
+                          id="gdprAgree"
+                          required
+                          checked={formState.gdprAgree}
+                          onChange={(e) => setFormState(prev => ({ ...prev, gdprAgree: e.target.checked }))}
+                          className="mt-1"
+                        />
+                        <label htmlFor="gdprAgree" className="text-xs text-[#4A463F] leading-snug">
+                          I agree to Ultraa Albums processing my calibration images under UK GDPR and confidentiality guidelines. Images are never archived or displayed publicly.
+                        </label>
+                      </div>
+
+                      <button
+                        type="submit"
+                        className="w-full py-4 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest hover:bg-[#292724] transition-colors mt-2"
+                      >
+                        Transmit 5 RAWs for Complimentary Calibration
+                      </button>
+                    </form>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
+          </RevealOnScroll>
         </div>
       </section>
     </div>

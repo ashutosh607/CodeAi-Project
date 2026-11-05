@@ -47,7 +47,7 @@ export default function HeroSection() {
             
             {/* 1. Category chip */}
             <RevealOnScroll direction="down" delay={0.02} distance={12} blur={false}>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FAF7F2]/90 border border-[#DED5C9] text-[10px] sm:text-[11px] font-sans font-medium uppercase tracking-[0.22em] text-[#777066] mt-0.5 mb-4 sm:mb-5 shadow-xs backdrop-blur-xs">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FAF7F2]/90 border border-[#DED5C9] text-[10px] sm:text-[11px] font-sans font-medium uppercase tracking-[0.22em] text-[#777066] mt-0 mb-3 sm:mb-4 shadow-xs backdrop-blur-xs">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#B99A69]" />
                 <span>THE ART OF PRESERVING MEMORIES</span>
               </div>
@@ -57,7 +57,7 @@ export default function HeroSection() {
             <TextReveal
               as="h1"
               delay={0.08}
-              className="font-serif text-[30px] xs:text-[38px] sm:text-[50px] md:text-[60px] lg:text-[68px] font-normal tracking-[-0.015em] text-[#201E1B] leading-[1.08] mb-5 sm:mb-7"
+              className="font-serif text-[30px] xs:text-[38px] sm:text-[50px] md:text-[60px] lg:text-[68px] font-normal tracking-[-0.015em] text-[#201E1B] leading-[1.08] mb-4 sm:mb-6"
             >
               Wedding<br />
               Photo Albums<br />

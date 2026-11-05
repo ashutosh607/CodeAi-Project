@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import gsap from 'gsap';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Check, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 /**
@@ -24,7 +24,10 @@ export default function Album3DCard({
   const shadowRef = useRef(null);
 
   const handleOpen3D = (e) => {
-    if (e) e.stopPropagation();
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     if (onOpenViewer) {
       onOpenViewer(album);
     } else {
@@ -36,9 +39,38 @@ export default function Album3DCard({
   const handleExplore = handleOpen3D;
 
   const handleViewSpecs = (e) => {
-    if (e) e.stopPropagation();
-    navigate(`/products/${album.slug}`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    if (onOpenViewer) {
+      onOpenViewer(album);
+    } else {
+      navigate(`/products/${album.slug}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const getSpreadPhoto = () => {
+    return (
+      album.spreads?.[0]?.left?.image ||
+      album.spreads?.[0]?.right?.image ||
+      album.previewImage ||
+      'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=85'
+    );
+  };
+
+  const getInclusions = () => {
+    const list = [];
+    if (album.binding) list.push(album.binding.split(',')[0]);
+    if (album.paperType) list.push(album.paperType.split(',')[0]);
+    if (album.finishing) list.push(album.finishing.split(',')[0]);
+    if (list.length === 0) {
+      list.push('180° Lay-Flat Seamless Gutter');
+      list.push('1.1mm Archival Rigid Core Boards');
+      list.push('Fuji Crystal Archive DPII Chemistry');
+    }
+    return list.slice(0, 3);
   };
 
   useEffect(() => {
@@ -227,9 +259,23 @@ export default function Album3DCard({
             <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/10 pointer-events-none" />
           </div>
 
+          {/* Floating Photo Preview of Inside Spread on Hover */}
+          <div className="album-hover-spread-peek">
+            <img
+              src={getSpreadPhoto()}
+              alt={`${album.name} spread preview`}
+              className="album-spread-peek-img"
+              loading="lazy"
+            />
+            <div className="album-spread-peek-tag">
+              <Sparkles size={10} className="text-[#D4AF37]" />
+              <span>Spread &amp; Craft Preview</span>
+            </div>
+          </div>
+
           {/* Hover Hint Pill */}
-          <div className="album-open-hint">
-            <span>Explore</span>
+          <div className="album-open-hint" onClick={handleOpen3D}>
+            <span>Open 3D Album</span>
             <ArrowRight size={10} className="text-[#B99A69]" />
           </div>
         </div>
@@ -246,12 +292,38 @@ export default function Album3DCard({
         <p className="album-card-caption-desc">
           {album.tagline}
         </p>
+
+        {/* On-Hover Words / Inclusions Reveal */}
+        <div className="album-hover-inclusions-drawer">
+          <div className="album-inclusions-title">
+            <Sparkles size={10} className="text-[#B99A69]" />
+            <span>WHAT IT INCLUDES:</span>
+          </div>
+          <ul className="album-inclusions-list">
+            {getInclusions().map((inc, i) => (
+              <li key={i}>
+                <Check size={11} className="text-[#B99A69] shrink-0" />
+                <span>{inc}</span>
+              </li>
+            ))}
+          </ul>
+          {album.sizes && album.sizes.length > 0 && (
+            <div className="album-sizes-pill-row">
+              <span className="album-sizes-label">SIZES:</span>
+              <span className="album-sizes-val">
+                {album.sizes.slice(0, 3).map(s => s.name).join(' • ')}
+              </span>
+            </div>
+          )}
+        </div>
+
         <button
           type="button"
-          onClick={handleExplore}
+          onClick={handleOpen3D}
           className="album-card-cta-btn"
+          aria-label={`Open and explore ${album.name}`}
         >
-          <span>Explore</span>
+          <span>EXPLORE</span>
           <ArrowRight size={12} />
         </button>
       </div>

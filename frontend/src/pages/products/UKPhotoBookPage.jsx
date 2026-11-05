@@ -9,6 +9,9 @@ import {
   Download, 
   MessageSquare
 } from 'lucide-react';
+import TextReveal from '../../components/motion/TextReveal';
+import RevealOnScroll from '../../components/motion/RevealOnScroll';
+import StaggerBoxes from '../../components/motion/StaggerBoxes';
 
 export default function UKPhotoBookPage() {
   const navigate = useNavigate();
@@ -171,26 +174,35 @@ export default function UKPhotoBookPage() {
         <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           {/* Left Column */}
           <div className="lg:col-span-7 flex flex-col space-y-6">
-            <div className="flex items-center gap-3">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#635E52]">
-                Editorial Bindery // British Monograph Series
-              </span>
-              <span className="h-px w-8 bg-[#635E52]"></span>
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-[#4A463F]">
-                Mohawk &amp; Fedrigoni Curated
-              </span>
-            </div>
+            <RevealOnScroll direction="down" delay={0.02} distance={12}>
+              <div className="flex items-center gap-3">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#635E52]">
+                  Editorial Bindery // British Monograph Series
+                </span>
+                <span className="h-px w-8 bg-[#635E52]"></span>
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-[#4A463F]">
+                  Mohawk &amp; Fedrigoni Curated
+                </span>
+              </div>
+            </RevealOnScroll>
 
-            <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#141310] font-normal leading-tight">
+            <TextReveal
+              as="h1"
+              direction="up"
+              delay={0.06}
+              className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#141310] font-normal leading-tight"
+            >
               Bespoke Fine Art Photo Books &amp; Wedding Monographs for UK Studios
-            </h1>
+            </TextReveal>
 
-            <p className="text-base lg:text-lg text-[#4A463F] max-w-2xl leading-relaxed">
-              Expansive editorial storytelling up to 250 pages. PUR flexible cold-melt bindings, tactile European book papers, and custom debossed European cloth hardcovers — delivered directly to studios across London, Edinburgh, and Manchester with zero customs friction.
-            </p>
+            <RevealOnScroll direction="up" delay={0.14} distance={16}>
+              <p className="text-base lg:text-lg text-[#4A463F] max-w-2xl leading-relaxed">
+                Expansive editorial storytelling up to 250 pages. PUR flexible cold-melt bindings, tactile European book papers, and custom debossed European cloth hardcovers — delivered directly to studios across London, Edinburgh, and Manchester with zero customs friction.
+              </p>
+            </RevealOnScroll>
 
             {/* Badges Strip */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+            <StaggerBoxes className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2" stagger={0.08} direction="up">
               <div className="bg-[#F4F4F0] p-3.5 border border-[#EAE6DF]">
                 <span className="text-[10px] font-semibold uppercase tracking-wider text-[#635E52] block">Starting At</span>
                 <span className="font-serif text-xl text-[#141310] font-normal mt-1 block">From £62</span>
@@ -211,46 +223,50 @@ export default function UKPhotoBookPage() {
                 <span className="font-serif text-xl text-[#141310] font-normal mt-1 block">Zero Customs</span>
                 <span className="text-[11px] text-[#4A463F] mt-0.5 block">DDP London Courier</span>
               </div>
-            </div>
+            </StaggerBoxes>
 
             {/* CTAs */}
-            <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-              <button
-                type="button"
-                onClick={() => handleEnquire('50% Studio Sample Photo Book Voucher')}
-                className="px-8 py-4 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest text-center hover:bg-[#292724] transition-colors"
-              >
-                Claim 50% Studio Sample Voucher
-              </button>
-              <a
-                href="#formats"
-                className="px-8 py-4 bg-[#E9E8E4] text-[#141310] text-xs font-semibold uppercase tracking-widest text-center hover:bg-[#DBDAD6] transition-colors"
-              >
-                View Monograph Formats ↓
-              </a>
-            </div>
+            <RevealOnScroll direction="up" delay={0.2} distance={18}>
+              <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                <button
+                  type="button"
+                  onClick={() => handleEnquire('50% Studio Sample Photo Book Voucher')}
+                  className="px-8 py-4 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest text-center hover:bg-[#292724] transition-colors"
+                >
+                  Claim 50% Studio Sample Voucher
+                </button>
+                <a
+                  href="#formats"
+                  className="px-8 py-4 bg-[#E9E8E4] text-[#141310] text-xs font-semibold uppercase tracking-widest text-center hover:bg-[#DBDAD6] transition-colors"
+                >
+                  View Monograph Formats ↓
+                </a>
+              </div>
+            </RevealOnScroll>
           </div>
 
           {/* Right Column: Visual Showcase */}
           <div className="lg:col-span-5 relative mt-8 lg:mt-0">
-            <div className="relative bg-[#EFEEEA] p-4 border border-[#EAE6DF]">
-              <img
-                src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1000&q=85"
-                alt="Open fine art wedding photo book with soft page roll on Mohawk paper"
-                className="w-full h-[480px] sm:h-[520px] object-cover"
-              />
-              <div className="absolute -bottom-6 -left-4 sm:-left-6 bg-[#FFFFFF] p-5 max-w-xs shadow-lg border border-[#EAE6DF]">
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-[#635E52] block">
-                  The English Monograph
-                </span>
-                <p className="font-serif text-[16px] text-[#141310] mt-1 font-normal leading-snug">
-                  Mohawk Superfine Eggshell 176gsm
-                </p>
-                <p className="text-[12px] text-[#4A463F] mt-1.5 leading-relaxed">
-                  Heavy cold-melt PUR square-back binding with custom headband and ribbon marker.
-                </p>
+            <RevealOnScroll direction="right" delay={0.14} distance={26}>
+              <div className="relative bg-[#EFEEEA] p-4 border border-[#EAE6DF]">
+                <img
+                  src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1000&q=85"
+                  alt="Open fine art wedding photo book with soft page roll on Mohawk paper"
+                  className="w-full h-[480px] sm:h-[520px] object-cover"
+                />
+                <div className="absolute -bottom-6 -left-4 sm:-left-6 bg-[#FFFFFF] p-5 max-w-xs shadow-lg border border-[#EAE6DF]">
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[#635E52] block">
+                    The English Monograph
+                  </span>
+                  <p className="font-serif text-[16px] text-[#141310] mt-1 font-normal leading-snug">
+                    Mohawk Superfine Eggshell 176gsm
+                  </p>
+                  <p className="text-[12px] text-[#4A463F] mt-1.5 leading-relaxed">
+                    Heavy cold-melt PUR square-back binding with custom headband and ribbon marker.
+                  </p>
+                </div>
               </div>
-            </div>
+            </RevealOnScroll>
           </div>
         </div>
       </section>
@@ -260,20 +276,29 @@ export default function UKPhotoBookPage() {
         <div className="max-w-[1440px] mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
             <div>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52]">
-                Architectural Distinction
-              </span>
-              <h2 className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal mt-2">
+              <RevealOnScroll direction="down" delay={0.02} distance={12}>
+                <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52]">
+                  Architectural Distinction
+                </span>
+              </RevealOnScroll>
+              <TextReveal
+                as="h2"
+                direction="left"
+                delay={0.06}
+                className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal mt-2"
+              >
                 The Modern Wedding Monograph
-              </h2>
+              </TextReveal>
             </div>
-            <p className="text-sm md:text-base text-[#4A463F] max-w-md leading-relaxed">
-              When a wedding narrative commands 150 to 250 images, rigid flush-mount boards become unwieldy. Our monographs preserve complete documentary stories inside a sleek, bookstore-grade fine art volume.
-            </p>
+            <RevealOnScroll direction="right" delay={0.12} distance={16}>
+              <p className="text-sm md:text-base text-[#4A463F] max-w-md leading-relaxed">
+                When a wedding narrative commands 150 to 250 images, rigid flush-mount boards become unwieldy. Our monographs preserve complete documentary stories inside a sleek, bookstore-grade fine art volume.
+              </p>
+            </RevealOnScroll>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-[#FAF9F5] p-8 flex flex-col justify-between border border-[#EAE6DF]">
+          <StaggerBoxes className="grid grid-cols-1 md:grid-cols-3 gap-8" stagger={0.12} direction="up">
+            <div className="bg-[#FAF9F5] p-8 flex flex-col justify-between border border-[#EAE6DF] hover:border-[#635E52]/40 transition-all duration-300">
               <div>
                 <span className="font-serif text-2xl text-[#635E52] block mb-4">01</span>
                 <h3 className="font-serif text-xl text-[#141310] font-normal mb-3">High-Volume Storytelling</h3>
@@ -287,7 +312,7 @@ export default function UKPhotoBookPage() {
               </div>
             </div>
 
-            <div className="bg-[#FAF9F5] p-8 flex flex-col justify-between border border-[#EAE6DF]">
+            <div className="bg-[#FAF9F5] p-8 flex flex-col justify-between border border-[#EAE6DF] hover:border-[#635E52]/40 transition-all duration-300">
               <div>
                 <span className="font-serif text-2xl text-[#635E52] block mb-4">02</span>
                 <h3 className="font-serif text-xl text-[#141310] font-normal mb-3">Tactile European Papers</h3>
@@ -301,7 +326,7 @@ export default function UKPhotoBookPage() {
               </div>
             </div>
 
-            <div className="bg-[#FAF9F5] p-8 flex flex-col justify-between border border-[#EAE6DF]">
+            <div className="bg-[#FAF9F5] p-8 flex flex-col justify-between border border-[#EAE6DF] hover:border-[#635E52]/40 transition-all duration-300">
               <div>
                 <span className="font-serif text-2xl text-[#635E52] block mb-4">03</span>
                 <h3 className="font-serif text-xl text-[#141310] font-normal mb-3">Cold-Melt PUR Spine</h3>
@@ -314,7 +339,7 @@ export default function UKPhotoBookPage() {
                 <p className="text-[12px] text-[#4A463F] mt-1">Extreme flexibility with 70% stronger page-pull test.</p>
               </div>
             </div>
-          </div>
+          </StaggerBoxes>
         </div>
       </section>
 
@@ -323,21 +348,30 @@ export default function UKPhotoBookPage() {
         <div className="max-w-[1440px] mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
             <div>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52]">
-                Architectural Proportions
-              </span>
-              <h2 className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal mt-2">
+              <RevealOnScroll direction="down" delay={0.02} distance={12}>
+                <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52]">
+                  Architectural Proportions
+                </span>
+              </RevealOnScroll>
+              <TextReveal
+                as="h2"
+                direction="left"
+                delay={0.06}
+                className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal mt-2"
+              >
                 Curated UK Dimensional Formats
-              </h2>
+              </TextReveal>
             </div>
-            <p className="text-sm md:text-base text-[#4A463F] max-w-lg leading-relaxed">
-              Standard ISO A-series and metric square ratios engineered to streamline InDesign layout templates and parent duplicate workflows.
-            </p>
+            <RevealOnScroll direction="right" delay={0.12} distance={16}>
+              <p className="text-sm md:text-base text-[#4A463F] max-w-lg leading-relaxed">
+                Standard ISO A-series and metric square ratios engineered to streamline InDesign layout templates and parent duplicate workflows.
+              </p>
+            </RevealOnScroll>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <StaggerBoxes className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" stagger={0.1} direction="up">
             {FORMATS.map((fmt) => (
-              <div key={fmt.id} className="bg-[#F4F4F0] p-6 flex flex-col justify-between border border-[#EAE6DF] hover:border-[#141310] transition-colors">
+              <div key={fmt.id} className="bg-[#F4F4F0] p-6 flex flex-col justify-between border border-[#EAE6DF] hover:border-[#141310] transition-all duration-300">
                 <div>
                   <div className="h-44 bg-[#FAF9F5] border border-[#EAE6DF] flex flex-col items-center justify-center p-4 relative mb-6">
                     <span className="font-serif text-2xl text-[#141310] font-normal">{fmt.dim}</span>
@@ -371,7 +405,7 @@ export default function UKPhotoBookPage() {
                 </div>
               </div>
             ))}
-          </div>
+          </StaggerBoxes>
         </div>
       </section>
 
@@ -380,31 +414,42 @@ export default function UKPhotoBookPage() {
         <div className="max-w-[1440px] mx-auto">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 gap-6">
             <div>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52]">
-                Studio Scale Production
-              </span>
-              <h2 className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal mt-2">
+              <RevealOnScroll direction="down" delay={0.02} distance={12}>
+                <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52]">
+                  Studio Scale Production
+                </span>
+              </RevealOnScroll>
+              <TextReveal
+                as="h2"
+                direction="left"
+                delay={0.06}
+                className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal mt-2"
+              >
                 Multi-Volume Studio Companion Tiering
-              </h2>
-              <p className="text-sm md:text-base text-[#4A463F] mt-2 max-w-xl leading-relaxed">
-                Streamlined wholesale discounts for duplicate wedding parent sets and high-output British commercial ateliers. Billed directly in British Pounds (£ GBP) inclusive of UK VAT documentation.
-              </p>
+              </TextReveal>
+              <RevealOnScroll direction="up" delay={0.12} distance={14}>
+                <p className="text-sm md:text-base text-[#4A463F] mt-2 max-w-xl leading-relaxed">
+                  Streamlined wholesale discounts for duplicate wedding parent sets and high-output British commercial ateliers. Billed directly in British Pounds (£ GBP) inclusive of UK VAT documentation.
+                </p>
+              </RevealOnScroll>
             </div>
-            <div className="bg-[#FAF9F5] p-4 flex items-center gap-3 border border-[#EAE6DF]">
-              <Truck size={22} className="text-[#635E52]" />
-              <div>
-                <span className="text-xs font-semibold uppercase tracking-wider text-[#141310] block">DDP Customs Guaranteed</span>
-                <span className="text-xs text-[#635E52]">Direct Air Dispatch to London, Manchester, Glasgow &amp; Belfast</span>
+            <RevealOnScroll direction="right" delay={0.14} distance={18}>
+              <div className="bg-[#FAF9F5] p-4 flex items-center gap-3 border border-[#EAE6DF]">
+                <Truck size={22} className="text-[#635E52]" />
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#141310] block">DDP Customs Guaranteed</span>
+                  <span className="text-xs text-[#635E52]">Direct Air Dispatch to London, Manchester, Glasgow &amp; Belfast</span>
+                </div>
               </div>
-            </div>
+            </RevealOnScroll>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+          <StaggerBoxes className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch" stagger={0.12} direction="up">
             {TIERS.map((tier, idx) => (
               <div
                 key={idx}
-                className={`p-8 flex flex-col justify-between border ${
-                  tier.highlight ? 'bg-[#FAF9F5] shadow-lg border-2 border-[#141310] relative' : 'bg-[#F4F4F0] border-[#EAE6DF]'
+                className={`p-8 flex flex-col justify-between border transition-all duration-300 ${
+                  tier.highlight ? 'bg-[#FAF9F5] shadow-lg border-2 border-[#141310] relative' : 'bg-[#F4F4F0] border-[#EAE6DF] hover:border-[#635E52]/40'
                 }`}
               >
                 {tier.highlight && (
@@ -454,7 +499,7 @@ export default function UKPhotoBookPage() {
                 </button>
               </div>
             ))}
-          </div>
+          </StaggerBoxes>
         </div>
       </section>
 
@@ -462,96 +507,105 @@ export default function UKPhotoBookPage() {
       <section className="w-full bg-[#FAF9F5] py-20 px-5 md:px-16" id="specs">
         <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
           <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
-            <div>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52]">
-                Lab Precision Engineering
-              </span>
-              <h2 className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal mt-2 mb-4">
-                Technical ICC Lab Profiles &amp; Precision Guidelines
-              </h2>
-              <p className="text-sm text-[#4A463F] leading-relaxed mb-6">
-                Ensure color fidelity between your calibrated Eizo/Apple monitor and our high-definition liquid electro-ink presses. We provide dedicated color spaces tuned to British studio post-production workflows.
-              </p>
+            <RevealOnScroll direction="left" delay={0.08} distance={20}>
+              <div>
+                <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52]">
+                  Lab Precision Engineering
+                </span>
+                <TextReveal
+                  as="h2"
+                  direction="left"
+                  delay={0.06}
+                  className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal mt-2 mb-4"
+                >
+                  Technical ICC Lab Profiles &amp; Precision Guidelines
+                </TextReveal>
+                <p className="text-sm text-[#4A463F] leading-relaxed mb-6">
+                  Ensure color fidelity between your calibrated Eizo/Apple monitor and our high-definition liquid electro-ink presses. We provide dedicated color spaces tuned to British studio post-production workflows.
+                </p>
 
-              <div className="space-y-4">
-                <div className="p-4 bg-[#F4F4F0] border border-[#EAE6DF]">
-                  <h4 className="font-serif text-base text-[#141310] font-normal">sRGB &amp; Adobe RGB 1998</h4>
-                  <p className="text-xs text-[#4A463F] mt-1 leading-relaxed">
-                    We accept both native colourspaces. Embedded profiles are automatically rendered via custom ICC curves for Mohawk &amp; Fedrigoni pulps.
-                  </p>
-                </div>
-                <div className="p-4 bg-[#F4F4F0] border border-[#EAE6DF]">
-                  <h4 className="font-serif text-base text-[#141310] font-normal">Bleed Safety &amp; Gutter Allowance</h4>
-                  <p className="text-xs text-[#4A463F] mt-1 leading-relaxed">
-                    3mm exterior bleed on all trim sides. Due to PUR spine flexibility, keep critical typography 10mm away from the inner gutter.
-                  </p>
+                <div className="space-y-4">
+                  <div className="p-4 bg-[#F4F4F0] border border-[#EAE6DF]">
+                    <h4 className="font-serif text-base text-[#141310] font-normal">sRGB &amp; Adobe RGB 1998</h4>
+                    <p className="text-xs text-[#4A463F] mt-1 leading-relaxed">
+                      We accept both native colourspaces. Embedded profiles are automatically rendered via custom ICC curves for Mohawk &amp; Fedrigoni pulps.
+                    </p>
+                  </div>
+                  <div className="p-4 bg-[#F4F4F0] border border-[#EAE6DF]">
+                    <h4 className="font-serif text-base text-[#141310] font-normal">Bleed Safety &amp; Gutter Allowance</h4>
+                    <p className="text-xs text-[#4A463F] mt-1 leading-relaxed">
+                      3mm exterior bleed on all trim sides. Due to PUR spine flexibility, keep critical typography 10mm away from the inner gutter.
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="pt-2">
-              <Link
-                to="/resources/catalog"
-                className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#141310] hover:text-[#635E52] transition-colors"
-              >
-                <span>Download UK Studio Technical Asset Pack (.ZIP 48MB)</span>
-                <Download size={14} />
-              </Link>
-            </div>
+              <div className="pt-6">
+                <Link
+                  to="/resources/catalog"
+                  className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#141310] hover:text-[#635E52] transition-colors"
+                >
+                  <span>Download UK Studio Technical Asset Pack (.ZIP 48MB)</span>
+                  <Download size={14} />
+                </Link>
+              </div>
+            </RevealOnScroll>
           </div>
 
           {/* Technical Spec Sheet UI */}
           <div className="lg:col-span-7 bg-[#F4F4F0] p-6 sm:p-10 border border-[#EAE6DF]">
-            <div className="flex items-center justify-between pb-6 border-b border-[#EAE6DF] mb-6">
-              <span className="font-serif text-xl text-[#141310] font-normal">Atelier Press Specifications</span>
-              <span className="text-[10px] font-semibold uppercase text-[#635E52]">Release v4.2 UK</span>
-            </div>
+            <RevealOnScroll direction="right" delay={0.12} distance={24}>
+              <div className="flex items-center justify-between pb-6 border-b border-[#EAE6DF] mb-6">
+                <span className="font-serif text-xl text-[#141310] font-normal">Atelier Press Specifications</span>
+                <span className="text-[10px] font-semibold uppercase text-[#635E52]">Release v4.2 UK</span>
+              </div>
 
-            <div className="space-y-3 text-xs">
-              <div className="flex justify-between py-2.5 bg-[#FAF9F5] px-4 border border-[#EAE6DF]">
-                <span className="text-[#635E52]">Press Architecture</span>
-                <span className="text-[#141310] font-medium">HP Indigo 12000 HD ElectroInk (7-Color Extended Gamut)</span>
-              </div>
-              <div className="flex justify-between py-2.5 bg-[#FAF9F5] px-4 border border-[#EAE6DF]">
-                <span className="text-[#635E52]">Substrate Options</span>
-                <span className="text-[#141310] font-medium">Mohawk Superfine Eggshell 176gsm / Fedrigoni 200gsm</span>
-              </div>
-              <div className="flex justify-between py-2.5 bg-[#FAF9F5] px-4 border border-[#EAE6DF]">
-                <span className="text-[#635E52]">Spine Architecture</span>
-                <span className="text-[#141310] font-medium">Reinforced PUR Cold-Melt Adhesive, Square Back with Headbands</span>
-              </div>
-              <div className="flex justify-between py-2.5 bg-[#FAF9F5] px-4 border border-[#EAE6DF]">
-                <span className="text-[#635E52]">Cover Styles</span>
-                <span className="text-[#141310] font-medium">Linen Hardcover, Silk Rayon, Velvet Softcover, or Printed Dust Jacket</span>
-              </div>
-              <div className="flex justify-between py-2.5 bg-[#FAF9F5] px-4 border border-[#EAE6DF]">
-                <span className="text-[#635E52]">Proofing Protocol</span>
-                <span className="text-[#141310] font-medium">Remote PDF Soft-Proof Portal or Physical Loose Sheet Express Proof</span>
-              </div>
-              <div className="flex justify-between py-2.5 bg-[#FAF9F5] px-4 border border-[#EAE6DF]">
-                <span className="text-[#635E52]">Turnaround to Great Britain</span>
-                <span className="text-[#141310] font-medium">8–12 Business Days (Production) + 2 Days (DHL Express DDP)</span>
-              </div>
-            </div>
-
-            {/* InDesign Template Callout */}
-            <div className="mt-8 p-5 bg-[#FAF9F5] border border-[#EAE6DF] flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-[#141310] flex items-center justify-center text-[#FAF9F5] text-xs font-bold">
-                  ID
+              <div className="space-y-3 text-xs">
+                <div className="flex justify-between py-2.5 bg-[#FAF9F5] px-4 border border-[#EAE6DF]">
+                  <span className="text-[#635E52]">Press Architecture</span>
+                  <span className="text-[#141310] font-medium">HP Indigo 12000 HD ElectroInk (7-Color Extended Gamut)</span>
                 </div>
-                <div>
-                  <p className="font-serif text-sm text-[#141310] font-medium">InDesign Master Templates</p>
-                  <p className="text-[11px] text-[#635E52]">Includes guides for spine calculation based on page counts.</p>
+                <div className="flex justify-between py-2.5 bg-[#FAF9F5] px-4 border border-[#EAE6DF]">
+                  <span className="text-[#635E52]">Substrate Options</span>
+                  <span className="text-[#141310] font-medium">Mohawk Superfine Eggshell 176gsm / Fedrigoni 200gsm</span>
+                </div>
+                <div className="flex justify-between py-2.5 bg-[#FAF9F5] px-4 border border-[#EAE6DF]">
+                  <span className="text-[#635E52]">Spine Architecture</span>
+                  <span className="text-[#141310] font-medium">Reinforced PUR Cold-Melt Adhesive, Square Back with Headbands</span>
+                </div>
+                <div className="flex justify-between py-2.5 bg-[#FAF9F5] px-4 border border-[#EAE6DF]">
+                  <span className="text-[#635E52]">Cover Styles</span>
+                  <span className="text-[#141310] font-medium">Linen Hardcover, Silk Rayon, Velvet Softcover, or Printed Dust Jacket</span>
+                </div>
+                <div className="flex justify-between py-2.5 bg-[#FAF9F5] px-4 border border-[#EAE6DF]">
+                  <span className="text-[#635E52]">Proofing Protocol</span>
+                  <span className="text-[#141310] font-medium">Remote PDF Soft-Proof Portal or Physical Loose Sheet Express Proof</span>
+                </div>
+                <div className="flex justify-between py-2.5 bg-[#FAF9F5] px-4 border border-[#EAE6DF]">
+                  <span className="text-[#635E52]">Turnaround to Great Britain</span>
+                  <span className="text-[#141310] font-medium">8–12 Business Days (Production) + 2 Days (DHL Express DDP)</span>
                 </div>
               </div>
-              <Link
-                to="/resources/catalog"
-                className="px-4 py-2 bg-[#141310] text-[#FAF9F5] text-[11px] font-semibold uppercase tracking-wider hover:bg-[#292724] transition-colors whitespace-nowrap"
-              >
-                Download .IDML
-              </Link>
-            </div>
+
+              {/* InDesign Template Callout */}
+              <div className="mt-8 p-5 bg-[#FAF9F5] border border-[#EAE6DF] flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-[#141310] flex items-center justify-center text-[#FAF9F5] text-xs font-bold">
+                    ID
+                  </div>
+                  <div>
+                    <p className="font-serif text-sm text-[#141310] font-medium">InDesign Master Templates</p>
+                    <p className="text-[11px] text-[#635E52]">Includes guides for spine calculation based on page counts.</p>
+                  </div>
+                </div>
+                <Link
+                  to="/resources/catalog"
+                  className="px-4 py-2 bg-[#141310] text-[#FAF9F5] text-[11px] font-semibold uppercase tracking-wider hover:bg-[#292724] transition-colors whitespace-nowrap"
+                >
+                  Download .IDML
+                </Link>
+              </div>
+            </RevealOnScroll>
           </div>
         </div>
       </section>
@@ -561,20 +615,29 @@ export default function UKPhotoBookPage() {
         <div className="max-w-[1440px] mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52]">
-                Curated Specimens
-              </span>
-              <h2 className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal mt-2">
+              <RevealOnScroll direction="down" delay={0.02} distance={12}>
+                <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52]">
+                  Curated Specimens
+                </span>
+              </RevealOnScroll>
+              <TextReveal
+                as="h2"
+                direction="left"
+                delay={0.06}
+                className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal mt-2"
+              >
                 British Wedding &amp; Monograph Portfolio
-              </h2>
+              </TextReveal>
             </div>
-            <p className="text-sm md:text-base text-[#4A463F] max-w-sm leading-relaxed">
-              Selected volumes crafted for esteemed studios documented across Surrey, the Cotswolds, and the Scottish Borders.
-            </p>
+            <RevealOnScroll direction="right" delay={0.12} distance={16}>
+              <p className="text-sm md:text-base text-[#4A463F] max-w-sm leading-relaxed">
+                Selected volumes crafted for esteemed studios documented across Surrey, the Cotswolds, and the Scottish Borders.
+              </p>
+            </RevealOnScroll>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="space-y-4 bg-[#FAF9F5] p-4 border border-[#EAE6DF]">
+          <StaggerBoxes className="grid grid-cols-1 md:grid-cols-3 gap-8" stagger={0.12} direction="up">
+            <div className="space-y-4 bg-[#FAF9F5] p-4 border border-[#EAE6DF] hover:border-[#635E52]/40 transition-all duration-300">
               <img
                 src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=85"
                 alt="Close-up macro detail of luxury hardbound photo book"
@@ -587,7 +650,7 @@ export default function UKPhotoBookPage() {
               </div>
             </div>
 
-            <div className="space-y-4 bg-[#FAF9F5] p-4 border border-[#EAE6DF]">
+            <div className="space-y-4 bg-[#FAF9F5] p-4 border border-[#EAE6DF] hover:border-[#635E52]/40 transition-all duration-300">
               <img
                 src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=800&q=85"
                 alt="Overhead view of an open horizontal landscape photo book"
@@ -600,7 +663,7 @@ export default function UKPhotoBookPage() {
               </div>
             </div>
 
-            <div className="space-y-4 bg-[#FAF9F5] p-4 border border-[#EAE6DF]">
+            <div className="space-y-4 bg-[#FAF9F5] p-4 border border-[#EAE6DF] hover:border-[#635E52]/40 transition-all duration-300">
               <img
                 src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=800&q=85"
                 alt="Stack of three parent edition photo books"
@@ -612,7 +675,7 @@ export default function UKPhotoBookPage() {
                 <p className="text-xs text-[#4A463F] mt-1">Matching parent volumes with velvet touch softcovers.</p>
               </div>
             </div>
-          </div>
+          </StaggerBoxes>
         </div>
       </section>
 
@@ -620,15 +683,22 @@ export default function UKPhotoBookPage() {
       <section className="w-full bg-[#FAF9F5] py-20 px-5 md:px-16 border-t border-[#EAE6DF]">
         <div className="max-w-[1000px] mx-auto">
           <div className="max-w-2xl mb-12">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52]">
-              UK Concierge FAQ
-            </span>
-            <h2 className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal mt-2">
+            <RevealOnScroll direction="down" delay={0.02} distance={12}>
+              <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52]">
+                UK Concierge FAQ
+              </span>
+            </RevealOnScroll>
+            <TextReveal
+              as="h2"
+              direction="left"
+              delay={0.06}
+              className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal mt-2"
+            >
               Questions from British Wedding Ateliers
-            </h2>
+            </TextReveal>
           </div>
 
-          <div className="space-y-4">
+          <StaggerBoxes className="space-y-4" stagger={0.08} direction="up">
             {FAQS.map((faq, idx) => (
               <div key={idx} className="bg-[#F4F4F0] border border-[#EAE6DF]">
                 <button
@@ -646,47 +716,60 @@ export default function UKPhotoBookPage() {
                 )}
               </div>
             ))}
-          </div>
+          </StaggerBoxes>
         </div>
       </section>
 
       {/* 9. Final Atelier CTA Section */}
       <section className="w-full py-20 px-5 md:px-16 bg-[#292724] text-[#FAF9F5]">
         <div className="max-w-[1440px] mx-auto text-center flex flex-col items-center">
-          <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[#CDC6B7] mb-4">
-            Exclusive Studio Specimen Programme
-          </span>
-          <h2 className="font-serif text-2xl sm:text-4xl max-w-3xl mb-6 font-normal">
+          <RevealOnScroll direction="down" delay={0.02} distance={12}>
+            <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[#CDC6B7] mb-4">
+              Exclusive Studio Specimen Programme
+            </span>
+          </RevealOnScroll>
+          <TextReveal
+            as="h2"
+            direction="up"
+            delay={0.06}
+            className="font-serif text-2xl sm:text-4xl max-w-3xl mb-6 font-normal text-[#FAF9F5]"
+          >
             Publish Your Next British Wedding Monograph — Receive 50% Off Your Studio Sample Volume
-          </h2>
-          <p className="text-sm md:text-base text-[#CDC6B7] max-w-2xl mb-10 leading-relaxed">
-            Experience the weight of Mohawk Superfine, the flex of our PUR binding, and the richness of European bookcloth in your own client consultations. Sample volumes are stamped with 'Studio Specimen' and billed with priority DDP transit.
-          </p>
+          </TextReveal>
+          <RevealOnScroll direction="up" delay={0.12} distance={14}>
+            <p className="text-sm md:text-base text-[#CDC6B7] max-w-2xl mb-10 leading-relaxed">
+              Experience the weight of Mohawk Superfine, the flex of our PUR binding, and the richness of European bookcloth in your own client consultations. Sample volumes are stamped with 'Studio Specimen' and billed with priority DDP transit.
+            </p>
+          </RevealOnScroll>
 
-          <div className="flex flex-col sm:flex-row items-center gap-4">
-            <button
-              type="button"
-              onClick={() => handleEnquire('50% Off Studio Sample Monograph Voucher')}
-              className="px-8 py-4 bg-[#FAF9F5] text-[#141310] text-xs font-semibold uppercase tracking-widest hover:bg-[#EAE2D2] transition-colors"
-            >
-              Claim 50% Studio Sample Voucher
-            </button>
-            <a
-              href="https://wa.me/919322254315"
-              target="_blank"
-              rel="noreferrer"
-              className="px-8 py-4 bg-transparent border border-[#FAF9F5]/30 text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest hover:bg-[#FAF9F5]/10 transition-colors flex items-center gap-2"
-            >
-              <MessageSquare size={14} />
-              <span>Schedule Virtual Consultation</span>
-            </a>
-          </div>
+          <RevealOnScroll direction="up" delay={0.18} distance={18}>
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <button
+                type="button"
+                onClick={() => handleEnquire('50% Off Studio Sample Monograph Voucher')}
+                className="px-8 py-4 bg-[#FAF9F5] text-[#141310] text-xs font-semibold uppercase tracking-widest hover:bg-[#EAE2D2] transition-colors"
+              >
+                Claim 50% Studio Sample Voucher
+              </button>
+              <a
+                href="https://wa.me/919322254315"
+                target="_blank"
+                rel="noreferrer"
+                className="px-8 py-4 bg-transparent border border-[#FAF9F5]/30 text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest hover:bg-[#FAF9F5]/10 transition-colors flex items-center gap-2"
+              >
+                <MessageSquare size={14} />
+                <span>Schedule Virtual Consultation</span>
+              </a>
+            </div>
+          </RevealOnScroll>
 
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-[#CDC6B7] text-xs font-semibold uppercase tracking-widest">
-            <span className="flex items-center gap-1.5"><Check size={14} className="text-[#FAF9F5]" /> No Minimum Order</span>
-            <span className="flex items-center gap-1.5"><Check size={14} className="text-[#FAF9F5]" /> DDP Customs Handled</span>
-            <span className="flex items-center gap-1.5"><Check size={14} className="text-[#FAF9F5]" /> BACS &amp; GBP Invoicing</span>
-          </div>
+          <RevealOnScroll direction="up" delay={0.24} distance={20}>
+            <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-[#CDC6B7] text-xs font-semibold uppercase tracking-widest">
+              <span className="flex items-center gap-1.5"><Check size={14} className="text-[#FAF9F5]" /> No Minimum Order</span>
+              <span className="flex items-center gap-1.5"><Check size={14} className="text-[#FAF9F5]" /> DDP Customs Handled</span>
+              <span className="flex items-center gap-1.5"><Check size={14} className="text-[#FAF9F5]" /> BACS &amp; GBP Invoicing</span>
+            </div>
+          </RevealOnScroll>
         </div>
       </section>
     </div>

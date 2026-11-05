@@ -1,8 +1,10 @@
 import React, { useRef, useEffect } from 'react';
-import { Truck, ShieldCheck, Package, ArrowRight } from 'lucide-react';
+import { Truck, ShieldCheck, Package, ArrowRight, Check, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import TextReveal from './motion/TextReveal';
+import RevealOnScroll from './motion/RevealOnScroll';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -35,28 +37,52 @@ const UK_COLLECTIONS = [
     title: 'Flush Mount Albums UK',
     tag: 'UK STANDARD',
     image: '/images/uk-card-1.jpg',
-    desc: 'Seamless 180° lay-flat wedding albums printed on Fuji Crystal Archive paper with 1.1mm archival core boards for UK photographers and high-end studios.'
+    desc: 'Seamless 180° lay-flat wedding albums printed on Fuji Crystal Archive paper with 1.1mm archival core boards for UK photographers and high-end studios.',
+    includes: [
+      'Continuous 180° Panoramic Spread Opening',
+      '1.1mm Rigid Archival Substrate Core Leaves',
+      'Fuji Crystal DPII Silver Halide Chemistry',
+      'Pre-Paid UK DDP Tracked Courier Dispatch'
+    ]
   },
   {
     slug: 'luxury-albums-uk',
     title: 'Luxury Albums & Wooden Caskets UK',
     tag: 'LUXURY TIER',
     image: '/images/uk-card-2.jpg',
-    desc: 'Full-grain Italian leathers, polished acrylic cameo windows, and bespoke presentation caskets crafted for luxury British and European celebrations.'
+    desc: 'Full-grain Italian leathers, polished acrylic cameo windows, and bespoke presentation caskets crafted for luxury British and European celebrations.',
+    includes: [
+      'Full-Grain Tuscan Vegetal-Tanned Leathers',
+      'Solid American Walnut Presentation Casket',
+      '4mm Diamond-Polished Acrylic Cameo Cover',
+      '24k Gold Gilded Edges & Custom Foil Die'
+    ]
   },
   {
     slug: 'box-and-bags-uk',
     title: 'Box and Bags Collection UK',
     tag: 'KEEPSAKE STORAGE',
     image: '/images/uk-card-3.jpg',
-    desc: 'Rigid 3mm clamshell boxes, magnetic closure presentation cases, and custom velvet travel bags tailored to standard UK dimensions.'
+    desc: 'Rigid 3mm clamshell boxes, magnetic closure presentation cases, and custom velvet travel bags tailored to standard UK dimensions.',
+    includes: [
+      '3mm Heavyweight Anti-Warp Binders Board',
+      'Recessed Satin Ribbon Lift-Out Mechanism',
+      'Plush Crushed Velvet Protective Lining',
+      'Matching Material & Debossed Couple Crest'
+    ]
   },
   {
     slug: 'image-editing-uk',
     title: 'Image Editing for UK Studios',
     tag: '48H SLA',
     image: '/images/uk-card-4.jpg',
-    desc: 'Dedicated overnight proof turnaround during peak wedding season. Natural skin tone grading calibrated for British ambient lighting.'
+    desc: 'Dedicated overnight proof turnaround during peak wedding season. Natural skin tone grading calibrated for British ambient lighting.',
+    includes: [
+      'Guaranteed 48h SLA During Peak UK Season',
+      'Natural British Sky & Skin Tone Grading',
+      '16-Bit TIFF & Print-Calibrated ICC Exports',
+      'Unlimited Proof Revisions via Dedicated Desk'
+    ]
   }
 ];
 
@@ -70,19 +96,21 @@ export default function UKDeskSection() {
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (prefersReduced) return;
 
-      // 1. Entrance animation for the top 3 guarantee cards
+      // 1. Entrance animation for the top 3 guarantee cards (coming smoothly from the left with blur-to-clear)
       const guaranteeCards = guaranteesRef.current?.querySelectorAll('.uk-guarantee-card');
       if (guaranteeCards && guaranteeCards.length > 0) {
         gsap.fromTo(
           guaranteeCards,
           {
-            y: 30,
-            opacity: 0
+            x: -35,
+            opacity: 0,
+            filter: 'blur(8px)'
           },
           {
-            y: 0,
+            x: 0,
             opacity: 1,
-            duration: 0.8,
+            filter: 'blur(0px)',
+            duration: 0.88,
             stagger: 0.12,
             ease: 'power3.out',
             scrollTrigger: {
@@ -91,28 +119,30 @@ export default function UKDeskSection() {
               once: true
             },
             onComplete: () => {
-              gsap.set(guaranteeCards, { clearProps: 'transform,opacity' });
+              gsap.set(guaranteeCards, { clearProps: 'transform,opacity,filter' });
             }
           }
         );
       }
 
-      // 2. Entrance animation for the 4 product cards (subtle 3D lift)
+      // 2. Entrance animation for the 4 product cards (coming from right and up with blur-to-clear)
       const productCards = cardsGridRef.current?.querySelectorAll('.uk-product-card');
       if (productCards && productCards.length > 0) {
         gsap.fromTo(
           productCards,
           {
-            y: 45,
+            y: 40,
+            x: 18,
             opacity: 0,
-            rotateX: 7
+            filter: 'blur(8px)'
           },
           {
             y: 0,
+            x: 0,
             opacity: 1,
-            rotateX: 0,
+            filter: 'blur(0px)',
             duration: 0.95,
-            stagger: 0.14,
+            stagger: 0.12,
             ease: 'power3.out',
             scrollTrigger: {
               trigger: cardsGridRef.current,
@@ -120,7 +150,7 @@ export default function UKDeskSection() {
               once: true
             },
             onComplete: () => {
-              gsap.set(productCards, { clearProps: 'transform,opacity' });
+              gsap.set(productCards, { clearProps: 'transform,opacity,filter' });
             }
           }
         );
@@ -196,6 +226,33 @@ export default function UKDeskSection() {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-10 lg:px-12 relative z-10">
         
         {/* =========================================================
+            EDITORIAL HEADER WITH WORD BLUR-TO-CLEAR REVEAL
+            ========================================================= */}
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+          <RevealOnScroll direction="down" delay={0.02} distance={12} blur={false}>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-[#DED5C9] text-[10px] sm:text-[11px] font-sans font-medium uppercase tracking-[0.22em] text-[#777066] mb-3.5 shadow-xs backdrop-blur-xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#B99A69]" />
+              <span>DEDICATED BRITISH &amp; EUROPEAN STUDIO DESK</span>
+            </div>
+          </RevealOnScroll>
+
+          <TextReveal
+            as="h2"
+            delay={0.08}
+            direction="up"
+            className="font-serif text-[30px] sm:text-[40px] lg:text-[46px] font-normal text-[#201E1B] leading-[1.14] tracking-tight mb-4"
+          >
+            Direct Atelier Logistics &amp; Sterling Billing
+          </TextReveal>
+
+          <RevealOnScroll direction="up" delay={0.18} distance={16}>
+            <p className="font-sans text-[14px] sm:text-[15.5px] text-[#777066] leading-[1.7] max-w-2xl mx-auto">
+              Serving premier wedding photographers across London, the Cotswolds, Edinburgh, and mainland Europe with insured 3–5 day express air transit, zero customs friction, and transparent GBP accounts.
+            </p>
+          </RevealOnScroll>
+        </div>
+
+        {/* =========================================================
             TOP ROW: 3 LOGISTICS & INVOICING CARDS
             ========================================================= */}
         <div
@@ -241,7 +298,7 @@ export default function UKDeskSection() {
               className="uk-product-card group relative bg-white/95 hover:bg-white border border-[#EAE3D6] hover:border-[#D6C7B2] rounded-2xl p-4 sm:p-4.5 pb-6 shadow-[0_12px_32px_-8px_rgba(32,30,27,0.07)] hover:shadow-[0_20px_45px_-8px_rgba(185,154,105,0.25)] hover:-translate-y-2 transition-all duration-400 flex flex-col justify-between backdrop-blur-xs overflow-hidden"
             >
               <div>
-                {/* Product Photograph Container */}
+                {/* Product Photograph Container with Sliding Inclusions Overlay */}
                 <div className="relative aspect-[16/11] rounded-xl overflow-hidden mb-4 sm:mb-5 bg-[#F0EAE1]">
                   <img
                     src={col.image}
@@ -251,10 +308,32 @@ export default function UKDeskSection() {
                   />
 
                   {/* Floating Luxury Tag Badge in Top-Left Corner */}
-                  <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#FAF7F2]/90 backdrop-blur-md border border-[#E0D5C3] shadow-xs">
+                  <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#FAF7F2]/90 backdrop-blur-md border border-[#E0D5C3] shadow-xs z-10">
                     <span className="font-sans text-[9px] sm:text-[9.5px] font-semibold tracking-[0.16em] uppercase text-[#8C734B]">
                       {col.tag}
                     </span>
+                  </div>
+
+                  {/* SLIDING HOVER INCLUSIONS OVERLAY */}
+                  <div className="absolute inset-0 bg-[#1A1815]/95 backdrop-blur-md p-4 sm:p-5 flex flex-col justify-between opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 z-20 pointer-events-none">
+                    <div>
+                      <div className="flex items-center gap-1.5 text-[9px] uppercase tracking-[0.18em] font-semibold text-[#D4AF37] mb-2.5">
+                        <Sparkles size={11} />
+                        <span>WHAT THIS INCLUDES</span>
+                      </div>
+                      <ul className="space-y-1.5 text-left">
+                        {col.includes.map((inc, iIdx) => (
+                          <li key={iIdx} className="flex items-start gap-2 text-[10.5px] sm:text-[11px] text-[#FAF7F2] leading-snug">
+                            <Check size={11} className="text-[#D4AF37] shrink-0 mt-0.5" />
+                            <span>{inc}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="pt-2 border-t border-white/10 flex items-center justify-between text-[9px] text-[#C8BEAE] uppercase tracking-wider">
+                      <span>UK Certified Specification</span>
+                      <ArrowRight size={10} className="text-[#D4AF37]" />
+                    </div>
                   </div>
                 </div>
 

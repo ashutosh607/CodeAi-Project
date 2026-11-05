@@ -8,6 +8,9 @@ import {
   ShieldCheck, 
   MessageSquare
 } from 'lucide-react';
+import TextReveal from '../../components/motion/TextReveal';
+import RevealOnScroll from '../../components/motion/RevealOnScroll';
+import StaggerBoxes from '../../components/motion/StaggerBoxes';
 
 export default function UKSlipInAlbumsPage() {
   const navigate = useNavigate();
@@ -123,26 +126,30 @@ export default function UKSlipInAlbumsPage() {
         <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           {/* Left Column: Manifesto */}
           <div className="lg:col-span-7 flex flex-col space-y-6">
-            <div className="flex items-center gap-3">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#635E52]">
-                Atelier Archives // British Portrait Folios
-              </span>
-              <span className="h-px w-8 bg-[#635E52]"></span>
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-[#4A463F]">
-                Fine Art Guild Standards
-              </span>
-            </div>
+            <RevealOnScroll direction="down" delay={0.02} distance={14}>
+              <div className="flex items-center gap-3">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#635E52]">
+                  Atelier Archives // British Portrait Folios
+                </span>
+                <span className="h-px w-8 bg-[#635E52]"></span>
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-[#4A463F]">
+                  Fine Art Guild Standards
+                </span>
+              </div>
+            </RevealOnScroll>
 
-            <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#141310] font-normal leading-tight">
+            <TextReveal as="h1" direction="up" delay={0.08} className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#141310] font-normal leading-tight">
               Bespoke Slip-In Albums &amp; Matted Folios for UK Portrait Studios
-            </h1>
+            </TextReveal>
 
-            <p className="text-base lg:text-lg text-[#4A463F] max-w-2xl leading-relaxed">
-              Handcrafted bevel-cut matted folios and archival slip-in tomes tailored for newborn, fine-art portrait, and generational family studios across Great Britain. Zero adhesive contact, pure cotton core boards, and expedited Royal Mail / DDP parcel delivery.
-            </p>
+            <RevealOnScroll direction="up" delay={0.18} distance={18}>
+              <p className="text-base lg:text-lg text-[#4A463F] max-w-2xl leading-relaxed">
+                Handcrafted bevel-cut matted folios and archival slip-in tomes tailored for newborn, fine-art portrait, and generational family studios across Great Britain. Zero adhesive contact, pure cotton core boards, and expedited Royal Mail / DDP parcel delivery.
+              </p>
+            </RevealOnScroll>
 
             {/* Spec Badges Bar */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+            <StaggerBoxes className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2" stagger={0.08} direction="up">
               <div className="bg-[#F4F4F0] p-3.5 border border-[#EAE6DF]">
                 <span className="text-[10px] font-semibold uppercase tracking-wider text-[#635E52] block">Entry Point</span>
                 <span className="font-serif text-xl text-[#141310] font-normal mt-1 block">From £48</span>
@@ -163,46 +170,50 @@ export default function UKSlipInAlbumsPage() {
                 <span className="font-serif text-xl text-[#141310] font-normal mt-1 block">Royal Mail</span>
                 <span className="text-[11px] text-[#4A463F] mt-0.5 block">Special Delivery Tracked</span>
               </div>
-            </div>
+            </StaggerBoxes>
 
             {/* CTA Cluster */}
-            <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-              <a
-                href="#sample-pack"
-                className="px-8 py-4 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest text-center hover:bg-[#292724] transition-colors"
-              >
-                Order UK Studio Sample Folio (£35)
-              </a>
-              <a
-                href="#apertures"
-                className="px-8 py-4 bg-[#E9E8E4] text-[#141310] text-xs font-semibold uppercase tracking-widest text-center hover:bg-[#DBDAD6] transition-colors"
-              >
-                Explore Aperture Formats ↓
-              </a>
-            </div>
+            <RevealOnScroll direction="up" delay={0.28} distance={16}>
+              <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                <a
+                  href="#sample-pack"
+                  className="px-8 py-4 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest text-center hover:bg-[#292724] transition-colors"
+                >
+                  Order UK Studio Sample Folio (£35)
+                </a>
+                <a
+                  href="#apertures"
+                  className="px-8 py-4 bg-[#E9E8E4] text-[#141310] text-xs font-semibold uppercase tracking-widest text-center hover:bg-[#DBDAD6] transition-colors"
+                >
+                  Explore Aperture Formats ↓
+                </a>
+              </div>
+            </RevealOnScroll>
           </div>
 
           {/* Right Column: Visual Composition with Annotation Card */}
           <div className="lg:col-span-5 relative mt-8 lg:mt-0">
-            <div className="relative bg-[#EFEEEA] p-4 border border-[#EAE6DF]">
-              <img
-                src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1000&q=85"
-                alt="Open luxury British slip-in matted photo album wrapped in oatmeal woven heritage linen showing precision diamond bevel-cut portrait mat."
-                className="w-full h-[480px] sm:h-[520px] object-cover"
-              />
-              {/* Tactile Annotation Card */}
-              <div className="absolute -bottom-6 -left-4 sm:-left-6 bg-[#FFFFFF] p-5 max-w-xs shadow-lg border border-[#EAE6DF]">
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-[#635E52] block">
-                  Specimen 08 / Mayfair Edition
-                </span>
-                <p className="font-serif text-[16px] text-[#141310] mt-1 font-normal leading-snug">
-                  Oatmeal Linen with 45° Ivory Bevel Core
-                </p>
-                <p className="text-[12px] text-[#4A463F] mt-1.5 leading-relaxed">
-                  Includes hidden slide-in perimeter slot, preventing print abrasion or glue distortion.
-                </p>
+            <RevealOnScroll direction="right" delay={0.2} distance={28}>
+              <div className="relative bg-[#EFEEEA] p-4 border border-[#EAE6DF]">
+                <img
+                  src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1000&q=85"
+                  alt="Open luxury British slip-in matted photo album wrapped in oatmeal woven heritage linen showing precision diamond bevel-cut portrait mat."
+                  className="w-full h-[480px] sm:h-[520px] object-cover"
+                />
+                {/* Tactile Annotation Card */}
+                <div className="absolute -bottom-6 -left-4 sm:-left-6 bg-[#FFFFFF] p-5 max-w-xs shadow-lg border border-[#EAE6DF]">
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[#635E52] block">
+                    Specimen 08 / Mayfair Edition
+                  </span>
+                  <p className="font-serif text-[16px] text-[#141310] mt-1 font-normal leading-snug">
+                    Oatmeal Linen with 45° Ivory Bevel Core
+                  </p>
+                  <p className="text-[12px] text-[#4A463F] mt-1.5 leading-relaxed">
+                    Includes hidden slide-in perimeter slot, preventing print abrasion or glue distortion.
+                  </p>
+                </div>
               </div>
-            </div>
+            </RevealOnScroll>
           </div>
         </div>
       </section>
@@ -215,16 +226,18 @@ export default function UKSlipInAlbumsPage() {
               <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52]">
                 Craft Engineering
               </span>
-              <h2 className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal mt-2">
+              <TextReveal as="h2" direction="left" delay={0.06} className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal mt-2">
                 The British Portrait Studio Advantage
-              </h2>
+              </TextReveal>
             </div>
-            <p className="text-sm md:text-base text-[#4A463F] max-w-md leading-relaxed">
-              Engineered for high-end In-Person Sales (IPS) sessions where tactile permanence, instantaneous client print insertion, and heirloom display define your studio tier.
-            </p>
+            <RevealOnScroll direction="right" delay={0.12}>
+              <p className="text-sm md:text-base text-[#4A463F] max-w-md leading-relaxed">
+                Engineered for high-end In-Person Sales (IPS) sessions where tactile permanence, instantaneous client print insertion, and heirloom display define your studio tier.
+              </p>
+            </RevealOnScroll>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <StaggerBoxes className="grid grid-cols-1 md:grid-cols-3 gap-8" stagger={0.1} direction="up">
             {/* Pillar 01 */}
             <div className="bg-[#FAF9F5] p-8 flex flex-col justify-between border border-[#EAE6DF]">
               <div>
@@ -269,7 +282,7 @@ export default function UKSlipInAlbumsPage() {
                 <p className="text-[12px] text-[#4A463F] mt-1">Rigid 1200gsm binder board cores with layflat stability.</p>
               </div>
             </div>
-          </div>
+          </StaggerBoxes>
         </div>
       </section>
 
@@ -281,16 +294,18 @@ export default function UKSlipInAlbumsPage() {
               <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52]">
                 Studio Catalog
               </span>
-              <h2 className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal mt-2">
+              <TextReveal as="h2" direction="left" delay={0.06} className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal mt-2">
                 Curated UK Aperture Standards
-              </h2>
+              </TextReveal>
             </div>
-            <p className="text-sm md:text-base text-[#4A463F] max-w-lg leading-relaxed">
-              Precision standard dimensions calibrated directly to British lab fine-art cut sizes. Supplied fully assembled with protective interleaved tissue.
-            </p>
+            <RevealOnScroll direction="right" delay={0.12}>
+              <p className="text-sm md:text-base text-[#4A463F] max-w-lg leading-relaxed">
+                Precision standard dimensions calibrated directly to British lab fine-art cut sizes. Supplied fully assembled with protective interleaved tissue.
+              </p>
+            </RevealOnScroll>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <StaggerBoxes className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" stagger={0.08} direction="up">
             {APERTURE_FORMATS.map((fmt) => (
               <div key={fmt.id} className="bg-[#F4F4F0] p-6 flex flex-col justify-between border border-[#EAE6DF] hover:border-[#141310] transition-colors">
                 <div>
@@ -330,7 +345,7 @@ export default function UKSlipInAlbumsPage() {
                 </div>
               </div>
             ))}
-          </div>
+          </StaggerBoxes>
         </div>
       </section>
 
@@ -344,9 +359,9 @@ export default function UKSlipInAlbumsPage() {
                 <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52]">
                   Sensory Materials
                 </span>
-                <h2 className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal mt-2 mb-4">
+                <TextReveal as="h2" direction="left" delay={0.06} className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal mt-2 mb-4">
                   British Heritage Cloth &amp; Bespoke Imprints
-                </h2>
+                </TextReveal>
                 <p className="text-sm text-[#4A463F] leading-relaxed">
                   Every slip-in tome is wrapped by hand in our workshop using heavy-gauge bookmaking textiles selected for longevity in temperate UK climates. Finished with hot-stamped magnesium studio dies.
                 </p>
@@ -367,7 +382,7 @@ export default function UKSlipInAlbumsPage() {
             </div>
 
             {/* Right Column: Swatches Bento */}
-            <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <StaggerBoxes className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6" stagger={0.12} direction="up">
               {/* English Bookcloth */}
               <div className="bg-[#FAF9F5] p-6 border border-[#EAE6DF]">
                 <div className="flex items-center justify-between mb-4">
@@ -466,7 +481,7 @@ export default function UKSlipInAlbumsPage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </StaggerBoxes>
           </div>
         </div>
       </section>
@@ -478,15 +493,17 @@ export default function UKSlipInAlbumsPage() {
             <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52]">
               Studio Trade Program
             </span>
-            <h2 className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal mt-2 mb-4">
+            <TextReveal as="h2" direction="up" delay={0.06} className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal mt-2 mb-4">
               UK Wholesale Studio Bundles
-            </h2>
-            <p className="text-sm md:text-base text-[#4A463F] leading-relaxed">
-              Tiered wholesale pricing calibrated to keep your In-Person Sales margins above 75%. All orders clear through UK logistics with zero customs paperwork.
-            </p>
+            </TextReveal>
+            <RevealOnScroll direction="up" delay={0.12}>
+              <p className="text-sm md:text-base text-[#4A463F] leading-relaxed">
+                Tiered wholesale pricing calibrated to keep your In-Person Sales margins above 75%. All orders clear through UK logistics with zero customs paperwork.
+              </p>
+            </RevealOnScroll>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+          <StaggerBoxes className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch" stagger={0.1} direction="up">
             {/* Bundle 1 */}
             <div className="bg-[#F4F4F0] p-8 flex flex-col justify-between border border-[#EAE6DF]">
               <div>
@@ -600,7 +617,7 @@ export default function UKSlipInAlbumsPage() {
                 Order Commercial Tier (£850)
               </button>
             </div>
-          </div>
+          </StaggerBoxes>
         </div>
       </section>
 
@@ -611,9 +628,9 @@ export default function UKSlipInAlbumsPage() {
             <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52]">
               Clarity &amp; Compliance
             </span>
-            <h2 className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal mt-2">
+            <TextReveal as="h2" direction="left" delay={0.06} className="font-serif text-2xl sm:text-4xl text-[#141310] font-normal mt-2">
               British Studio Logistics FAQ
-            </h2>
+            </TextReveal>
           </div>
 
           <div className="space-y-4">
@@ -641,37 +658,39 @@ export default function UKSlipInAlbumsPage() {
       {/* 8. Final Atelier CTA */}
       <section className="w-full bg-[#292724] text-[#FAF9F5] py-20 px-5 md:px-16">
         <div className="max-w-[1440px] mx-auto">
-          <div className="bg-[#FFFFFF]/5 p-8 md:p-14 border border-[#FFFFFF]/10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
-            <div className="max-w-2xl space-y-3">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#CDC6B7]">
-                Next Step For Your Studio
-              </span>
-              <h2 className="font-serif text-2xl sm:text-4xl text-[#FAF9F5] font-normal">
-                Elevate Your British Portrait Presentation
-              </h2>
-              <p className="text-base text-[#CDC6B7] leading-relaxed">
-                Order your bespoke studio sample folio and tactile cloth swatch book today. Delivered directly to your UK studio with complimentary debossing proofing.
-              </p>
+          <RevealOnScroll direction="up" delay={0.06} distance={24}>
+            <div className="bg-[#FFFFFF]/5 p-8 md:p-14 border border-[#FFFFFF]/10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+              <div className="max-w-2xl space-y-3">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#CDC6B7]">
+                  Next Step For Your Studio
+                </span>
+                <TextReveal as="h2" direction="left" delay={0.08} className="font-serif text-2xl sm:text-4xl text-[#FAF9F5] font-normal">
+                  Elevate Your British Portrait Presentation
+                </TextReveal>
+                <p className="text-base text-[#CDC6B7] leading-relaxed">
+                  Order your bespoke studio sample folio and tactile cloth swatch book today. Delivered directly to your UK studio with complimentary debossing proofing.
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
+                <button
+                  type="button"
+                  onClick={() => handleEnquire('Studio Sample Folio (£35)')}
+                  className="px-8 py-4 bg-[#FAF9F5] text-[#141310] text-xs font-semibold uppercase tracking-widest text-center hover:bg-[#EAE2D2] transition-colors"
+                >
+                  Order Sample Folio (£35)
+                </button>
+                <a
+                  href="https://wa.me/919322254315"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-8 py-4 bg-transparent border border-[#FAF9F5]/30 text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest text-center hover:bg-[#FAF9F5]/10 transition-colors flex items-center justify-center gap-2"
+                >
+                  <MessageSquare size={14} />
+                  <span>Speak to UK Concierge</span>
+                </a>
+              </div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-              <button
-                type="button"
-                onClick={() => handleEnquire('Studio Sample Folio (£35)')}
-                className="px-8 py-4 bg-[#FAF9F5] text-[#141310] text-xs font-semibold uppercase tracking-widest text-center hover:bg-[#EAE2D2] transition-colors"
-              >
-                Order Sample Folio (£35)
-              </button>
-              <a
-                href="https://wa.me/919322254315"
-                target="_blank"
-                rel="noreferrer"
-                className="px-8 py-4 bg-transparent border border-[#FAF9F5]/30 text-[#FAF9F5] text-xs font-semibold uppercase tracking-widest text-center hover:bg-[#FAF9F5]/10 transition-colors flex items-center justify-center gap-2"
-              >
-                <MessageSquare size={14} />
-                <span>Speak to UK Concierge</span>
-              </a>
-            </div>
-          </div>
+          </RevealOnScroll>
         </div>
       </section>
     </div>

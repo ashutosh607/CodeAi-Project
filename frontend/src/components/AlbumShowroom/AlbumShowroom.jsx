@@ -316,26 +316,33 @@ export default function AlbumShowroom({ onSelectProduct }) {
     // Set initial closed state: Rig centered as a closed book (x: -25%), Left wing folded inside spine, Cover closed at 0deg
     gsap.set(rig, { x: '-25%', rotateY: -12, rotateX: 3.5, rotateZ: 0.5, scale: 1 });
     gsap.set(cover, { rotateY: 0, skewY: 0, display: 'block', zIndex: 60 });
-    if (frontFace) gsap.set(frontFace, { opacity: 1, visibility: 'visible' });
-    if (backFace) gsap.set(backFace, { opacity: 0, visibility: 'hidden' });
+    if (frontFace) {
+      frontFace.style.display = 'block';
+      gsap.set(frontFace, { opacity: 1, visibility: 'visible' });
+    }
+    if (backFace) {
+      backFace.style.display = 'none';
+      gsap.set(backFace, { opacity: 0, visibility: 'hidden' });
+    }
     gsap.set(leftWing, { opacity: 0, scaleX: 0.15, transformOrigin: 'right center' });
     if (shadow) gsap.set(shadow, { width: '220px', maxWidth: '240px', opacity: 0.28 });
 
     const tl = gsap.timeline({
       onComplete: () => {
         // Dock cover and hide leaf so left spread is 100% sharp and interactive
+        if (cover) cover.style.display = 'none';
         gsap.set(cover, { display: 'none' });
       }
     });
 
-    // 1. The whole book centers and levels
+    // 1. The whole book centers and levels with synchronized power3.inOut
     tl.to(rig, {
       x: '0%',
       rotateY: 0,
       rotateX: 3,
       rotateZ: 0,
       duration: 1.15,
-      ease: 'power2.inOut'
+      ease: 'power3.inOut'
     }, 0);
 
     // 2. Ambient shadow expands to encompass full open spread
@@ -345,7 +352,7 @@ export default function AlbumShowroom({ onSelectProduct }) {
         maxWidth: '480px',
         opacity: 0.4,
         duration: 1.15,
-        ease: 'power2.inOut'
+        ease: 'power3.inOut'
       }, 0);
     }
 
@@ -353,20 +360,44 @@ export default function AlbumShowroom({ onSelectProduct }) {
     tl.to(leftWing, {
       opacity: 1,
       scaleX: 1,
-      duration: 1.0,
-      ease: 'power2.out'
-    }, 0.1);
+      duration: 1.1,
+      ease: 'power3.inOut'
+    }, 0.05);
 
     // 4. Front cover leaf swings 180 degrees from spine hinge
     tl.to(cover, {
       rotateY: -180,
       duration: 1.15,
-      ease: 'power3.inOut'
+      ease: 'power3.inOut',
+      onUpdate: () => {
+        const curRot = parseFloat(gsap.getProperty(cover, 'rotateY')) || 0;
+        // Midpoint face toggle: when passing perpendicular (-88deg), toggle display
+        // to prevent reversed/mirrored typography
+        if (curRot <= -88) {
+          if (frontFace && frontFace.style.display !== 'none') {
+            frontFace.style.display = 'none';
+          }
+          if (backFace && backFace.style.display !== 'block') {
+            backFace.style.display = 'block';
+            gsap.set(backFace, { opacity: 1, visibility: 'visible' });
+          }
+        } else {
+          if (frontFace && frontFace.style.display !== 'block') {
+            frontFace.style.display = 'block';
+            gsap.set(frontFace, { opacity: 1, visibility: 'visible' });
+          }
+          if (backFace && backFace.style.display !== 'none') {
+            backFace.style.display = 'none';
+          }
+        }
+      }
     }, 0);
 
-    // Midpoint face toggle: when rotation passes 90deg perpendicular, switch front/back faces
-    if (frontFace) tl.set(frontFace, { opacity: 0, visibility: 'hidden' }, 0.52);
-    if (backFace) tl.set(backFace, { opacity: 1, visibility: 'visible' }, 0.52);
+    // Deterministic timeline face swap at exact perpendicular midpoint (t = 0.55s)
+    if (frontFace) tl.set(frontFace, { display: 'none', visibility: 'hidden' }, 0.55);
+    if (backFace) tl.set(backFace, { display: 'block', visibility: 'visible', opacity: 1 }, 0.55);
+    // At swing completion, hide cover leaf completely
+    tl.set(cover, { display: 'none' }, 1.15);
 
     // 5. Authentic cover flexion during swing
     tl.to(cover, { skewY: -2.6, duration: 0.52, ease: 'power2.in' }, 0);
@@ -803,13 +834,14 @@ export default function AlbumShowroom({ onSelectProduct }) {
                       {/* FRONT FACE OF COVER (Facing user when closed at rotateY: 0deg) */}
                       <div
                         ref={showroomCoverFrontRef}
-                        className="absolute inset-0 backface-hidden overflow-hidden rounded-r-xs flex items-center justify-center p-3 sm:p-5 shadow-2xl transition-colors duration-500"
+                        className="absolute inset-0 backface-hidden rounded-r-xs flex items-center justify-center p-3 sm:p-5 shadow-2xl transition-colors duration-500"
                         style={{
                           backgroundColor: activeAlbum.coverColor,
                           boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.15), 0 16px 36px rgba(32,30,27,0.22)',
                           backfaceVisibility: 'hidden',
                           WebkitBackfaceVisibility: 'hidden',
-                          transform: 'rotateY(0deg) translateZ(1px)'
+                          transform: 'rotateY(0deg) translateZ(1px)',
+                          display: 'block'
                         }}
                       >
                         <div
@@ -831,11 +863,12 @@ export default function AlbumShowroom({ onSelectProduct }) {
                       {/* BACK FACE OF COVER (Inside spread Plate 01 resting on left stack at rotateY: -180deg) */}
                       <div
                         ref={showroomCoverBackRef}
-                        className="absolute inset-0 backface-hidden overflow-hidden rounded-l-xs shadow-2xl"
+                        className="absolute inset-0 backface-hidden rounded-l-xs shadow-2xl"
                         style={{
                           transform: 'rotateY(180deg) translateZ(1px)',
                           backfaceVisibility: 'hidden',
-                          WebkitBackfaceVisibility: 'hidden'
+                          WebkitBackfaceVisibility: 'hidden',
+                          display: 'none'
                         }}
                       >
                         <AlbumInteriorPage

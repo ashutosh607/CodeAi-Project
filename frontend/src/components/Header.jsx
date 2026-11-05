@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import gsap from 'gsap';
 import {
   ChevronDown,
   Menu,
@@ -9,6 +10,7 @@ import {
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import AnnouncementTicker from './AnnouncementTicker';
+import TextReveal from './motion/TextReveal';
 
 export default function Header({ onOpenPayOnline }) {
   const [activeMenu, setActiveMenu] = useState(null); // 'albums' | 'services' | 'uk' | 'about' | 'resources'
@@ -17,6 +19,7 @@ export default function Header({ onOpenPayOnline }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const timeoutRef = useRef(null);
   const navRef = useRef(null);
+  const megaMenuPaneRef = useRef(null);
   const location = useLocation();
 
   // Scroll detection for sticky elevated styling
@@ -27,6 +30,77 @@ export default function Header({ onOpenPayOnline }) {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // GSAP Smooth Blur-to-Clear Mega Menu Animation
+  useEffect(() => {
+    if (!activeMenu || !megaMenuPaneRef.current) return;
+    const pane = megaMenuPaneRef.current;
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return;
+
+    const ctx = gsap.context(() => {
+      // 1. Dropdown Pane Entrance
+      gsap.fromTo(
+        pane,
+        { opacity: 0, y: -8, filter: 'blur(8px)' },
+        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.32, ease: 'power3.out' }
+      );
+
+      // 2. Specific Submenu Staggered Entrances
+      if (activeMenu === 'uk') {
+        const leftCol = pane.querySelector('.uk-menu-left');
+        const items = pane.querySelectorAll('.uk-menu-item');
+        if (leftCol) {
+          gsap.fromTo(
+            leftCol,
+            { x: -28, opacity: 0, filter: 'blur(6px)' },
+            { x: 0, opacity: 1, filter: 'blur(0px)', duration: 0.44, delay: 0.04, ease: 'power3.out' }
+          );
+        }
+        if (items.length > 0) {
+          gsap.fromTo(
+            items,
+            { y: 16, x: 12, opacity: 0, filter: 'blur(6px)' },
+            {
+              y: 0,
+              x: 0,
+              opacity: 1,
+              filter: 'blur(0px)',
+              duration: 0.44,
+              stagger: 0.035,
+              delay: 0.06,
+              ease: 'power3.out',
+              onComplete: () => {
+                gsap.set(items, { clearProps: 'filter,transform' });
+              }
+            }
+          );
+        }
+      } else {
+        const genericCards = pane.querySelectorAll('.col-span-3, .col-span-2, .grid > a, .grid > div');
+        if (genericCards.length > 0) {
+          gsap.fromTo(
+            genericCards,
+            { y: 14, opacity: 0, filter: 'blur(6px)' },
+            {
+              y: 0,
+              opacity: 1,
+              filter: 'blur(0px)',
+              duration: 0.42,
+              stagger: 0.035,
+              delay: 0.05,
+              ease: 'power3.out',
+              onComplete: () => {
+                gsap.set(genericCards, { clearProps: 'filter,transform' });
+              }
+            }
+          );
+        }
+      }
+    }, pane);
+
+    return () => ctx.revert();
+  }, [activeMenu]);
 
   const handleMouseEnter = (menuKey) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -309,6 +383,7 @@ export default function Header({ onOpenPayOnline }) {
         {/* Full-Width Luxury Mega Menu Dropdown Pane */}
         {activeMenu && (
           <div
+            ref={megaMenuPaneRef}
             className="atelier-dropdown-full-pane"
             onMouseEnter={() => handleMouseEnter(activeMenu)}
             onMouseLeave={handleMouseLeave}
@@ -518,7 +593,7 @@ export default function Header({ onOpenPayOnline }) {
               {/* 3. FOR UK MEGA MENU */}
               {activeMenu === 'uk' && (
                 <div className="flex gap-10 items-stretch">
-                  <div className="w-1/3 pr-8 border-r border-[#DED5C9] flex flex-col justify-between">
+                  <div className="uk-menu-left w-1/3 pr-8 border-r border-[#DED5C9] flex flex-col justify-between">
                     <div>
                       <div className="flex items-center gap-2 mb-2">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#B99A69]"></span>
@@ -526,9 +601,15 @@ export default function Header({ onOpenPayOnline }) {
                           United Kingdom Liaison Desk
                         </span>
                       </div>
-                      <h4 className="font-serif text-[22px] text-[#201E1B] font-normal leading-snug mb-3">
+                      <TextReveal
+                        as="h4"
+                        direction="left"
+                        playOnMount={true}
+                        delay={0.08}
+                        className="font-serif text-[22px] text-[#201E1B] font-normal leading-snug mb-3"
+                      >
                         Dedicated Logistics &amp; Sterling Billing
-                      </h4>
+                      </TextReveal>
                       <p className="text-[12.5px] text-[#777066] leading-relaxed mb-5">
                         Duty-paid priority air transit directly to studios across London, Edinburgh, Manchester, and the Cotswolds. Seamless ordering with zero customs delays and transparent GBP invoicing.
                       </p>
@@ -536,47 +617,47 @@ export default function Header({ onOpenPayOnline }) {
                     <Link
                       to="/for-uk"
                       onClick={() => setActiveMenu(null)}
-                      className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.16em] font-semibold text-[#201E1B] hover:text-[#B99A69] transition-colors"
+                      className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.16em] font-semibold text-[#201E1B] hover:text-[#B99A69] transition-colors group"
                     >
                       <span>Explore Full UK Desk Overview</span>
-                      <ArrowRight size={12} />
+                      <ArrowRight size={12} className="transition-transform group-hover:translate-x-1 text-[#B99A69]" />
                     </Link>
                   </div>
 
                   <div className="w-2/3 grid grid-cols-3 gap-y-4 gap-x-6 text-[13px] text-[#201E1B]">
-                    <Link to="/for-uk/flush-mount-album-uk" onClick={() => setActiveMenu(null)} className="group p-3 hover:bg-[#EEE7DC]/40 rounded-sm transition-colors block">
+                    <Link to="/for-uk/flush-mount-album-uk" onClick={() => setActiveMenu(null)} className="uk-menu-item group p-3 hover:bg-[#EEE7DC]/50 rounded-sm transition-all block border border-transparent hover:border-[#DED5C9]">
                       <span className="font-medium group-hover:text-[#B99A69] transition-colors block">Flush Mount for UK</span>
                       <span className="text-[11px] text-[#777066] block mt-0.5">Continuous spreads for UK wedding studios</span>
                     </Link>
-                    <Link to="/for-uk/luxury-albums-uk" onClick={() => setActiveMenu(null)} className="group p-3 hover:bg-[#EEE7DC]/40 rounded-sm transition-colors block">
+                    <Link to="/for-uk/luxury-albums-uk" onClick={() => setActiveMenu(null)} className="uk-menu-item group p-3 hover:bg-[#EEE7DC]/50 rounded-sm transition-all block border border-transparent hover:border-[#DED5C9]">
                       <span className="font-medium group-hover:text-[#B99A69] transition-colors block">Luxury Albums for UK</span>
                       <span className="text-[11px] text-[#777066] block mt-0.5">Full-grain leather with British hallmarked foils</span>
                     </Link>
-                    <Link to="/for-uk/box-and-bags-uk" onClick={() => setActiveMenu(null)} className="group p-3 hover:bg-[#EEE7DC]/40 rounded-sm transition-colors block">
+                    <Link to="/for-uk/box-and-bags-uk" onClick={() => setActiveMenu(null)} className="uk-menu-item group p-3 hover:bg-[#EEE7DC]/50 rounded-sm transition-all block border border-transparent hover:border-[#DED5C9]">
                       <span className="font-medium group-hover:text-[#B99A69] transition-colors block">Box &amp; Bags for UK</span>
                       <span className="text-[11px] text-[#777066] block mt-0.5">Handmade linen caskets &amp; velvet totes</span>
                     </Link>
-                    <Link to="/for-uk/slip-in-albums-uk" onClick={() => setActiveMenu(null)} className="group p-3 hover:bg-[#EEE7DC]/40 rounded-sm transition-colors block">
+                    <Link to="/for-uk/slip-in-albums-uk" onClick={() => setActiveMenu(null)} className="uk-menu-item group p-3 hover:bg-[#EEE7DC]/50 rounded-sm transition-all block border border-transparent hover:border-[#DED5C9]">
                       <span className="font-medium group-hover:text-[#B99A69] transition-colors block">Slip-in Albums for UK</span>
                       <span className="text-[11px] text-[#777066] block mt-0.5">Classic portrait folios and matted albums</span>
                     </Link>
-                    <Link to="/for-uk/photo-book-uk" onClick={() => setActiveMenu(null)} className="group p-3 hover:bg-[#EEE7DC]/40 rounded-sm transition-colors block">
+                    <Link to="/for-uk/photo-book-uk" onClick={() => setActiveMenu(null)} className="uk-menu-item group p-3 hover:bg-[#EEE7DC]/50 rounded-sm transition-all block border border-transparent hover:border-[#DED5C9]">
                       <span className="font-medium group-hover:text-[#B99A69] transition-colors block">Photo Book for UK</span>
                       <span className="text-[11px] text-[#777066] block mt-0.5">Lightweight fine art volumes &amp; parent copies</span>
                     </Link>
-                    <Link to="/for-uk/image-editing-uk" onClick={() => setActiveMenu(null)} className="group p-3 hover:bg-[#EEE7DC]/40 rounded-sm transition-colors block">
+                    <Link to="/for-uk/image-editing-uk" onClick={() => setActiveMenu(null)} className="uk-menu-item group p-3 hover:bg-[#EEE7DC]/50 rounded-sm transition-all block border border-transparent hover:border-[#DED5C9]">
                       <span className="font-medium group-hover:text-[#B99A69] transition-colors block">Image Editing for UK</span>
                       <span className="text-[11px] text-[#777066] block mt-0.5">Fast UK-timezone turnaround retouching</span>
                     </Link>
-                    <Link to="/for-uk/photography-uk" onClick={() => setActiveMenu(null)} className="group p-3 hover:bg-[#EEE7DC]/40 rounded-sm transition-colors block">
+                    <Link to="/for-uk/photography-uk" onClick={() => setActiveMenu(null)} className="uk-menu-item group p-3 hover:bg-[#EEE7DC]/50 rounded-sm transition-all block border border-transparent hover:border-[#DED5C9]">
                       <span className="font-medium group-hover:text-[#B99A69] transition-colors block">Photography for UK</span>
                       <span className="text-[11px] text-[#777066] block mt-0.5">Associate shooter support &amp; second shooters</span>
                     </Link>
-                    <Link to="/for-uk#turnaround" onClick={() => setActiveMenu(null)} className="group p-3 hover:bg-[#EEE7DC]/40 rounded-sm transition-colors block">
+                    <Link to="/for-uk#turnaround" onClick={() => setActiveMenu(null)} className="uk-menu-item group p-3 hover:bg-[#EEE7DC]/50 rounded-sm transition-all block border border-transparent hover:border-[#DED5C9]">
                       <span className="font-medium group-hover:text-[#B99A69] transition-colors block">UK Turnaround Schedules</span>
                       <span className="text-[11px] text-[#777066] block mt-0.5">Express 10-14 day doorstep delivery</span>
                     </Link>
-                    <Link to="/contact" onClick={() => setActiveMenu(null)} className="group p-3 bg-[#EEE7DC]/60 hover:bg-[#EEE7DC] rounded-sm transition-colors block border border-[#DED5C9]">
+                    <Link to="/contact" onClick={() => setActiveMenu(null)} className="uk-menu-item group p-3 bg-[#EEE7DC]/70 hover:bg-[#EEE7DC] rounded-sm transition-all block border border-[#DED5C9] hover:border-[#B99A69]">
                       <span className="font-medium text-[#B99A69] block">Request UK Sample Kit</span>
                       <span className="text-[11px] text-[#777066] block mt-0.5">Includes swatches &amp; paper specimen book</span>
                     </Link>

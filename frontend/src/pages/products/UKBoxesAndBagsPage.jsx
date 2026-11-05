@@ -13,6 +13,9 @@ import {
   Lock, 
   Sliders 
 } from 'lucide-react';
+import TextReveal from '../../components/motion/TextReveal';
+import RevealOnScroll from '../../components/motion/RevealOnScroll';
+import StaggerBoxes from '../../components/motion/StaggerBoxes';
 
 export default function UKBoxesAndBagsPage() {
   const navigate = useNavigate();
@@ -142,37 +145,48 @@ export default function UKBoxesAndBagsPage() {
       <section className="w-full py-12 md:py-20 px-4 md:px-16 border-b border-[#EAE6DF]">
         <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           <div className="lg:col-span-7 flex flex-col items-start">
-            <div className="inline-flex items-center gap-2 mb-6 px-3.5 py-1.5 bg-[#EFEEEA] text-[#141310] text-[11px] font-semibold uppercase tracking-[0.18em]">
-              <Package size={14} className="text-[#635E52]" />
-              <span>Archival Enclosures • UK Dispatch • Hand-Milled Timber &amp; Velvet</span>
-            </div>
+            <RevealOnScroll direction="down" delay={0.02} distance={12}>
+              <div className="inline-flex items-center gap-2 mb-6 px-3.5 py-1.5 bg-[#EFEEEA] text-[#141310] text-[11px] font-semibold uppercase tracking-[0.18em]">
+                <Package size={14} className="text-[#635E52]" />
+                <span>Archival Enclosures • UK Dispatch • Hand-Milled Timber &amp; Velvet</span>
+              </div>
+            </RevealOnScroll>
 
-            <h1 className="font-serif text-3xl md:text-5xl lg:text-[54px] text-[#141310] leading-[1.12] tracking-tight mb-6 font-normal">
+            <TextReveal
+              as="h1"
+              direction="up"
+              delay={0.06}
+              className="font-serif text-3xl md:text-5xl lg:text-[54px] text-[#141310] leading-[1.12] tracking-tight mb-6 font-normal"
+            >
               Architectural Keepsake Boxes &amp; Velvet Folio Enclosures for UK Studios
-            </h1>
+            </TextReveal>
 
-            <p className="text-base md:text-lg text-[#4A463F] max-w-2xl mb-8 leading-relaxed">
-              Handcrafted timber chests, Solander archival clamshell cases, and tailored organic linen slipcases milled to exact millimetre tolerances for British wedding photographers. Bespoke debossing, magnetic flush closures, and zero-duty sterling billing.
-            </p>
+            <RevealOnScroll direction="up" delay={0.14} distance={16}>
+              <p className="text-base md:text-lg text-[#4A463F] max-w-2xl mb-8 leading-relaxed">
+                Handcrafted timber chests, Solander archival clamshell cases, and tailored organic linen slipcases milled to exact millimetre tolerances for British wedding photographers. Bespoke debossing, magnetic flush closures, and zero-duty sterling billing.
+              </p>
+            </RevealOnScroll>
 
-            <div className="flex flex-wrap items-center gap-4">
-              <a
-                href="#order-swatch-kit"
-                className="px-8 py-3.5 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-[0.16em] hover:bg-[#292724] transition-colors inline-flex items-center gap-2"
-              >
-                <span>Order UK Studio Sample Kit</span>
-                <ArrowRight size={14} />
-              </a>
-              <a
-                href="#archetypes"
-                className="px-8 py-3.5 bg-[#EFEEEA] text-[#141310] text-xs font-semibold uppercase tracking-[0.16em] hover:bg-[#EAE6DF] transition-colors"
-              >
-                Explore 3 Archetypes
-              </a>
-            </div>
+            <RevealOnScroll direction="up" delay={0.2} distance={18}>
+              <div className="flex flex-wrap items-center gap-4">
+                <a
+                  href="#order-swatch-kit"
+                  className="px-8 py-3.5 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-[0.16em] hover:bg-[#292724] transition-colors inline-flex items-center gap-2"
+                >
+                  <span>Order UK Studio Sample Kit</span>
+                  <ArrowRight size={14} />
+                </a>
+                <a
+                  href="#archetypes"
+                  className="px-8 py-3.5 bg-[#EFEEEA] text-[#141310] text-xs font-semibold uppercase tracking-[0.16em] hover:bg-[#EAE6DF] transition-colors"
+                >
+                  Explore 3 Archetypes
+                </a>
+              </div>
+            </RevealOnScroll>
 
             {/* Quick Metrics */}
-            <div className="grid grid-cols-3 gap-6 mt-10 pt-6 w-full max-w-lg bg-[#F4F4F0] p-6 border border-[#EAE6DF]">
+            <StaggerBoxes className="grid grid-cols-3 gap-6 mt-10 pt-6 w-full max-w-lg bg-[#F4F4F0] p-6 border border-[#EAE6DF]" stagger={0.1} direction="up">
               <div>
                 <span className="text-[10px] font-semibold uppercase tracking-wider text-[#635E52]">Tier Entry</span>
                 <p className="font-serif text-xl text-[#141310] mt-1 font-bold">From £65</p>
@@ -188,24 +202,26 @@ export default function UKBoxesAndBagsPage() {
                 <p className="font-serif text-xl text-[#141310] mt-1 font-bold">£240</p>
                 <span className="text-xs text-[#4A463F]">American Walnut</span>
               </div>
-            </div>
+            </StaggerBoxes>
           </div>
 
           {/* Hero Image */}
           <div className="lg:col-span-5 relative">
-            <div className="relative bg-[#E9E8E4] p-4 border border-[#EAE6DF] shadow-xl">
-              <img
-                src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=1200&q=85"
-                alt="American walnut wedding album keepsake box with velvet interior"
-                className="w-full h-[480px] object-cover"
-              />
-              <div className="absolute -bottom-4 -left-4 bg-[#141310] text-[#FAF9F5] p-5 max-w-xs shadow-xl hidden md:block border border-[#4A463F]">
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-[#CCC5BC] block mb-1">British Atelier Standard</span>
-                <p className="text-xs leading-snug text-[#EAE6DF]">
-                  Calibrated for 10x10, 12x12, and 14x10 UK heirloom volumes with optional recessed cinema USB wells.
-                </p>
+            <RevealOnScroll direction="right" delay={0.14} distance={26}>
+              <div className="relative bg-[#E9E8E4] p-4 border border-[#EAE6DF] shadow-xl">
+                <img
+                  src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=1200&q=85"
+                  alt="American walnut wedding album keepsake box with velvet interior"
+                  className="w-full h-[480px] object-cover"
+                />
+                <div className="absolute -bottom-4 -left-4 bg-[#141310] text-[#FAF9F5] p-5 max-w-xs shadow-xl hidden md:block border border-[#4A463F]">
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[#CCC5BC] block mb-1">British Atelier Standard</span>
+                  <p className="text-xs leading-snug text-[#EAE6DF]">
+                    Calibrated for 10x10, 12x12, and 14x10 UK heirloom volumes with optional recessed cinema USB wells.
+                  </p>
+                </div>
               </div>
-            </div>
+            </RevealOnScroll>
           </div>
         </div>
       </section>
@@ -215,17 +231,28 @@ export default function UKBoxesAndBagsPage() {
         <div className="max-w-[1440px] mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52] block mb-2">Portfolio Categorisation</span>
-              <h2 className="font-serif text-3xl md:text-4xl text-[#141310] font-normal">Three Enclosure Archetypes for the British Market</h2>
+              <RevealOnScroll direction="down" delay={0.02} distance={12}>
+                <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52] block mb-2">Portfolio Categorisation</span>
+              </RevealOnScroll>
+              <TextReveal
+                as="h2"
+                direction="left"
+                delay={0.06}
+                className="font-serif text-3xl md:text-4xl text-[#141310] font-normal"
+              >
+                Three Enclosure Archetypes for the British Market
+              </TextReveal>
             </div>
-            <p className="text-sm md:text-base text-[#4A463F] max-w-md leading-relaxed">
-              Conceived for Cotswolds country weddings, Scottish highland celebrations, and London hotel galas. Engineered to protect fine-art prints for over a century.
-            </p>
+            <RevealOnScroll direction="right" delay={0.12} distance={16}>
+              <p className="text-sm md:text-base text-[#4A463F] max-w-md leading-relaxed">
+                Conceived for Cotswolds country weddings, Scottish highland celebrations, and London hotel galas. Engineered to protect fine-art prints for over a century.
+              </p>
+            </RevealOnScroll>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <StaggerBoxes className="grid grid-cols-1 lg:grid-cols-3 gap-6" stagger={0.12} direction="up">
             {/* Archetype 1 */}
-            <article className="bg-[#FAF9F5] flex flex-col border border-[#EAE6DF] shadow-sm group">
+            <article className="bg-[#FAF9F5] flex flex-col border border-[#EAE6DF] shadow-sm group hover:border-[#635E52]/40 transition-all duration-300">
               <div className="relative overflow-hidden h-64 bg-[#EFEEEA]">
                 <img
                   src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=85"
@@ -267,7 +294,7 @@ export default function UKBoxesAndBagsPage() {
             </article>
 
             {/* Archetype 2 */}
-            <article className="bg-[#FAF9F5] flex flex-col border border-[#EAE6DF] shadow-sm group">
+            <article className="bg-[#FAF9F5] flex flex-col border border-[#EAE6DF] shadow-sm group hover:border-[#635E52]/40 transition-all duration-300">
               <div className="relative overflow-hidden h-64 bg-[#EFEEEA]">
                 <img
                   src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=85"
@@ -309,7 +336,7 @@ export default function UKBoxesAndBagsPage() {
             </article>
 
             {/* Archetype 3 */}
-            <article className="bg-[#FAF9F5] flex flex-col border border-[#EAE6DF] shadow-sm group">
+            <article className="bg-[#FAF9F5] flex flex-col border border-[#EAE6DF] shadow-sm group hover:border-[#635E52]/40 transition-all duration-300">
               <div className="relative overflow-hidden h-64 bg-[#EFEEEA]">
                 <img
                   src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=800&q=85"
@@ -349,7 +376,7 @@ export default function UKBoxesAndBagsPage() {
                 </div>
               </div>
             </article>
-          </div>
+          </StaggerBoxes>
         </div>
       </section>
 
@@ -357,42 +384,55 @@ export default function UKBoxesAndBagsPage() {
       <section className="w-full py-16 md:py-24 px-4 md:px-16 bg-[#FAF9F5] border-b border-[#EAE6DF]">
         <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           <div className="lg:col-span-6 order-2 lg:order-1">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-4">
-                <img
-                  src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&w=600&q=85"
-                  alt="Precision laser cut finger wells with velvet lining"
-                  className="w-full h-56 object-cover border border-[#EAE6DF]"
-                />
-                <div className="bg-[#EFEEEA] p-5 border border-[#EAE6DF]">
-                  <span className="text-[10px] font-semibold uppercase text-[#635E52] tracking-widest">Tolerance</span>
-                  <p className="font-serif text-2xl text-[#141310] my-1">±0.5mm</p>
-                  <p className="text-xs text-[#4A463F]">CNC milling tailored specifically to the exact spine thickness of your volume.</p>
+            <RevealOnScroll direction="left" delay={0.12} distance={24}>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-4">
+                  <img
+                    src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&w=600&q=85"
+                    alt="Precision laser cut finger wells with velvet lining"
+                    className="w-full h-56 object-cover border border-[#EAE6DF]"
+                  />
+                  <div className="bg-[#EFEEEA] p-5 border border-[#EAE6DF]">
+                    <span className="text-[10px] font-semibold uppercase text-[#635E52] tracking-widest">Tolerance</span>
+                    <p className="font-serif text-2xl text-[#141310] my-1">±0.5mm</p>
+                    <p className="text-xs text-[#4A463F]">CNC milling tailored specifically to the exact spine thickness of your volume.</p>
+                  </div>
+                </div>
+                <div className="space-y-4 pt-6">
+                  <div className="bg-[#141310] text-[#FAF9F5] p-5 border border-[#4A463F]">
+                    <span className="text-[10px] font-semibold uppercase tracking-widest text-[#CCC5BC]">Cinema Deliverable</span>
+                    <p className="font-serif text-2xl text-[#FAF9F5] my-1">4K Reel Wells</p>
+                    <p className="text-xs text-[#CCC5BC]">Dual compartments allowing video and photography duos to present in one cohesive chest.</p>
+                  </div>
+                  <img
+                    src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=85"
+                    alt="Satin pull ribbon inside wooden presentation box"
+                    className="w-full h-56 object-cover border border-[#EAE6DF]"
+                  />
                 </div>
               </div>
-              <div className="space-y-4 pt-6">
-                <div className="bg-[#141310] text-[#FAF9F5] p-5 border border-[#4A463F]">
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[#CCC5BC]">Cinema Deliverable</span>
-                  <p className="font-serif text-2xl text-[#FAF9F5] my-1">4K Reel Wells</p>
-                  <p className="text-xs text-[#CCC5BC]">Dual compartments allowing video and photography duos to present in one cohesive chest.</p>
-                </div>
-                <img
-                  src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=85"
-                  alt="Satin pull ribbon inside wooden presentation box"
-                  className="w-full h-56 object-cover border border-[#EAE6DF]"
-                />
-              </div>
-            </div>
+            </RevealOnScroll>
           </div>
 
           <div className="lg:col-span-6 order-1 lg:order-2 flex flex-col items-start lg:pl-6">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52] mb-2">Architectural Interior Engineering</span>
-            <h2 className="font-serif text-3xl md:text-4xl text-[#141310] mb-4 font-normal">Dual-Format Hybrid Nesting</h2>
-            <p className="text-base text-[#4A463F] mb-6 leading-relaxed">
-              Contemporary British wedding packages rarely deliver print alone. Ultraa Albums engineers custom-milled dual-compartment box chassis featuring integrated finger-wells for easy album retrieval alongside recessed secondary wells for cinematic USB drives, 4K Master SSDs, and highlight print folios.
-            </p>
+            <RevealOnScroll direction="down" delay={0.02} distance={12}>
+              <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52] mb-2">Architectural Interior Engineering</span>
+            </RevealOnScroll>
+            <TextReveal
+              as="h2"
+              direction="right"
+              delay={0.06}
+              className="font-serif text-3xl md:text-4xl text-[#141310] mb-4 font-normal"
+            >
+              Dual-Format Hybrid Nesting
+            </TextReveal>
+            <RevealOnScroll direction="up" delay={0.12} distance={14}>
+              <p className="text-base text-[#4A463F] mb-6 leading-relaxed">
+                Contemporary British wedding packages rarely deliver print alone. Ultraa Albums engineers custom-milled dual-compartment box chassis featuring integrated finger-wells for easy album retrieval alongside recessed secondary wells for cinematic USB drives, 4K Master SSDs, and highlight print folios.
+              </p>
+            </RevealOnScroll>
 
-            <div className="space-y-3 w-full mb-6">
+            <StaggerBoxes className="space-y-3 w-full mb-6" stagger={0.1} direction="left">
               <div className="p-4 bg-[#F4F4F0] border border-[#EAE6DF] flex items-start gap-3">
                 <Package size={20} className="text-[#635E52] shrink-0 mt-0.5" />
                 <div>
@@ -416,7 +456,7 @@ export default function UKBoxesAndBagsPage() {
                   <p className="text-xs text-[#4A463F] mt-0.5">Sub-surface N52 grade magnets provide a satisfying, whisper-quiet tactile seal when the heavy lid closes.</p>
                 </div>
               </div>
-            </div>
+            </StaggerBoxes>
           </div>
         </div>
       </section>
@@ -425,13 +465,24 @@ export default function UKBoxesAndBagsPage() {
       <section className="w-full py-16 md:py-24 px-4 md:px-16 bg-[#141310] text-[#FAF9F5] border-b border-[#292724]">
         <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           <div className="lg:col-span-6 space-y-6">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#CCC5BC]">Global Logistics Assurance</span>
-            <h2 className="font-serif text-3xl md:text-4xl text-[#FAF9F5] font-normal">Climate-Shielded Transit to Great Britain</h2>
-            <p className="text-base text-[#CCC5BC] leading-relaxed">
-              Bookblocks and fine timber expand and contract with atmospheric moisture. Every UK order is sealed in an impermeable 5-layer protected transit packaging engineered specifically for high-altitude air cargo and variable British weather.
-            </p>
+            <RevealOnScroll direction="down" delay={0.02} distance={12}>
+              <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#CCC5BC]">Global Logistics Assurance</span>
+            </RevealOnScroll>
+            <TextReveal
+              as="h2"
+              direction="left"
+              delay={0.06}
+              className="font-serif text-3xl md:text-4xl text-[#FAF9F5] font-normal"
+            >
+              Climate-Shielded Transit to Great Britain
+            </TextReveal>
+            <RevealOnScroll direction="up" delay={0.12} distance={14}>
+              <p className="text-base text-[#CCC5BC] leading-relaxed">
+                Bookblocks and fine timber expand and contract with atmospheric moisture. Every UK order is sealed in an impermeable 5-layer protected transit packaging engineered specifically for high-altitude air cargo and variable British weather.
+              </p>
+            </RevealOnScroll>
 
-            <div className="grid grid-cols-2 gap-4 pt-2">
+            <StaggerBoxes className="grid grid-cols-2 gap-4 pt-2" stagger={0.1} direction="up">
               <div className="bg-[#292724] p-5 border border-[#4A463F]">
                 <span className="font-serif text-2xl text-[#FAF9F5] block mb-1">0%</span>
                 <span className="text-[10px] font-semibold uppercase tracking-wider text-[#CCC5BC] block mb-1">Moisture Fluctuation</span>
@@ -442,59 +493,63 @@ export default function UKBoxesAndBagsPage() {
                 <span className="text-[10px] font-semibold uppercase tracking-wider text-[#CCC5BC] block mb-1">Priority Air Cleared</span>
                 <p className="text-xs text-[#CCC5BC]">Pre-paid DDP customs clearance eliminates VAT delays or unexpected tariffs.</p>
               </div>
-            </div>
+            </StaggerBoxes>
 
-            <div className="pt-2 flex items-center gap-3 text-xs text-[#CCC5BC]">
-              <Truck size={16} className="text-[#CCC5BC]" />
-              <span>Insured door-to-door transit to London, Edinburgh, Manchester, Bristol &amp; Belfast</span>
-            </div>
+            <RevealOnScroll direction="up" delay={0.18} distance={16}>
+              <div className="pt-2 flex items-center gap-3 text-xs text-[#CCC5BC]">
+                <Truck size={16} className="text-[#CCC5BC]" />
+                <span>Insured door-to-door transit to London, Edinburgh, Manchester, Bristol &amp; Belfast</span>
+              </div>
+            </RevealOnScroll>
           </div>
 
           <div className="lg:col-span-6">
-            <div className="bg-[#292724] p-6 md:p-8 border border-[#4A463F] shadow-2xl">
-              <h3 className="font-serif text-xl text-[#FAF9F5] mb-5 font-normal">The 5-Layer Armored Transit System</h3>
-              <div className="space-y-3">
-                <div className="flex items-start gap-3 p-3 bg-[#141310]/50 border border-[#4A463F]">
-                  <span className="text-[10px] font-bold px-2 py-0.5 bg-[#FAF9F5] text-[#141310]">L1</span>
-                  <div>
-                    <p className="text-xs font-semibold text-[#FAF9F5]">Acid-Free Micro-Foam &amp; VCI Vapor Film</p>
-                    <p className="text-[11px] text-[#CCC5BC] mt-0.5">Direct contact buffer preventing friction buffing and metal clasp tarnish.</p>
+            <RevealOnScroll direction="right" delay={0.16} distance={26}>
+              <div className="bg-[#292724] p-6 md:p-8 border border-[#4A463F] shadow-2xl">
+                <h3 className="font-serif text-xl text-[#FAF9F5] mb-5 font-normal">The 5-Layer Armored Transit System</h3>
+                <StaggerBoxes className="space-y-3" stagger={0.08} direction="up">
+                  <div className="flex items-start gap-3 p-3 bg-[#141310]/50 border border-[#4A463F]">
+                    <span className="text-[10px] font-bold px-2 py-0.5 bg-[#FAF9F5] text-[#141310]">L1</span>
+                    <div>
+                      <p className="text-xs font-semibold text-[#FAF9F5]">Acid-Free Micro-Foam &amp; VCI Vapor Film</p>
+                      <p className="text-[11px] text-[#CCC5BC] mt-0.5">Direct contact buffer preventing friction buffing and metal clasp tarnish.</p>
+                    </div>
                   </div>
-                </div>
 
-                <div className="flex items-start gap-3 p-3 bg-[#141310]/50 border border-[#4A463F]">
-                  <span className="text-[10px] font-bold px-2 py-0.5 bg-[#FAF9F5] text-[#141310]">L2</span>
-                  <div>
-                    <p className="text-xs font-semibold text-[#FAF9F5]">Organic Linen Dust Wrap</p>
-                    <p className="text-[11px] text-[#CCC5BC] mt-0.5">Breathable secondary barrier with your studio's foil stamped presentation label.</p>
+                  <div className="flex items-start gap-3 p-3 bg-[#141310]/50 border border-[#4A463F]">
+                    <span className="text-[10px] font-bold px-2 py-0.5 bg-[#FAF9F5] text-[#141310]">L2</span>
+                    <div>
+                      <p className="text-xs font-semibold text-[#FAF9F5]">Organic Linen Dust Wrap</p>
+                      <p className="text-[11px] text-[#CCC5BC] mt-0.5">Breathable secondary barrier with your studio's foil stamped presentation label.</p>
+                    </div>
                   </div>
-                </div>
 
-                <div className="flex items-start gap-3 p-3 bg-[#141310]/50 border border-[#4A463F]">
-                  <span className="text-[10px] font-bold px-2 py-0.5 bg-[#FAF9F5] text-[#141310]">L3</span>
-                  <div>
-                    <p className="text-xs font-semibold text-[#FAF9F5]">High-Density EVA Corner Armor</p>
-                    <p className="text-[11px] text-[#CCC5BC] mt-0.5">4-corner reinforced impact dampers absorbing drops up to 1.8 metres.</p>
+                  <div className="flex items-start gap-3 p-3 bg-[#141310]/50 border border-[#4A463F]">
+                    <span className="text-[10px] font-bold px-2 py-0.5 bg-[#FAF9F5] text-[#141310]">L3</span>
+                    <div>
+                      <p className="text-xs font-semibold text-[#FAF9F5]">High-Density EVA Corner Armor</p>
+                      <p className="text-[11px] text-[#CCC5BC] mt-0.5">4-corner reinforced impact dampers absorbing drops up to 1.8 metres.</p>
+                    </div>
                   </div>
-                </div>
 
-                <div className="flex items-start gap-3 p-3 bg-[#141310]/50 border border-[#4A463F]">
-                  <span className="text-[10px] font-bold px-2 py-0.5 bg-[#FAF9F5] text-[#141310]">L4</span>
-                  <div>
-                    <p className="text-xs font-semibold text-[#FAF9F5]">Double-Wall Flute Corrugated Hard Shell</p>
-                    <p className="text-[11px] text-[#CCC5BC] mt-0.5">Rigid puncture-resistant flight-ready outer shipper carton.</p>
+                  <div className="flex items-start gap-3 p-3 bg-[#141310]/50 border border-[#4A463F]">
+                    <span className="text-[10px] font-bold px-2 py-0.5 bg-[#FAF9F5] text-[#141310]">L4</span>
+                    <div>
+                      <p className="text-xs font-semibold text-[#FAF9F5]">Double-Wall Flute Corrugated Hard Shell</p>
+                      <p className="text-[11px] text-[#CCC5BC] mt-0.5">Rigid puncture-resistant flight-ready outer shipper carton.</p>
+                    </div>
                   </div>
-                </div>
 
-                <div className="flex items-start gap-3 p-3 bg-[#141310]/50 border border-[#4A463F]">
-                  <span className="text-[10px] font-bold px-2 py-0.5 bg-[#FAF9F5] text-[#141310]">L5</span>
-                  <div>
-                    <p className="text-xs font-semibold text-[#FAF9F5]">Therma-Shield Shrink Seal</p>
-                    <p className="text-[11px] text-[#CCC5BC] mt-0.5">Waterproof shrink envelope tested for heavy rain deliveries.</p>
+                  <div className="flex items-start gap-3 p-3 bg-[#141310]/50 border border-[#4A463F]">
+                    <span className="text-[10px] font-bold px-2 py-0.5 bg-[#FAF9F5] text-[#141310]">L5</span>
+                    <div>
+                      <p className="text-xs font-semibold text-[#FAF9F5]">Therma-Shield Shrink Seal</p>
+                      <p className="text-[11px] text-[#CCC5BC] mt-0.5">Waterproof shrink envelope tested for heavy rain deliveries.</p>
+                    </div>
                   </div>
-                </div>
+                </StaggerBoxes>
               </div>
-            </div>
+            </RevealOnScroll>
           </div>
         </div>
       </section>
@@ -505,13 +560,24 @@ export default function UKBoxesAndBagsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
             <div className="lg:col-span-5 flex flex-col justify-between">
               <div>
-                <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52] block mb-2">Tactile Studio Kit</span>
-                <h2 className="font-serif text-3xl md:text-4xl text-[#141310] mb-4 font-normal">UK Studio Swatch &amp; Enclosure Sample Box</h2>
-                <p className="text-base text-[#4A463F] mb-6 leading-relaxed">
-                  Experience the genuine heft of seasoned Teak, the dense pile of British heritage velvets, and precision foil finishes before commissioning client tomes. Delivered to any UK studio postcode within 4 working days.
-                </p>
+                <RevealOnScroll direction="down" delay={0.02} distance={12}>
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52] block mb-2">Tactile Studio Kit</span>
+                </RevealOnScroll>
+                <TextReveal
+                  as="h2"
+                  direction="left"
+                  delay={0.06}
+                  className="font-serif text-3xl md:text-4xl text-[#141310] mb-4 font-normal"
+                >
+                  UK Studio Swatch &amp; Enclosure Sample Box
+                </TextReveal>
+                <RevealOnScroll direction="left" delay={0.12} distance={14}>
+                  <p className="text-base text-[#4A463F] mb-6 leading-relaxed">
+                    Experience the genuine heft of seasoned Teak, the dense pile of British heritage velvets, and precision foil finishes before commissioning client tomes. Delivered to any UK studio postcode within 4 working days.
+                  </p>
+                </RevealOnScroll>
 
-                <div className="space-y-3 mb-8 text-xs text-[#4A463F]">
+                <StaggerBoxes className="space-y-3 mb-8 text-xs text-[#4A463F]" stagger={0.08} direction="left">
                   <div className="flex items-center gap-2">
                     <Check size={14} className="text-[#635E52]" />
                     <span className="font-medium text-[#141310]">8 Hand-Stained Timber Blocks (Walnut, Teak, Ash, Oak)</span>
@@ -528,15 +594,17 @@ export default function UKBoxesAndBagsPage() {
                     <Check size={14} className="text-[#635E52]" />
                     <span className="font-medium text-[#141310]">Laser Engraving &amp; Hot Foil Typography Palette Guide</span>
                   </div>
-                </div>
+                </StaggerBoxes>
               </div>
 
-              <div className="bg-[#FAF9F5] p-6 border border-[#EAE6DF]">
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-[#635E52]">Full Cost Reimbursed</span>
-                <p className="text-xs text-[#4A463F] mt-1">
-                  Sample box cost (£45 inc. UK VAT &amp; Shipping) is credited 100% against your first album enclosure order over £200.
-                </p>
-              </div>
+              <RevealOnScroll direction="up" delay={0.16} distance={16}>
+                <div className="bg-[#FAF9F5] p-6 border border-[#EAE6DF]">
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-[#635E52]">Full Cost Reimbursed</span>
+                  <p className="text-xs text-[#4A463F] mt-1">
+                    Sample box cost (£45 inc. UK VAT &amp; Shipping) is credited 100% against your first album enclosure order over £200.
+                  </p>
+                </div>
+              </RevealOnScroll>
             </div>
 
             <div className="lg:col-span-7 bg-[#FAF9F5] p-6 md:p-10 border border-[#EAE6DF] shadow-sm">
@@ -548,119 +616,121 @@ export default function UKBoxesAndBagsPage() {
                   </p>
                 </div>
               ) : (
-                <form onSubmit={handleSampleSubmit} className="space-y-4">
-                  <div className="flex items-center justify-between pb-3 border-b border-[#EAE6DF]">
-                    <span className="font-serif text-lg text-[#141310] font-normal">Dispatch Request • United Kingdom</span>
-                    <span className="font-serif text-lg text-[#141310] font-bold">£45.00 GBP</span>
-                  </div>
+                <RevealOnScroll direction="right" delay={0.14} distance={20}>
+                  <form onSubmit={handleSampleSubmit} className="space-y-4">
+                    <div className="flex items-center justify-between pb-3 border-b border-[#EAE6DF]">
+                      <span className="font-serif text-lg text-[#141310] font-normal">Dispatch Request • United Kingdom</span>
+                      <span className="font-serif text-lg text-[#141310] font-bold">£45.00 GBP</span>
+                    </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-[10px] font-semibold uppercase tracking-wider text-[#635E52] mb-1">Photographer / Studio Name *</label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="e.g. Rowan &amp; Birch Fine Art"
+                          value={sampleForm.studioName}
+                          onChange={(e) => setSampleForm({ ...sampleForm, studioName: e.target.value })}
+                          className="w-full px-4 py-2.5 bg-[#F4F4F0] text-xs text-[#141310] border border-[#EAE6DF] outline-none focus:border-[#141310]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-semibold uppercase tracking-wider text-[#635E52] mb-1">Studio Website / Portfolio *</label>
+                        <input
+                          type="url"
+                          required
+                          placeholder="https://studio.co.uk"
+                          value={sampleForm.website}
+                          onChange={(e) => setSampleForm({ ...sampleForm, website: e.target.value })}
+                          className="w-full px-4 py-2.5 bg-[#F4F4F0] text-xs text-[#141310] border border-[#EAE6DF] outline-none focus:border-[#141310]"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-[10px] font-semibold uppercase tracking-wider text-[#635E52] mb-1">Direct Email (UK Contact) *</label>
+                        <input
+                          type="email"
+                          required
+                          placeholder="atelier@studio.co.uk"
+                          value={sampleForm.email}
+                          onChange={(e) => setSampleForm({ ...sampleForm, email: e.target.value })}
+                          className="w-full px-4 py-2.5 bg-[#F4F4F0] text-xs text-[#141310] border border-[#EAE6DF] outline-none focus:border-[#141310]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-semibold uppercase tracking-wider text-[#635E52] mb-1">UK Mobile / Telephone *</label>
+                        <input
+                          type="tel"
+                          required
+                          placeholder="+44 7..."
+                          value={sampleForm.phone}
+                          onChange={(e) => setSampleForm({ ...sampleForm, phone: e.target.value })}
+                          className="w-full px-4 py-2.5 bg-[#F4F4F0] text-xs text-[#141310] border border-[#EAE6DF] outline-none focus:border-[#141310]"
+                        />
+                      </div>
+                    </div>
+
                     <div>
-                      <label className="block text-[10px] font-semibold uppercase tracking-wider text-[#635E52] mb-1">Photographer / Studio Name *</label>
+                      <label className="block text-[10px] font-semibold uppercase tracking-wider text-[#635E52] mb-1">UK Delivery Street Address *</label>
                       <input
                         type="text"
                         required
-                        placeholder="e.g. Rowan &amp; Birch Fine Art"
-                        value={sampleForm.studioName}
-                        onChange={(e) => setSampleForm({ ...sampleForm, studioName: e.target.value })}
-                        className="w-full px-4 py-2.5 bg-[#F4F4F0] text-xs text-[#141310] border border-[#EAE6DF] outline-none focus:border-[#141310]"
+                        placeholder="Unit 4, The Mews, Clerkenwell"
+                        value={sampleForm.address}
+                        onChange={(e) => setSampleForm({ ...sampleForm, address: e.target.value })}
+                        className="w-full px-4 py-2.5 bg-[#F4F4F0] text-xs text-[#141310] border border-[#EAE6DF] outline-none focus:border-[#141310] mb-2"
                       />
+                      <div className="grid grid-cols-2 gap-4">
+                        <input
+                          type="text"
+                          required
+                          placeholder="City (e.g. London)"
+                          value={sampleForm.city}
+                          onChange={(e) => setSampleForm({ ...sampleForm, city: e.target.value })}
+                          className="w-full px-4 py-2.5 bg-[#F4F4F0] text-xs text-[#141310] border border-[#EAE6DF] outline-none focus:border-[#141310]"
+                        />
+                        <input
+                          type="text"
+                          required
+                          placeholder="Postcode (e.g. EC1R 0AT)"
+                          value={sampleForm.postcode}
+                          onChange={(e) => setSampleForm({ ...sampleForm, postcode: e.target.value })}
+                          className="w-full px-4 py-2.5 bg-[#F4F4F0] text-xs text-[#141310] border border-[#EAE6DF] outline-none focus:border-[#141310]"
+                        />
+                      </div>
                     </div>
+
                     <div>
-                      <label className="block text-[10px] font-semibold uppercase tracking-wider text-[#635E52] mb-1">Studio Website / Portfolio *</label>
-                      <input
-                        type="url"
-                        required
-                        placeholder="https://studio.co.uk"
-                        value={sampleForm.website}
-                        onChange={(e) => setSampleForm({ ...sampleForm, website: e.target.value })}
-                        className="w-full px-4 py-2.5 bg-[#F4F4F0] text-xs text-[#141310] border border-[#EAE6DF] outline-none focus:border-[#141310]"
-                      />
+                      <label className="block text-[10px] font-semibold uppercase tracking-wider text-[#635E52] mb-2">Album Volume Sizes Typically Ordered</label>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                        {['10x10', '12x12', '14x10', 'Custom'].map((sz) => (
+                          <label
+                            key={sz}
+                            onClick={() => handleSizeToggle(sz)}
+                            className={`p-2.5 border cursor-pointer text-center select-none ${sampleForm.sizes.includes(sz) ? 'bg-[#141310] text-[#FAF9F5] border-[#141310]' : 'bg-[#F4F4F0] text-[#4A463F] border-[#EAE6DF]'}`}
+                          >
+                            {sz === 'Custom' ? 'Bespoke mm' : `${sz}" Volume`}
+                          </label>
+                        ))}
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-[10px] font-semibold uppercase tracking-wider text-[#635E52] mb-1">Direct Email (UK Contact) *</label>
-                      <input
-                        type="email"
-                        required
-                        placeholder="atelier@studio.co.uk"
-                        value={sampleForm.email}
-                        onChange={(e) => setSampleForm({ ...sampleForm, email: e.target.value })}
-                        className="w-full px-4 py-2.5 bg-[#F4F4F0] text-xs text-[#141310] border border-[#EAE6DF] outline-none focus:border-[#141310]"
-                      />
+                    <div className="pt-3">
+                      <button
+                        type="submit"
+                        className="w-full py-3.5 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-[0.16em] hover:bg-[#292724] transition-colors"
+                      >
+                        Proceed to Secure GBP Payment (£45)
+                      </button>
+                      <p className="text-[11px] text-[#635E52] text-center mt-2">
+                        Includes duty-free express air postage &amp; sample swatches.
+                      </p>
                     </div>
-                    <div>
-                      <label className="block text-[10px] font-semibold uppercase tracking-wider text-[#635E52] mb-1">UK Mobile / Telephone *</label>
-                      <input
-                        type="tel"
-                        required
-                        placeholder="+44 7..."
-                        value={sampleForm.phone}
-                        onChange={(e) => setSampleForm({ ...sampleForm, phone: e.target.value })}
-                        className="w-full px-4 py-2.5 bg-[#F4F4F0] text-xs text-[#141310] border border-[#EAE6DF] outline-none focus:border-[#141310]"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-semibold uppercase tracking-wider text-[#635E52] mb-1">UK Delivery Street Address *</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Unit 4, The Mews, Clerkenwell"
-                      value={sampleForm.address}
-                      onChange={(e) => setSampleForm({ ...sampleForm, address: e.target.value })}
-                      className="w-full px-4 py-2.5 bg-[#F4F4F0] text-xs text-[#141310] border border-[#EAE6DF] outline-none focus:border-[#141310] mb-2"
-                    />
-                    <div className="grid grid-cols-2 gap-4">
-                      <input
-                        type="text"
-                        required
-                        placeholder="City (e.g. London)"
-                        value={sampleForm.city}
-                        onChange={(e) => setSampleForm({ ...sampleForm, city: e.target.value })}
-                        className="w-full px-4 py-2.5 bg-[#F4F4F0] text-xs text-[#141310] border border-[#EAE6DF] outline-none focus:border-[#141310]"
-                      />
-                      <input
-                        type="text"
-                        required
-                        placeholder="Postcode (e.g. EC1R 0AT)"
-                        value={sampleForm.postcode}
-                        onChange={(e) => setSampleForm({ ...sampleForm, postcode: e.target.value })}
-                        className="w-full px-4 py-2.5 bg-[#F4F4F0] text-xs text-[#141310] border border-[#EAE6DF] outline-none focus:border-[#141310]"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-semibold uppercase tracking-wider text-[#635E52] mb-2">Album Volume Sizes Typically Ordered</label>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-                      {['10x10', '12x12', '14x10', 'Custom'].map((sz) => (
-                        <label
-                          key={sz}
-                          onClick={() => handleSizeToggle(sz)}
-                          className={`p-2.5 border cursor-pointer text-center select-none ${sampleForm.sizes.includes(sz) ? 'bg-[#141310] text-[#FAF9F5] border-[#141310]' : 'bg-[#F4F4F0] text-[#4A463F] border-[#EAE6DF]'}`}
-                        >
-                          {sz === 'Custom' ? 'Bespoke mm' : `${sz}" Volume`}
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="pt-3">
-                    <button
-                      type="submit"
-                      className="w-full py-3.5 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-[0.16em] hover:bg-[#292724] transition-colors"
-                    >
-                      Proceed to Secure GBP Payment (£45)
-                    </button>
-                    <p className="text-[11px] text-[#635E52] text-center mt-2">
-                      Includes duty-free express air postage &amp; sample swatches.
-                    </p>
-                  </div>
-                </form>
+                  </form>
+                </RevealOnScroll>
               )}
             </div>
           </div>
@@ -671,75 +741,101 @@ export default function UKBoxesAndBagsPage() {
       <section className="w-full py-16 md:py-24 px-4 md:px-16 bg-[#FAF9F5] border-b border-[#EAE6DF]">
         <div className="max-w-[1440px] mx-auto">
           <div className="mb-10">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52] block mb-2">Precision Millimetre Engineering</span>
-            <h2 className="font-serif text-3xl md:text-4xl text-[#141310] font-normal">UK Standard Album Sizing &amp; Enclosure Matrix</h2>
-            <p className="text-sm md:text-base text-[#4A463F] max-w-2xl mt-2">
-              Every box is manufactured to internal clearances allowing exactly 4mm lateral expansion and effortless thumb ribbon extraction.
-            </p>
+            <RevealOnScroll direction="down" delay={0.02} distance={12}>
+              <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52] block mb-2">Precision Millimetre Engineering</span>
+            </RevealOnScroll>
+            <TextReveal
+              as="h2"
+              direction="left"
+              delay={0.06}
+              className="font-serif text-3xl md:text-4xl text-[#141310] font-normal"
+            >
+              UK Standard Album Sizing &amp; Enclosure Matrix
+            </TextReveal>
+            <RevealOnScroll direction="up" delay={0.12} distance={14}>
+              <p className="text-sm md:text-base text-[#4A463F] max-w-2xl mt-2">
+                Every box is manufactured to internal clearances allowing exactly 4mm lateral expansion and effortless thumb ribbon extraction.
+              </p>
+            </RevealOnScroll>
           </div>
 
           {/* Sizing Table */}
-          <div className="overflow-x-auto bg-[#FAF9F5] border border-[#EAE6DF] shadow-sm mb-16">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-[#E9E8E4] text-[#141310] text-[11px] font-semibold uppercase tracking-wider border-b border-[#EAE6DF]">
-                  <th className="p-4 md:p-5">Format Size</th>
-                  <th className="p-4 md:p-5">Internal Dimensions (mm)</th>
-                  <th className="p-4 md:p-5">Ideal Album Spec</th>
-                  <th className="p-4 md:p-5">Secondary Cinema Well</th>
-                  <th className="p-4 md:p-5 text-right">GBP Unit Price</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#EAE6DF] text-xs text-[#4A463F]">
-                {SIZING_MATRIX.map((row, idx) => (
-                  <tr key={idx} className="hover:bg-[#F4F4F0] transition-colors">
-                    <td className="p-4 md:p-5 font-serif text-sm text-[#141310] font-medium">{row.format}</td>
-                    <td className="p-4 md:p-5 font-mono text-xs">{row.dimensions}</td>
-                    <td className="p-4 md:p-5">{row.albumSpec}</td>
-                    <td className="p-4 md:p-5">{row.mediaWell}</td>
-                    <td className="p-4 md:p-5 text-right font-serif text-base text-[#141310] font-bold">{row.price}</td>
+          <RevealOnScroll direction="up" delay={0.14} distance={20}>
+            <div className="overflow-x-auto bg-[#FAF9F5] border border-[#EAE6DF] shadow-sm mb-16">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-[#E9E8E4] text-[#141310] text-[11px] font-semibold uppercase tracking-wider border-b border-[#EAE6DF]">
+                    <th className="p-4 md:p-5">Format Size</th>
+                    <th className="p-4 md:p-5">Internal Dimensions (mm)</th>
+                    <th className="p-4 md:p-5">Ideal Album Spec</th>
+                    <th className="p-4 md:p-5">Secondary Cinema Well</th>
+                    <th className="p-4 md:p-5 text-right">GBP Unit Price</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-[#EAE6DF] text-xs text-[#4A463F]">
+                  {SIZING_MATRIX.map((row, idx) => (
+                    <tr key={idx} className="hover:bg-[#F4F4F0] transition-colors">
+                      <td className="p-4 md:p-5 font-serif text-sm text-[#141310] font-medium">{row.format}</td>
+                      <td className="p-4 md:p-5 font-mono text-xs">{row.dimensions}</td>
+                      <td className="p-4 md:p-5">{row.albumSpec}</td>
+                      <td className="p-4 md:p-5">{row.mediaWell}</td>
+                      <td className="p-4 md:p-5 text-right font-serif text-base text-[#141310] font-bold">{row.price}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </RevealOnScroll>
 
           {/* FAQ Section */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
             <div className="lg:col-span-4">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52] block mb-2">Client Care &amp; Logistics</span>
-              <h3 className="font-serif text-2xl md:text-3xl text-[#141310] mb-3 font-normal">Frequently Asked Questions</h3>
-              <p className="text-xs text-[#4A463F] mb-6 leading-relaxed">
-                Everything UK photographers need to know about VAT invoicing, Heathrow logistics, wood moisture acclimatization, and custom studio debossing.
-              </p>
-              <div className="bg-[#EFEEEA] p-5 border border-[#EAE6DF]">
-                <span className="text-[10px] font-semibold uppercase text-[#635E52]">UK Atelier Liaison</span>
-                <p className="text-sm font-semibold text-[#141310] mt-1">+91 93222 54315</p>
-                <p className="text-xs text-[#4A463F] mt-1">Direct WhatsApp dedicated to photographers on GMT / BST working hours.</p>
-              </div>
+              <RevealOnScroll direction="down" delay={0.02} distance={12}>
+                <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#635E52] block mb-2">Client Care &amp; Logistics</span>
+              </RevealOnScroll>
+              <TextReveal
+                as="h3"
+                direction="left"
+                delay={0.06}
+                className="font-serif text-2xl md:text-3xl text-[#141310] mb-3 font-normal"
+              >
+                Frequently Asked Questions
+              </TextReveal>
+              <RevealOnScroll direction="left" delay={0.12} distance={14}>
+                <p className="text-xs text-[#4A463F] mb-6 leading-relaxed">
+                  Everything UK photographers need to know about VAT invoicing, Heathrow logistics, wood moisture acclimatization, and custom studio debossing.
+                </p>
+                <div className="bg-[#EFEEEA] p-5 border border-[#EAE6DF]">
+                  <span className="text-[10px] font-semibold uppercase text-[#635E52]">UK Atelier Liaison</span>
+                  <p className="text-sm font-semibold text-[#141310] mt-1">+91 93222 54315</p>
+                  <p className="text-xs text-[#4A463F] mt-1">Direct WhatsApp dedicated to photographers on GMT / BST working hours.</p>
+                </div>
+              </RevealOnScroll>
             </div>
 
             <div className="lg:col-span-8 space-y-3">
-              {FAQS.map((faq, idx) => {
-                const isOpen = activeFaq === idx;
-                return (
-                  <div key={idx} className="bg-[#F4F4F0] border border-[#EAE6DF]">
-                    <button
-                      type="button"
-                      onClick={() => setActiveFaq(isOpen ? null : idx)}
-                      className="w-full p-5 text-left flex items-center justify-between gap-4"
-                    >
-                      <h4 className="font-serif text-base text-[#141310] font-normal">{faq.q}</h4>
-                      {isOpen ? <ChevronUp size={16} className="text-[#635E52] shrink-0" /> : <ChevronDown size={16} className="text-[#635E52] shrink-0" />}
-                    </button>
-                    {isOpen && (
-                      <div className="px-5 pb-5 text-xs text-[#4A463F] leading-relaxed border-t border-[#EAE6DF]/60 pt-3">
-                        {faq.a}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+              <StaggerBoxes className="space-y-3" stagger={0.08} direction="up">
+                {FAQS.map((faq, idx) => {
+                  const isOpen = activeFaq === idx;
+                  return (
+                    <div key={idx} className="bg-[#F4F4F0] border border-[#EAE6DF]">
+                      <button
+                        type="button"
+                        onClick={() => setActiveFaq(isOpen ? null : idx)}
+                        className="w-full p-5 text-left flex items-center justify-between gap-4"
+                      >
+                        <h4 className="font-serif text-base text-[#141310] font-normal">{faq.q}</h4>
+                        {isOpen ? <ChevronUp size={16} className="text-[#635E52] shrink-0" /> : <ChevronDown size={16} className="text-[#635E52] shrink-0" />}
+                      </button>
+                      {isOpen && (
+                        <div className="px-5 pb-5 text-xs text-[#4A463F] leading-relaxed border-t border-[#EAE6DF]/60 pt-3">
+                          {faq.a}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </StaggerBoxes>
             </div>
           </div>
         </div>
@@ -747,30 +843,32 @@ export default function UKBoxesAndBagsPage() {
 
       {/* 8. Interactive Studio Concierge Strip */}
       <section className="w-full py-14 px-4 md:px-16 bg-[#EFEEEA] border-b border-[#EAE6DF]">
-        <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>
-            <span className="text-[10px] font-semibold uppercase tracking-widest text-[#635E52] block mb-1">Tailored Commissions</span>
-            <h3 className="font-serif text-2xl text-[#141310] font-normal">Need a one-off bespoke dimension for an oversized UK wedding volume?</h3>
-            <p className="text-xs text-[#4A463F] mt-1">Our craftspeople cut custom timber chassis and Solander cases to any specified dimension within 48 hours.</p>
+        <RevealOnScroll direction="up" delay={0.08} distance={16}>
+          <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+              <span className="text-[10px] font-semibold uppercase tracking-widest text-[#635E52] block mb-1">Tailored Commissions</span>
+              <h3 className="font-serif text-2xl text-[#141310] font-normal">Need a one-off bespoke dimension for an oversized UK wedding volume?</h3>
+              <p className="text-xs text-[#4A463F] mt-1">Our craftspeople cut custom timber chassis and Solander cases to any specified dimension within 48 hours.</p>
+            </div>
+            <div className="flex items-center gap-3 shrink-0">
+              <a
+                href="tel:+919322254315"
+                className="px-5 py-3 bg-[#FAF9F5] text-[#141310] text-xs font-semibold uppercase tracking-wider border border-[#EAE6DF] hover:bg-[#FAF9F5]/80 transition-colors inline-flex items-center gap-2"
+              >
+                <Phone size={14} />
+                <span>+91 93222 54315</span>
+              </a>
+              <button
+                type="button"
+                onClick={() => handleEnquire('Bespoke Enclosure')}
+                className="px-6 py-3 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-wider hover:bg-[#292724] transition-colors inline-flex items-center gap-2"
+              >
+                <Mail size={14} />
+                <span>Request Quote</span>
+              </button>
+            </div>
           </div>
-          <div className="flex items-center gap-3 shrink-0">
-            <a
-              href="tel:+919322254315"
-              className="px-5 py-3 bg-[#FAF9F5] text-[#141310] text-xs font-semibold uppercase tracking-wider border border-[#EAE6DF] hover:bg-[#FAF9F5]/80 transition-colors inline-flex items-center gap-2"
-            >
-              <Phone size={14} />
-              <span>+91 93222 54315</span>
-            </a>
-            <button
-              type="button"
-              onClick={() => handleEnquire('Bespoke Enclosure')}
-              className="px-6 py-3 bg-[#141310] text-[#FAF9F5] text-xs font-semibold uppercase tracking-wider hover:bg-[#292724] transition-colors inline-flex items-center gap-2"
-            >
-              <Mail size={14} />
-              <span>Request Quote</span>
-            </button>
-          </div>
-        </div>
+        </RevealOnScroll>
       </section>
     </div>
   );
