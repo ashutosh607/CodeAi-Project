@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Sliders, Sparkles } from 'lucide-react';
 import RevealOnScroll from './motion/RevealOnScroll';
+import TextReveal from './motion/TextReveal';
 
 const COMPARISONS = [
   {
@@ -94,21 +95,29 @@ export default function BeforeAfterSlider() {
     <section id="before-after" className="before-after-section py-16 sm:py-24 bg-[#FAF7F2] border-b border-[#DED5C9]">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-10 lg:px-12">
         {/* Section Header */}
-        <RevealOnScroll direction="up" className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EEE7DC] border border-[#DED5C9] text-[10px] sm:text-[11px] font-sans font-medium uppercase tracking-[0.22em] text-[#777066] mb-3">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#B99A69]" />
-            <span>SAMPLE SUITE SHOWCASE</span>
-          </div>
-          <h2 className="font-serif text-[28px] sm:text-[38px] md:text-[44px] font-normal tracking-tight text-[#201E1B] leading-tight mb-3">
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+          <RevealOnScroll direction="down" delay={0.05} distance={12} blur={false}>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EEE7DC] border border-[#DED5C9] text-[10px] sm:text-[11px] font-sans font-medium uppercase tracking-[0.22em] text-[#777066] mb-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#B99A69]" />
+              <span>SAMPLE SUITE SHOWCASE</span>
+            </div>
+          </RevealOnScroll>
+          <TextReveal
+            as="h2"
+            delay={0.08}
+            className="font-serif text-[28px] sm:text-[38px] md:text-[44px] font-normal tracking-tight text-[#201E1B] leading-tight mb-3"
+          >
             Photo Editing Sample: Before — After
-          </h2>
-          <p className="font-sans text-[14px] sm:text-[15px] text-[#777066] leading-relaxed">
-            Drag the interactive divider to inspect our high-fidelity skin retouching, tonal balance, and environmental color grading.
-          </p>
-        </RevealOnScroll>
+          </TextReveal>
+          <RevealOnScroll direction="up" delay={0.16} distance={18}>
+            <p className="font-sans text-[14px] sm:text-[15px] text-[#777066] leading-relaxed">
+              Drag the interactive divider to inspect our high-fidelity skin retouching, tonal balance, and environmental color grading.
+            </p>
+          </RevealOnScroll>
+        </div>
 
         {/* 1. SINGLE-LINE CATEGORY SELECTOR DOCK */}
-        <div className="flex justify-center mb-6 sm:mb-8">
+        <RevealOnScroll direction="up" delay={0.22} distance={20} className="flex justify-center mb-6 sm:mb-8">
           <div className="inline-flex items-center gap-1 sm:gap-2 p-1.5 rounded-full bg-[#EEE7DC]/80 border border-[#DED5C9] shadow-xs backdrop-blur-sm max-w-full overflow-x-auto scrollbar-none">
             {COMPARISONS.map((cat) => {
               const isActive = activeTab === cat.id;
@@ -129,10 +138,10 @@ export default function BeforeAfterSlider() {
               );
             })}
           </div>
-        </div>
+        </RevealOnScroll>
 
         {/* 2. PROPERLY SIZED, FULLY VISIBLE INTERACTIVE SLIDER VIEWER */}
-        <div className="max-w-[760px] mx-auto">
+        <RevealOnScroll direction="up" delay={0.28} distance={24} className="max-w-[760px] mx-auto">
           <div className="bg-[#FAF7F2] p-2 sm:p-3 rounded-xl border border-[#DED5C9] shadow-md">
             <div
               ref={containerRef}
@@ -205,7 +214,7 @@ export default function BeforeAfterSlider() {
               <span>Drag handle to inspect</span>
             </div>
           </div>
-        </div>
+        </RevealOnScroll>
       </div>
     </section>
   );

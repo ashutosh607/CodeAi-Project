@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
+import TextReveal from '../components/motion/TextReveal';
+import RevealOnScroll from '../components/motion/RevealOnScroll';
 import { 
   BadgeCheck, 
   Sparkles, 
@@ -114,9 +116,13 @@ export default function ProductEnquiryPage() {
               <span style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', color: '#635E52', marginBottom: '0.75rem' }}>
                 Commission An Heirloom
               </span>
-              <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(2rem, 4vw, 3.25rem)', fontWeight: 400, color: '#141310', lineHeight: 1.15, letterSpacing: '-0.01em', marginBottom: '1rem' }}>
-                Bespoke Album & Print Enquiry
-              </h1>
+              <TextReveal
+                as="h1"
+                delay={0.08}
+                style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(2rem, 4vw, 3.25rem)', fontWeight: 400, color: '#141310', lineHeight: 1.15, letterSpacing: '-0.01em', marginBottom: '1rem' }}
+              >
+                Bespoke Album &amp; Print Enquiry
+              </TextReveal>
               <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '1.05rem', color: '#635E52', lineHeight: 1.65, maxWidth: '680px' }}>
                 Provide your album specifications, cover material preferences, and studio requirements. Our master album consultant will respond within 24 hours with exact pricing, physical swatch kits, and bespoke binding schedules.
               </p>

@@ -10,6 +10,7 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import RevealOnScroll from './motion/RevealOnScroll';
+import TextReveal from './motion/TextReveal';
 
 export default function ContactSection({ prefilledProduct }) {
   const [formData, setFormData] = useState({
@@ -53,15 +54,21 @@ export default function ContactSection({ prefilledProduct }) {
   return (
     <section id="contact" className="contact-enquiry-section" ref={formRef}>
       <div className="section-container">
-        <RevealOnScroll direction="up" className="contact-header-center">
-          <div className="section-eyebrow-chip">
-            <span>DIRECT STUDIO INQUIRIES &amp; COMMISSIONS</span>
-          </div>
-          <h2 className="contact-heading">Request a Bespoke Studio Quote</h2>
-          <p className="contact-lead-text">
-            Submit your album specifications or request a physical swatch kit. Our master bindery team will prepare pricing, paper samples, and proofing timelines within 24 hours.
-          </p>
-        </RevealOnScroll>
+        <div className="contact-header-center">
+          <RevealOnScroll direction="down" delay={0.05} distance={12} blur={false}>
+            <div className="section-eyebrow-chip">
+              <span>DIRECT STUDIO INQUIRIES &amp; COMMISSIONS</span>
+            </div>
+          </RevealOnScroll>
+          <TextReveal as="h2" className="contact-heading" delay={0.08}>
+            Request a Bespoke Studio Quote
+          </TextReveal>
+          <RevealOnScroll direction="up" delay={0.16} distance={18}>
+            <p className="contact-lead-text">
+              Submit your album specifications or request a physical swatch kit. Our master bindery team will prepare pricing, paper samples, and proofing timelines within 24 hours.
+            </p>
+          </RevealOnScroll>
+        </div>
 
         <div className="contact-two-column-split">
           {/* Left Column: Direct Atelier Information & Payment Info */}

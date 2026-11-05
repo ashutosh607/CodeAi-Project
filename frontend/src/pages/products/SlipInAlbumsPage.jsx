@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import RevealOnScroll from '../../components/motion/RevealOnScroll';
+import TextReveal from '../../components/motion/TextReveal';
 import { ArrowRight } from 'lucide-react';
 
 export default function SlipInAlbumsPage() {
@@ -119,9 +120,13 @@ export default function SlipInAlbumsPage() {
                   Atelier Series 04 • Instant Delivery Format
                 </span>
 
-                <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(2.2rem, 3.8vw, 3.25rem)', fontWeight: 400, lineHeight: 1.12, letterSpacing: '-0.01em', margin: '0 0 0.5rem 0', color: '#141310' }}>
-                  Slip-In Albums & Matted Folios
-                </h1>
+                <TextReveal
+                  as="h1"
+                  delay={0.08}
+                  style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(2.2rem, 3.8vw, 3.25rem)', fontWeight: 400, lineHeight: 1.12, letterSpacing: '-0.01em', margin: '0 0 0.5rem 0', color: '#141310' }}
+                >
+                  Slip-In Albums &amp; Matted Folios
+                </TextReveal>
 
                 <p style={{ fontFamily: 'Playfair Display, serif', fontStyle: 'italic', fontSize: '1.25rem', color: '#635E52', margin: '0 0 1.5rem 0' }}>
                   Timeless Portrait Presentation for Contemporary Fine Art Studios

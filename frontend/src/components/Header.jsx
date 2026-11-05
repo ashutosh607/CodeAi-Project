@@ -766,7 +766,7 @@ export default function Header({ onOpenPayOnline }) {
       {/* 3. Mobile Navigation Drawer */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 top-[110px] bg-black/35 z-40 xl:hidden backdrop-blur-xs transition-opacity"
+          className={`fixed inset-0 ${isScrolled ? 'top-[106px]' : 'top-[110px]'} bg-black/35 z-40 xl:hidden backdrop-blur-xs transition-opacity`}
           onClick={() => setMobileMenuOpen(false)}
         >
           <div

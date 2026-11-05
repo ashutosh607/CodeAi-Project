@@ -1,6 +1,6 @@
 import React from 'react';
 import { Globe, DollarSign, Award, Users } from 'lucide-react';
-import RevealOnScroll from './motion/RevealOnScroll';
+import StaggerBoxes from './motion/StaggerBoxes';
 
 const VALUES = [
   {
@@ -29,14 +29,12 @@ export default function WhyChooseUs() {
   return (
     <section className="why-choose-us-section">
       <div className="section-container">
-        <div className="why-choose-us-four-strip">
+        <StaggerBoxes className="why-choose-us-four-strip" stagger={0.09}>
           {VALUES.map((val, idx) => {
             const Icon = val.icon;
             return (
-              <RevealOnScroll
+              <div
                 key={idx}
-                direction="up"
-                delay={idx * 0.08}
                 className="why-value-item"
               >
                 <div className="value-icon-wrapper">
@@ -46,10 +44,10 @@ export default function WhyChooseUs() {
                   <h3 className="value-title">{val.title}</h3>
                   <p className="value-desc">{val.desc}</p>
                 </div>
-              </RevealOnScroll>
+              </div>
             );
           })}
-        </div>
+        </StaggerBoxes>
       </div>
     </section>
   );

@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 import RevealOnScroll from '../components/motion/RevealOnScroll';
+import TextReveal from '../components/motion/TextReveal';
+import StaggerBoxes from '../components/motion/StaggerBoxes';
 import { PRODUCTS_CATALOG } from '../data/catalogData';
 
 // 6 Dedicated Stitch Product Pages
@@ -69,22 +71,28 @@ export default function ProductDetailPage() {
           <span style={{ color: '#141310', fontWeight: 600 }}>Atelier Master Collections</span>
         </div>
 
-        <RevealOnScroll direction="up">
-          <div style={{ textAlign: 'center', maxWidth: '780px', margin: '0 auto 4rem auto' }}>
+        <div style={{ textAlign: 'center', maxWidth: '780px', margin: '0 auto 4rem auto' }}>
+          <RevealOnScroll direction="down" delay={0.05} distance={12} blur={false}>
             <span style={{ display: 'inline-block', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#635E52', background: '#EFEEEA', padding: '0.35rem 0.85rem', marginBottom: '1rem' }}>
               Atelier Master Collection
             </span>
-            <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(2.25rem, 4vw, 3.5rem)', color: '#141310', fontWeight: 400, margin: '0 0 1rem 0' }}>
-              Handcrafted Heirlooms & Presentation
-            </h1>
+          </RevealOnScroll>
+          <TextReveal
+            as="h1"
+            delay={0.08}
+            style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(2.25rem, 4vw, 3.5rem)', color: '#141310', fontWeight: 400, margin: '0 0 1rem 0' }}
+          >
+            Handcrafted Heirlooms &amp; Presentation
+          </TextReveal>
+          <RevealOnScroll direction="up" delay={0.16} distance={18}>
             <p style={{ fontSize: '1.05rem', color: '#4A463F', lineHeight: 1.65, margin: 0 }}>
               Every volume is individually hand-bound in our Mumbai bindery using archival continuous-tone silver halide chemistry, museum-grade 1.2mm substrate cores, and full-grain Italian calfskin.
             </p>
-          </div>
-        </RevealOnScroll>
+          </RevealOnScroll>
+        </div>
 
         {/* 6 Stitch Product Cards Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '2.5rem' }}>
+        <StaggerBoxes style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '2.5rem' }} stagger={0.1}>
           {[
             {
               slug: 'flush-mount-album',
@@ -200,7 +208,7 @@ export default function ProductDetailPage() {
               </div>
             </div>
           ))}
-        </div>
+        </StaggerBoxes>
       </div>
     </div>
   );

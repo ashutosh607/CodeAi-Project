@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import RevealOnScroll from '../../components/motion/RevealOnScroll';
+import TextReveal from '../../components/motion/TextReveal';
+import StaggerBoxes from '../../components/motion/StaggerBoxes';
 import { 
   ShieldCheck, 
   ArrowRight
@@ -122,9 +124,13 @@ export default function FlushMountAlbumPage() {
                   Flagship Tome Series
                 </span>
 
-                <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(2.2rem, 3.8vw, 3.25rem)', fontWeight: 400, lineHeight: 1.12, letterSpacing: '-0.01em', margin: '0 0 0.5rem 0', color: '#141310' }}>
+                <TextReveal
+                  as="h1"
+                  delay={0.08}
+                  style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(2.2rem, 3.8vw, 3.25rem)', fontWeight: 400, lineHeight: 1.12, letterSpacing: '-0.01em', margin: '0 0 0.5rem 0', color: '#141310' }}
+                >
                   The Flush Mount Album
-                </h1>
+                </TextReveal>
 
                 <p style={{ fontFamily: 'Playfair Display, serif', fontStyle: 'italic', fontSize: '1.25rem', color: '#635E52', margin: '0 0 1.5rem 0' }}>
                   Seamless Panoramic Splendour
@@ -147,7 +153,7 @@ export default function FlushMountAlbumPage() {
                 </div>
 
                 {/* Quick Spec Matrix */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem', marginBottom: '2rem' }}>
+                <StaggerBoxes style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem', marginBottom: '2rem' }} stagger={0.08}>
                   <div style={{ background: '#EFEEEA', padding: '1rem', border: '1px solid #EAE6DF' }}>
                     <span style={{ fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#635E52', display: 'block' }}>Page Core</span>
                     <strong style={{ fontSize: '0.95rem', color: '#141310', display: 'block', margin: '0.2rem 0' }}>1.2mm Rigid Board</strong>
@@ -171,7 +177,7 @@ export default function FlushMountAlbumPage() {
                     <strong style={{ fontSize: '0.95rem', color: '#141310', display: 'block', margin: '0.2rem 0' }}>Fuji DPII / Silk Rag</strong>
                     <span style={{ fontSize: '0.72rem', color: '#635E52' }}>100+ year certified tint</span>
                   </div>
-                </div>
+                </StaggerBoxes>
 
                 {/* Actions */}
                 <div style={{ display: 'flex', gap: '0.85rem', flexWrap: 'wrap', marginBottom: '1.25rem' }}>

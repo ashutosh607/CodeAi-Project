@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import RevealOnScroll from '../../components/motion/RevealOnScroll';
+import TextReveal from '../../components/motion/TextReveal';
 import { 
   ArrowRight, 
   Phone, 
@@ -136,9 +137,13 @@ export default function LuxuryHeirloomPage() {
                   The Sovereign Collection • Commission N° 04
                 </span>
 
-                <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(2.2rem, 3.8vw, 3.25rem)', fontWeight: 400, lineHeight: 1.12, letterSpacing: '-0.01em', margin: '0 0 0.5rem 0', color: '#141310' }}>
+                <TextReveal
+                  as="h1"
+                  delay={0.08}
+                  style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(2.2rem, 3.8vw, 3.25rem)', fontWeight: 400, lineHeight: 1.12, letterSpacing: '-0.01em', margin: '0 0 0.5rem 0', color: '#141310' }}
+                >
                   Luxury Heirloom Tome
-                </h1>
+                </TextReveal>
 
                 <p style={{ fontFamily: 'Playfair Display, serif', fontStyle: 'italic', fontSize: '1.25rem', color: '#635E52', margin: '0 0 1.5rem 0' }}>
                   The absolute pinnacle of archival bookbinding craft, engineered to outlast centuries.

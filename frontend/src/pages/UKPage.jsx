@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Truck, ShieldCheck, CreditCard, ArrowRight, CheckCircle2, Phone, Mail } from 'lucide-react';
 import RevealOnScroll from '../components/motion/RevealOnScroll';
+import TextReveal from '../components/motion/TextReveal';
 import { UK_CATALOG } from '../data/catalogData';
 
 // Dedicated UK Stitch Product Implementations
@@ -85,9 +86,13 @@ export default function UKPage() {
               <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#635E52] bg-[#EFEEEA] px-3.5 py-1.5 inline-block mb-4">
                 BRITISH &amp; EUROPEAN PHOTOGRAPHERS DESK
               </span>
-              <h1 className="font-serif text-3xl md:text-5xl text-[#141310] font-normal leading-tight mb-4">
+              <TextReveal
+                as="h1"
+                delay={0.08}
+                className="font-serif text-3xl md:text-5xl text-[#141310] font-normal leading-tight mb-4"
+              >
                 {activeItem ? activeItem.name : 'Fine Art Bindery Dedicated to UK Studios'}
-              </h1>
+              </TextReveal>
               <p className="text-base text-[#4A463F] leading-relaxed mb-6 max-w-2xl">
                 {activeItem
                   ? activeItem.shortDesc

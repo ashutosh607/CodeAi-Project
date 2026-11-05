@@ -168,14 +168,14 @@ html.lenis, html.lenis body {
    Main Content Layout Offset (Prevent Header Overlap)
    ========================================================================== */
 #main-content {
-  padding-top: 112px;
+  padding-top: 108px;
   position: relative;
   width: 100%;
 }
 
 @media (max-width: 640px) {
   #main-content {
-    padding-top: 104px;
+    padding-top: 100px;
   }
 }
 
@@ -753,6 +753,15 @@ html.lenis, html.lenis body {
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.15),
     0 16px 32px rgba(20, 19, 16, 0.24);
+}
+
+.backface-hidden {
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d !important;
 }
 
 .cover-face {

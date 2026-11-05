@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import RevealOnScroll from '../../components/motion/RevealOnScroll';
+import TextReveal from '../../components/motion/TextReveal';
 import {
   ChevronRight,
   Download,
@@ -117,9 +118,13 @@ export default function CatalogSpecifierPage() {
                 Official Atelier Compendium // 2026 Edition
               </span>
             </div>
-            <h1 className="font-serif text-[38px] md:text-[56px] text-[#141310] font-normal tracking-tight leading-[1.06]">
+            <TextReveal
+              as="h1"
+              delay={0.08}
+              className="font-serif text-[38px] md:text-[56px] text-[#141310] font-normal tracking-tight leading-[1.06]"
+            >
               The 2026 Atelier Catalog &amp; Physical Swatch Compendium
-            </h1>
+            </TextReveal>
             <p className="text-[16px] md:text-[18px] text-[#4A463F] max-w-2xl leading-relaxed pt-2">
               Explore our comprehensive volume of heirloom album specifications, fine art papers, Italian leathers, and presentation chests in high-fidelity digital format, or order the tactile hardwood specimen box curated for discerning studios.
             </p>
@@ -211,7 +216,8 @@ export default function CatalogSpecifierPage() {
               <button
                 type="button"
                 onClick={handleDownloadDossier}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-[#141310] text-white hover:bg-[#292824] transition-colors text-[11px] uppercase tracking-widest font-semibold whitespace-nowrap shadow-sm"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#201E1B] !text-[#FAF7F2] hover:bg-[#B99A69] transition-all text-[11px] uppercase tracking-widest font-semibold whitespace-nowrap shadow-sm cursor-pointer"
+                style={{ color: '#FAF7F2', backgroundColor: '#201E1B' }}
               >
                 <Download size={15} />
                 <span>Download Dossier (18.4 MB)</span>
@@ -277,7 +283,8 @@ export default function CatalogSpecifierPage() {
               </div>
               <a
                 href="#order-swatch-box"
-                className="w-full py-3.5 bg-[#141310] text-white hover:bg-[#292824] transition-colors text-[11px] uppercase tracking-widest font-semibold flex items-center justify-center gap-2"
+                className="w-full py-3.5 rounded-full bg-[#201E1B] !text-[#FAF7F2] hover:bg-[#B99A69] transition-all text-[11px] uppercase tracking-widest font-semibold flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                style={{ color: '#FAF7F2', backgroundColor: '#201E1B', textDecoration: 'none' }}
               >
                 <span>Order Specimen Box For Studio</span>
                 <ArrowRight size={14} />
@@ -706,7 +713,8 @@ export default function CatalogSpecifierPage() {
                 <div className="pt-2">
                   <button
                     type="submit"
-                    className="w-full py-4 bg-[#141310] text-white hover:bg-[#292824] transition-colors text-[11px] uppercase tracking-widest font-semibold flex items-center justify-center gap-2"
+                    className="w-full py-4 rounded-full bg-[#201E1B] !text-[#FAF7F2] hover:bg-[#B99A69] transition-all text-[11px] uppercase tracking-widest font-semibold flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                    style={{ color: '#FAF7F2', backgroundColor: '#201E1B' }}
                   >
                     <Lock size={15} />
                     <span>Confirm Dispatch Request &amp; Generate Invoice</span>
@@ -767,38 +775,73 @@ export default function CatalogSpecifierPage() {
       </section>
 
       {/* 7. Bottom Atelier Concierge Banner */}
-      <section className="max-w-[1440px] mx-auto px-5 md:px-16 py-12 mb-12 w-full">
-        <div className="bg-[#141310] text-white p-8 md:p-12 shadow-md">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-            <div className="space-y-2 max-w-2xl">
-              <div className="flex items-center gap-2 text-[#EDE5DA] text-[10px] uppercase font-semibold tracking-widest">
-                <span className="w-2 h-2 rounded-full bg-[#EDE5DA]"></span>
-                <span>Bespoke Studio Support Active</span>
+      <section className="max-w-[1440px] mx-auto px-5 md:px-16 py-10 md:py-14 mb-12 w-full">
+        <div
+          className="relative rounded-2xl p-8 sm:p-10 md:p-12 border border-[#3A352E] shadow-[0_24px_64px_-16px_rgba(20,19,16,0.35)] overflow-hidden"
+          style={{ backgroundColor: '#1A1815' }}
+        >
+          {/* Subtle Warm Luxury Atelier Glows */}
+          <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#B99A69]/10 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#B99A69]/5 blur-3xl pointer-events-none" />
+
+          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+            <div className="space-y-3 max-w-2xl text-left">
+              {/* Gold Status Pill */}
+              <div
+                className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#B99A69]/40 text-[10px] uppercase font-sans font-medium tracking-[0.22em]"
+                style={{ backgroundColor: 'rgba(185, 154, 105, 0.12)', color: '#D4AF37' }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse" />
+                <span style={{ color: '#D4AF37' }}>Bespoke Studio Support Active</span>
               </div>
-              <h3 className="font-serif text-[28px] md:text-[34px] font-normal text-white">
+
+              {/* Crisp High-Contrast White Heading */}
+              <h3
+                className="font-serif text-[28px] sm:text-[32px] md:text-[38px] font-normal leading-[1.16] tracking-[-0.01em] m-0"
+                style={{ color: '#FAF7F2' }}
+              >
                 Need a Custom Cover Deboss Die or Bespoke Dimensions?
               </h3>
-              <p className="text-[14px] text-[#CDC6B7] leading-relaxed">
+
+              {/* High-Readability Warm Linen Paragraph */}
+              <p
+                className="font-sans text-[13.5px] sm:text-[14.5px] leading-[1.7] font-normal m-0 pt-1"
+                style={{ color: '#C8BEAE' }}
+              >
                 Speak directly with our Master Bookbinders in Mumbai or our UK Studio Liaison in London for custom foil brass dies, exotic leather sourcing, or exhibition display tomes.
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+            {/* High-Contrast Interactive Buttons */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 shrink-0">
+              {/* Primary Mumbai Direct Studio Call */}
               <a
                 href="tel:+919322254315"
-                className="px-6 py-4 bg-white text-[#141310] hover:bg-[#FAF9F5] transition-colors text-[11px] uppercase tracking-widest font-semibold flex items-center justify-center gap-2 whitespace-nowrap"
+                className="inline-flex items-center justify-center gap-2.5 px-6 sm:px-7 py-3.5 sm:py-4 rounded-full font-sans font-medium text-[11px] sm:text-[12px] uppercase tracking-[0.18em] transition-all duration-300 hover:bg-[#B99A69] hover:!text-[#FAF7F2] shadow-sm hover:shadow-md cursor-pointer group whitespace-nowrap"
+                style={{
+                  backgroundColor: '#FAF7F2',
+                  color: '#201E1B',
+                  textDecoration: 'none'
+                }}
               >
-                <Phone size={16} />
-                <span>Mumbai +91 93222 54315</span>
+                <Phone size={14} className="text-[#B99A69] group-hover:text-[#FAF7F2] transition-colors" />
+                <span style={{ color: 'inherit' }}>Mumbai +91 93222 54315</span>
               </a>
+
+              {/* Secondary London WhatsApp Desk */}
               <a
                 href="https://wa.me/919322254315"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-6 py-4 bg-[#EAE2D2] text-[#1F1B12] hover:bg-white transition-colors text-[11px] uppercase tracking-widest font-semibold flex items-center justify-center gap-2 whitespace-nowrap"
+                className="inline-flex items-center justify-center gap-2.5 px-6 sm:px-7 py-3.5 sm:py-4 rounded-full border border-[#B99A69]/50 font-sans font-medium text-[11px] sm:text-[12px] uppercase tracking-[0.18em] transition-all duration-300 hover:border-[#B99A69] hover:bg-[#B99A69]/20 shadow-sm hover:shadow-md cursor-pointer group whitespace-nowrap"
+                style={{
+                  backgroundColor: '#24211D',
+                  color: '#FAF7F2',
+                  textDecoration: 'none'
+                }}
               >
-                <MessageCircle size={16} />
-                <span>London WhatsApp Desk</span>
+                <MessageCircle size={15} className="text-[#25D366]" />
+                <span style={{ color: '#FAF7F2' }}>London WhatsApp Desk</span>
               </a>
             </div>
           </div>

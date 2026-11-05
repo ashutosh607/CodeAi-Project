@@ -8,8 +8,78 @@ if (typeof window !== 'undefined') {
 }
 
 /**
- * Editorial Headline Text Reveal
- * Reveals text word-by-word with subtle upward motion & blur-to-clear.
+ * Recursively wraps words within strings, JSX elements, and arrays
+ * into animated span wrappers (.text-reveal-word).
+ */
+function wrapWordsRecursively(node, keyPrefix = 'tw') {
+  if (node === null || node === undefined || typeof node === 'boolean') {
+    return node;
+  }
+
+  // Plain string: split into words and wrap
+  if (typeof node === 'string') {
+    const tokens = node.split(/(\s+)/); // Preserves whitespace
+    return tokens.map((token, i) => {
+      if (/^\s+$/.test(token)) {
+        return token; // Preserve spaces as-is
+      }
+      if (!token) return null;
+      return (
+        <span
+          key={`${keyPrefix}-${i}`}
+          className="inline-block overflow-hidden align-top"
+          style={{ verticalAlign: 'top' }}
+        >
+          <span className="text-reveal-word inline-block will-change-transform">
+            {token}
+          </span>
+        </span>
+      );
+    });
+  }
+
+  // Number: render as a word
+  if (typeof node === 'number') {
+    return (
+      <span key={`${keyPrefix}-num`} className="inline-block overflow-hidden align-top">
+        <span className="text-reveal-word inline-block will-change-transform">
+          {node}
+        </span>
+      </span>
+    );
+  }
+
+  // Array of children
+  if (Array.isArray(node)) {
+    return node.map((child, idx) => wrapWordsRecursively(child, `${keyPrefix}-${idx}`));
+  }
+
+  // React element (e.g., <span className="italic">...</span> or <br />)
+  if (React.isValidElement(node)) {
+    // Preserve break tags and void elements
+    if (node.type === 'br' || node.type === 'hr') {
+      return node;
+    }
+
+    // Clone element and recursively wrap its children
+    return React.cloneElement(
+      node,
+      { key: node.key || `${keyPrefix}-el` },
+      wrapWordsRecursively(node.props.children, `${keyPrefix}-child`)
+    );
+  }
+
+  return node;
+}
+
+/**
+ * Editorial Headline & Text Reveal Component
+ * 
+ * Reveals words with an organic, subtle blur-to-clear and upward translation.
+ * - Handles plain text, styled nested elements (spans, italic, accents), and line breaks.
+ * - Senses if element is above the fold for immediate entrance on page load.
+ * - Supports GSAP ScrollTrigger with Lenis synchronization.
+ * - Automatically cleans up filter/transforms on complete for crisp font anti-aliasing.
  */
 export default function TextReveal({
   children,
@@ -17,7 +87,9 @@ export default function TextReveal({
   className = '',
   delay = 0.05,
   stagger = undefined,
-  threshold = 'top 90%',
+  threshold = 'top 92%',
+  distance = undefined,
+  duration = undefined,
   ...restProps
 }) {
   const elRef = useRef(null);
@@ -32,35 +104,41 @@ export default function TextReveal({
     }
 
     const isMobile = isMobileViewport();
-    const effectiveStagger = stagger !== undefined ? stagger : isMobile ? 0.03 : 0.045;
+    const effectiveStagger = stagger !== undefined ? stagger : isMobile ? 0.028 : 0.042;
+    const effectiveDistance = distance !== undefined ? distance : isMobile ? 18 : 26;
+    const effectiveDuration = duration !== undefined ? duration : isMobile ? 0.68 : 0.88;
 
     const ctx = gsap.context(() => {
-      // Find all inner words
       const words = el.querySelectorAll('.text-reveal-word');
       if (words.length === 0) return;
+
+      const rect = el.getBoundingClientRect();
+      const isAboveFold = rect.top < (window.innerHeight || document.documentElement.clientHeight) * 0.9;
 
       gsap.fromTo(
         words,
         {
           opacity: 0,
-          y: isMobile ? 16 : 24,
+          y: effectiveDistance,
           filter: isMobile ? 'blur(3px)' : 'blur(6px)'
         },
         {
           opacity: 1,
           y: 0,
           filter: 'blur(0px)',
-          duration: isMobile ? 0.65 : 0.85,
+          duration: effectiveDuration,
           stagger: effectiveStagger,
-          delay,
+          delay: isAboveFold ? delay : 0,
           ease: 'power3.out',
-          scrollTrigger: {
-            trigger: el,
-            start: threshold,
-            once: true
-          },
+          scrollTrigger: isAboveFold
+            ? undefined
+            : {
+                trigger: el,
+                start: threshold,
+                once: true
+              },
           onComplete: () => {
-            gsap.set(words, { clearProps: 'filter' });
+            gsap.set(words, { clearProps: 'filter,transform,opacity' });
           }
         }
       );
@@ -69,25 +147,11 @@ export default function TextReveal({
     return () => {
       ctx.revert();
     };
-  }, [delay, stagger, threshold]);
-
-  // If children is a string, split into word spans
-  const renderContent = () => {
-    if (typeof children === 'string') {
-      const words = children.split(' ');
-      return words.map((word, i) => (
-        <span key={i} className="inline-block overflow-hidden mr-[0.25em] last:mr-0">
-          <span className="text-reveal-word inline-block">{word}</span>
-        </span>
-      ));
-    }
-    return children;
-  };
+  }, [delay, stagger, threshold, distance, duration]);
 
   return (
     <Component ref={elRef} className={className} {...restProps}>
-      {renderContent()}
+      {wrapWordsRecursively(children)}
     </Component>
   );
 }
-

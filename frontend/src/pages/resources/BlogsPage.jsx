@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import RevealOnScroll from '../../components/motion/RevealOnScroll';
+import TextReveal from '../../components/motion/TextReveal';
 import {
   ChevronRight,
   ArrowRight,
@@ -342,9 +343,13 @@ export default function BlogsPage() {
                 <span className="font-semibold uppercase tracking-[0.25em] text-[#635E52] text-[11px] block">
                   Archival Monograph &amp; Editorial Dispatch
                 </span>
-                <h1 className="font-serif text-[38px] md:text-[54px] text-[#141310] font-normal leading-[1.08] tracking-tight">
+                <TextReveal
+                  as="h1"
+                  delay={0.08}
+                  className="font-serif text-[38px] md:text-[54px] text-[#141310] font-normal leading-[1.08] tracking-tight"
+                >
                   The Ultraa Journal: Notes on Bookbinding Craft, Archival Science &amp; Visual Culture
-                </h1>
+                </TextReveal>
               </RevealOnScroll>
 
               <RevealOnScroll direction="right" className="lg:col-span-4 pb-2 space-y-4">

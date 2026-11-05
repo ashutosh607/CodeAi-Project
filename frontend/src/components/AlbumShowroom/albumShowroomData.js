@@ -251,6 +251,169 @@ export const SHOWROOM_ALBUMS = [
         }
       }
     ]
+  },
+
+  {
+    id: 'layflat',
+    slug: 'layflat',
+    name: 'Layflat Books',
+    tagline: 'Ultra-Slim Panoramic Wedding Volume with Zero Gutter Crease',
+    category: 'ARCHIVAL SLIMLINE',
+    coverMaterial: 'Muted Sage Botanical Linen & Rose Gold Deboss',
+    coverColor: '#D4DDD3',
+    accentColor: '#8F9E8B',
+    coverTexture: 'linen',
+    spineTitle: 'ULTRAA • LAYFLAT PANORAMA • MMXXVI',
+    frontTitle: 'FINE ART LAYFLAT',
+    frontSubtitle: 'CONTEMPORARY ULTRA-SLIM SPREADS',
+    desc: 'Engineered for studio workflows and modern celebrations desiring seamless double-page panoramic storytelling with zero gutter loss in a sleeker, lightweight profile. Perfect for destination elopements and pre-wedding folios.',
+    pageEdgeType: 'standard',
+    blockThickness: '14px',
+    sizes: [
+      { name: '8 x 8 in', desc: 'Compact studio companion' },
+      { name: '10 x 10 in', desc: 'Standard intimate square heirloom' },
+      { name: '11 x 14 in', desc: 'Grand landscape editorial format' }
+    ],
+    materials: ['Botanical Linen', 'Textured Bookcloth', 'Hand-Glued Endpapers'],
+    paperType: 'Archival Matte Cotton Rag with Protective Silk Lamination',
+    finishing: 'Blind Deboss Typography with Rose Gold Accent Foil',
+    binding: 'True 180° Layflat Ultra-Thin Archival Hinge Construction',
+    spreads: [
+      {
+        id: 1,
+        title: 'Sunset Coastline & Allée Vows',
+        left: {
+          image: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1000&q=85',
+          caption: 'Plate 01 • Terraced Garden Stroll at Twilight'
+        },
+        right: {
+          image: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1000&q=85',
+          caption: 'Plate 02 • Intimate Sunset Embrace by the Shore'
+        }
+      }
+    ]
+  },
+
+  {
+    id: 'box-and-bags',
+    slug: 'box-and-bags',
+    name: 'Box & Bags Collection',
+    tagline: 'Hand-Constructed Clamshell Presentation Vaults & Velvet Pouches',
+    category: 'PROTECTIVE STORAGE',
+    coverMaterial: 'Rigid 3mm Binders Board Wrapped in Velvet & Italian Leather',
+    coverColor: '#2C3E2D',
+    accentColor: '#D4AF37',
+    coverTexture: 'linen',
+    spineTitle: 'ULTRAA • ARCHIVAL VAULT • MMXXVI',
+    frontTitle: 'ARTISANAL VAULT & CASKET',
+    frontSubtitle: 'PROTECTIVE HEIRLOOM HOUSING',
+    desc: 'Every heirloom album deserves a protective sanctuary. Our clamshell boxes are crafted from 3mm dense binders board that resists temperature shifts, wrapped in matching textiles, and lined with velvet to safeguard against dust and atmospheric moisture.',
+    pageEdgeType: 'thick-rigid',
+    blockThickness: '28px',
+    sizes: [
+      { name: 'Fits 10x10 in', desc: 'Precision tailored with ribbon lift' },
+      { name: 'Fits 12x12 in', desc: 'Executive wedding casket size' },
+      { name: 'Fits 11x14 in', desc: 'Grand landscape edition' }
+    ],
+    materials: ['3mm Rigid Binders Board', 'Crushed Velvet Lining', 'Grosgrain Satin Pulls'],
+    paperType: 'Acid-Free Heavyweight Foam & Velvet Bedding',
+    finishing: 'Deep Foil Stamped Seal with Hidden Neodymium Magnetic Closure',
+    binding: 'Precision Clamshell Hand-Assembled Structure',
+    spreads: [
+      {
+        id: 1,
+        title: 'The Presentation Casket Interior',
+        left: {
+          image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=1000&q=85',
+          caption: 'Artisanal Velvet Casket Bed & Silk Pull Ribbon'
+        },
+        right: {
+          image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=85',
+          caption: 'Magnetic Closure Flap & Custom Brass Monogram Plate'
+        }
+      }
+    ]
+  },
+
+  {
+    id: 'parent-albums',
+    slug: 'parent-albums',
+    name: 'Parent Keepsakes',
+    tagline: 'Proportional Duplicate Editions for Family Milestones & Gifting',
+    category: 'COMPANION SUITE',
+    coverMaterial: 'Soft Blush Silk Bookcloth & Brass Stamping',
+    coverColor: '#E8DCD4',
+    accentColor: '#B99A69',
+    coverTexture: 'linen',
+    spineTitle: 'ULTRAA • PARENT COMPANION • MMXXVI',
+    frontTitle: 'PARENT HEIRLOOM EDITION',
+    frontSubtitle: 'SCALED REPLICA FOR FAMILY SHARING',
+    desc: 'The definitive solution for family gift editions. Exact proportional duplicates of the main wedding album, crafted with matching archival paper and luxury bookcloth covers for spontaneous gifting and shelf display across generations.',
+    pageEdgeType: 'standard',
+    blockThickness: '16px',
+    sizes: [
+      { name: '8 x 8 in', desc: 'Exact 12x12 duplicate scale' },
+      { name: '6 x 6 in', desc: 'Handbag & bedside companion' },
+      { name: '5 x 7 in', desc: 'Portrait presentation folio' }
+    ],
+    materials: ['Woven Rose Bookcloth', 'Japanese Endpapers', 'Acid-Free Core'],
+    paperType: 'Fuji Crystal Archive Photographic Lustre Paper',
+    finishing: 'Foil Stamped Monogram with Matching Slipcase Ribbon',
+    binding: 'Lay-Flat Seamless Flush Mount Scale',
+    spreads: [
+      {
+        id: 1,
+        title: 'Family Embrace & Generations Gathering',
+        left: {
+          image: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=85',
+          caption: 'Plate 01 • Parents Emotional Toast at Twilight'
+        },
+        right: {
+          image: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1000&q=85',
+          caption: 'Plate 02 • Mother & Bride Sacred Blessing'
+        }
+      }
+    ]
+  },
+
+  {
+    id: 'mini-accordions',
+    slug: 'mini-accordions',
+    name: 'Pocket Accordions',
+    tagline: 'Magnetic Folding Fine-Art Keepsakes for Handbags & Desktops',
+    category: 'ARTISANAL MINIATURE',
+    coverMaterial: 'Warm Camel Buckram with Concealed Magnetic Catch',
+    coverColor: '#C9B6A1',
+    accentColor: '#8C6D48',
+    coverTexture: 'linen',
+    spineTitle: 'ULTRAA • ACCORDION FOLIO • MMXXVI',
+    frontTitle: 'POCKET ACCORDION FOLIO',
+    frontSubtitle: 'MAGNETIC FINE-ART ACCORDION',
+    desc: 'Delightful 3x3 inch folding accordions with up to 14 fine art photographic panels. Features concealed magnetic covers that snap closed or stand unsupported on office desks, bedside tables, or mantlepieces.',
+    pageEdgeType: 'standard',
+    blockThickness: '10px',
+    sizes: [
+      { name: '3 x 3 in', desc: 'Pocket square edition (10-14 panels)' },
+      { name: '4 x 4 in', desc: 'Desktop standing display edition' }
+    ],
+    materials: ['Camel Textured Buckram', 'Japanese Linen', 'Neodymium Magnets'],
+    paperType: 'Museum 310gsm Cotton Rag Smooth Paper',
+    finishing: 'Debossed Geometric Frame with Gold Monogram Catch',
+    binding: 'Continuous Zig-Zag Accordion Folding Leaf',
+    spreads: [
+      {
+        id: 1,
+        title: 'Milestone Portraits & Detail Vignettes',
+        left: {
+          image: 'https://images.unsplash.com/photo-1519225433281-96db8b3260e5?auto=format&fit=crop&w=1000&q=85',
+          caption: 'Panel 01 • The Laughter & Champagne Toast'
+        },
+        right: {
+          image: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=1000&q=85',
+          caption: 'Panel 02 • Confetti Shower & Midnight Departure'
+        }
+      }
+    ]
   }
 ];
 

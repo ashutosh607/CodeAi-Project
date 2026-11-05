@@ -2,6 +2,8 @@ import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import RevealOnScroll from './motion/RevealOnScroll';
+import TextReveal from './motion/TextReveal';
+import StaggerBoxes from './motion/StaggerBoxes';
 
 const SERVICES = [
   {
@@ -34,19 +36,21 @@ export default function ServicesSection() {
   return (
     <section id="services" className="services-section">
       <div className="section-container">
-        <RevealOnScroll direction="up" className="services-header-center">
-          <div className="section-eyebrow-chip">
-            <span>COMPLETE POST-PRODUCTION &amp; STORYTELLING</span>
-          </div>
-          <h2 className="services-heading">Services We Offer</h2>
-        </RevealOnScroll>
+        <div className="services-header-center">
+          <RevealOnScroll direction="down" delay={0.05} distance={12} blur={false}>
+            <div className="section-eyebrow-chip">
+              <span>COMPLETE POST-PRODUCTION &amp; STORYTELLING</span>
+            </div>
+          </RevealOnScroll>
+          <TextReveal as="h2" className="services-heading" delay={0.08}>
+            Services We Offer
+          </TextReveal>
+        </div>
 
-        <div className="services-three-column-grid">
-          {SERVICES.map((srv, index) => (
-            <RevealOnScroll
+        <StaggerBoxes className="services-three-column-grid" stagger={0.12}>
+          {SERVICES.map((srv) => (
+            <div
               key={srv.id}
-              direction="up"
-              delay={index * 0.1}
               className="service-editorial-card group"
             >
               <div className="service-card-photo-wrapper overflow-hidden">
@@ -66,9 +70,9 @@ export default function ServicesSection() {
                   <ArrowRight size={14} />
                 </Link>
               </div>
-            </RevealOnScroll>
+            </div>
           ))}
-        </div>
+        </StaggerBoxes>
       </div>
     </section>
   );

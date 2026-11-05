@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { CheckCircle2, Clock, ArrowRight, ShieldCheck, ChevronRight } from 'lucide-react';
 import RevealOnScroll from '../components/motion/RevealOnScroll';
+import TextReveal from '../components/motion/TextReveal';
 import { SERVICES_CATALOG } from '../data/catalogData';
 import BeforeAfterSlider from '../components/BeforeAfterSlider';
 
@@ -108,7 +109,9 @@ export default function ServiceDetailPage() {
           <div className="service-hero-grid">
             <RevealOnScroll direction="left" className="service-hero-content">
               <span className="section-eyebrow-chip">STUDIO POST-PRODUCTION & ATELIER</span>
-              <h1 className="service-hero-heading">{service.name}</h1>
+              <TextReveal as="h1" delay={0.08} className="service-hero-heading">
+                {service.name}
+              </TextReveal>
               <p className="service-hero-desc">{service.heroDesc || service.shortDesc}</p>
 
               <div className="service-highlights-row">

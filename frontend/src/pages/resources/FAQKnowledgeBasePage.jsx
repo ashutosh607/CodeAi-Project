@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import RevealOnScroll from '../../components/motion/RevealOnScroll';
+import TextReveal from '../../components/motion/TextReveal';
 import {
   ChevronRight,
   Search,
@@ -217,9 +218,13 @@ export default function FAQKnowledgeBasePage() {
             <span className="font-semibold uppercase tracking-[0.25em] text-[#635E52] text-[11px] block">
               Technical Dossier &amp; Operations Manual
             </span>
-            <h1 className="font-serif text-[38px] md:text-[54px] text-[#141310] leading-tight font-normal tracking-tight">
+            <TextReveal
+              as="h1"
+              delay={0.08}
+              className="font-serif text-[38px] md:text-[54px] text-[#141310] leading-tight font-normal tracking-tight"
+            >
               Frequently Addressed Inquiries &amp; Studio Protocols
-            </h1>
+            </TextReveal>
             <p className="text-[16px] md:text-[18px] text-[#4A463F] max-w-2xl leading-relaxed pt-2">
               Definitive technical specifications on silver halide continuous tone chemistry, archival Hahnemühle substrates, customs-cleared global courier transit, and bespoke bookbinding die preparation.
             </p>

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import TextReveal from '../components/motion/TextReveal';
+import RevealOnScroll from '../components/motion/RevealOnScroll';
 import { 
   ShieldCheck, 
   QrCode, 
@@ -88,9 +90,13 @@ export default function PayOnlinePage() {
             </span>
           </div>
 
-          <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(2rem, 4vw, 3.25rem)', fontWeight: 400, color: 'var(--color-primary, #141310)', lineHeight: 1.18, letterSpacing: '-0.01em', marginBottom: '1rem' }}>
+          <TextReveal
+            as="h1"
+            delay={0.08}
+            style={{ fontFamily: 'Playfair Display, serif', fontSize: 'clamp(2rem, 4vw, 3.25rem)', fontWeight: 400, color: 'var(--color-primary, #141310)', lineHeight: 1.18, letterSpacing: '-0.01em', marginBottom: '1rem' }}
+          >
             Secure Online Payment Portal
-          </h1>
+          </TextReveal>
 
           <p style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '1rem', color: 'var(--color-secondary, #635E52)', lineHeight: 1.65 }}>
             Safe and seamless payment processing for bespoke album commissions, retouching batches, custom sample swatch kits, and international express air freight.

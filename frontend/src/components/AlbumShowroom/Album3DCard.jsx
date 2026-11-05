@@ -16,17 +16,27 @@ import { useNavigate } from 'react-router-dom';
 export default function Album3DCard({
   album,
   index = 0,
-  onSelectProduct
+  onOpenViewer
 }) {
   const navigate = useNavigate();
   const podiumRef = useRef(null);
   const bookVolumeRef = useRef(null);
   const shadowRef = useRef(null);
 
-  const handleExplore = () => {
-    if (onSelectProduct) {
-      onSelectProduct(album);
+  const handleOpen3D = (e) => {
+    if (e) e.stopPropagation();
+    if (onOpenViewer) {
+      onOpenViewer(album);
+    } else {
+      navigate(`/products/${album.slug}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+  };
+
+  const handleExplore = handleOpen3D;
+
+  const handleViewSpecs = (e) => {
+    if (e) e.stopPropagation();
     navigate(`/products/${album.slug}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -111,18 +121,22 @@ export default function Album3DCard({
   }, []);
 
   return (
-    <div ref={podiumRef} className="album-product-podium">
+    <div
+      ref={podiumRef}
+      onClick={handleOpen3D}
+      className="album-product-podium cursor-pointer"
+    >
       {/* 3D Physical Album Stage */}
       <div
         className="album-3d-stage"
-        onClick={handleExplore}
+        onClick={handleOpen3D}
         role="button"
         tabIndex={0}
-        aria-label={`Explore ${album.name}`}
+        aria-label={`Open 3D ${album.name}`}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            handleExplore();
+            handleOpen3D();
           }
         }}
       >

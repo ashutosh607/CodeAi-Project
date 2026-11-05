@@ -75,6 +75,10 @@ export default function SmoothScroll({ children }) {
     } else {
       window.scrollTo(0, 0);
     }
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 120);
+    return () => clearTimeout(timer);
   }, [location.pathname]);
 
   return <>{children}</>;

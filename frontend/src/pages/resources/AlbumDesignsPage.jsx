@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import RevealOnScroll from '../../components/motion/RevealOnScroll';
+import TextReveal from '../../components/motion/TextReveal';
 import {
   ChevronRight,
   SlidersHorizontal,
@@ -186,9 +187,13 @@ export default function AlbumDesignsPage() {
             <span className="font-semibold uppercase tracking-[0.25em] text-[#635E52] text-[11px] block">
               Curated Album Layout Architecture &amp; Spatial Grids
             </span>
-            <h1 className="font-serif text-[38px] md:text-[54px] text-[#141310] font-normal leading-[1.08] tracking-tight">
+            <TextReveal
+              as="h1"
+              delay={0.08}
+              className="font-serif text-[38px] md:text-[54px] text-[#141310] font-normal leading-[1.08] tracking-tight"
+            >
               Curated Album Designs &amp; Spread Architecture
-            </h1>
+            </TextReveal>
             <p className="text-[#4A463F] text-[16px] md:text-[18px] max-w-2xl leading-relaxed pt-2">
               Explore 140+ archived master spreads engineered with mathematical golden-ratio proportions, zero-interruption continuous gutters, and calibrated breathing room tailored for luxury wedding tomes.
             </p>

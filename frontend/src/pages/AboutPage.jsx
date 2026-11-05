@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import RevealOnScroll from '../components/motion/RevealOnScroll';
+import TextReveal from '../components/motion/TextReveal';
+import StaggerBoxes from '../components/motion/StaggerBoxes';
 import {
   ShieldCheck,
   Award,
@@ -37,16 +39,16 @@ export default function AboutPage() {
                     The Atelier &amp; Philosophy
                   </span>
                 </div>
-                <h1 className="font-serif text-[38px] md:text-[52px] text-[#141310] tracking-tight leading-[1.12] mb-8 font-normal">
+                <TextReveal as="h1" delay={0.08} className="font-serif text-[38px] md:text-[52px] text-[#141310] tracking-tight leading-[1.12] mb-8 font-normal">
                   Preserving Sacred Moments Through Master Bookbinding &amp; Silver Halide Artistry
-                </h1>
+                </TextReveal>
                 <p className="text-[17px] text-[#4A463F] leading-relaxed mb-10 max-w-xl">
                   Ultraa Albums is Mumbai’s premier custom photo book manufacturer and artisanal binding atelier. Over the past 15 years, we have quietly powered the luxury deliverable suites of top-tier wedding cinematographers and photographers across India, the UK, Europe, and the Middle East.
                 </p>
               </div>
 
               {/* Micro Typographic Spec Matrix */}
-              <div className="grid grid-cols-3 gap-6 pt-8 mt-4 bg-[#F4F4F0] p-6 border border-[#EAE6DF]">
+              <StaggerBoxes className="grid grid-cols-3 gap-6 pt-8 mt-4 bg-[#F4F4F0] p-6 border border-[#EAE6DF]" stagger={0.08}>
                 <div>
                   <p className="font-semibold uppercase text-[#635E52] text-[10px] tracking-widest mb-1">Established</p>
                   <p className="font-serif text-[22px] text-[#141310] font-normal leading-tight">2009</p>
@@ -62,7 +64,7 @@ export default function AboutPage() {
                   <p className="font-serif text-[22px] text-[#141310] font-normal leading-tight">42 Nations</p>
                   <p className="text-[12px] text-[#4A463F] mt-1">Priority Insured</p>
                 </div>
-              </div>
+              </StaggerBoxes>
             </RevealOnScroll>
 
             {/* Right: Asymmetric Mosaic Display */}
@@ -280,108 +282,198 @@ export default function AboutPage() {
       </section>
 
       {/* SECTION 4: THE 3-STEP WORKING PROCESS (FULL-WIDTH DARK SECTION) */}
-      <section id="how-we-work" className="scroll-mt-24 w-full bg-[#292724] text-[#F4F4F0] py-16 md:py-28 relative">
-        <div className="max-w-[1440px] mx-auto px-4 md:px-12">
-          <div className="max-w-2xl mb-16">
-            <span className="font-semibold uppercase tracking-[0.25em] text-[#EAE2D2] text-[11px] block mb-3">
-              Execution Sequence
-            </span>
-            <h2 className="font-serif text-[32px] md:text-[44px] text-[#FFFFFF] font-normal leading-tight">
+      <section id="how-we-work" className="scroll-mt-24 w-full bg-[#1A1815] text-[#FAF7F2] py-16 md:py-28 relative overflow-hidden">
+        {/* Subtle Atmospheric Gold Glows */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 rounded-full bg-[#B99A69]/5 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-10 w-96 h-96 rounded-full bg-[#B99A69]/5 blur-3xl pointer-events-none" />
+
+        <div className="max-w-[1440px] mx-auto px-4 md:px-12 relative z-10">
+          <div className="max-w-2xl mb-14 sm:mb-16 text-left">
+            {/* Live Gold Status Pill */}
+            <div
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#B99A69]/40 text-[10px] uppercase font-sans font-medium tracking-[0.22em] mb-3"
+              style={{ backgroundColor: 'rgba(185, 154, 105, 0.12)', color: '#D4AF37' }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse" />
+              <span style={{ color: '#D4AF37' }}>EXECUTION SEQUENCE</span>
+            </div>
+
+            {/* High-Contrast White Heading */}
+            <TextReveal
+              as="h2"
+              delay={0.08}
+              className="font-serif text-[32px] md:text-[44px] lg:text-[48px] font-normal leading-[1.14] tracking-tight mt-1 mb-3"
+              style={{ color: '#FAF7F2' }}
+            >
               From Digital Master to Bound Volume
-            </h2>
-            <p className="text-[15px] text-[#928E89] mt-4 leading-relaxed">
+            </TextReveal>
+
+            {/* High-Contrast Warm Linen Subtitle */}
+            <p
+              className="font-sans text-[15px] md:text-[16px] leading-[1.7] font-normal"
+              style={{ color: '#C8BEAE' }}
+            >
               A seamless three-tier collaboration connecting international studios directly with our Santacruz master binders.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative">
+          <StaggerBoxes className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 relative" stagger={0.12}>
             {/* Step 1 */}
-            <div className="bg-[#332421]/60 p-8 md:p-10 flex flex-col justify-between relative shadow-sm border border-[#494643]">
+            <div
+              className="rounded-2xl p-6 sm:p-8 md:p-10 flex flex-col justify-between relative shadow-[0_16px_40px_-12px_rgba(0,0,0,0.35)] border border-[#3E3A33] transition-all duration-300 hover:border-[#B99A69]/60 hover:-translate-y-1 group"
+              style={{ backgroundColor: '#24211D' }}
+            >
               <div>
-                <div className="flex items-center justify-between mb-8">
-                  <span className="font-serif text-[36px] text-[#EAE2D2] opacity-40">01</span>
-                  <BookOpen size={28} className="text-[#EAE2D2]" />
+                <div className="flex items-center justify-between mb-6">
+                  <span className="font-serif text-[38px] md:text-[42px] leading-none" style={{ color: '#B99A69', opacity: 0.55 }}>
+                    01
+                  </span>
+                  <div className="w-10 h-10 rounded-full border border-[#B99A69]/30 flex items-center justify-center bg-[#1A1815]">
+                    <BookOpen size={20} className="text-[#B99A69]" />
+                  </div>
                 </div>
-                <span className="font-semibold uppercase tracking-widest text-[#EAE2D2] text-[10px] block mb-2">
+
+                <span
+                  className="inline-block px-2.5 py-0.5 rounded-full border border-[#B99A69]/30 text-[9.5px] font-sans font-semibold uppercase tracking-[0.2em] mb-2.5"
+                  style={{ color: '#D4AF37', backgroundColor: 'rgba(185, 154, 105, 0.1)' }}
+                >
                   Stage 01
                 </span>
-                <h3 className="font-serif text-[22px] text-[#FFFFFF] mb-4 font-normal">
+
+                <h3
+                  className="font-serif text-[22px] sm:text-[24px] font-normal leading-snug mb-3.5 group-hover:text-[#B99A69] transition-colors"
+                  style={{ color: '#FAF7F2' }}
+                >
                   Transfer &amp; Layout Curating
                 </h3>
-                <p className="text-[15px] text-[#928E89] leading-relaxed mb-6">
+
+                <p
+                  className="font-sans text-[14px] sm:text-[14.5px] leading-[1.7] mb-6 font-normal"
+                  style={{ color: '#D5CDBF' }}
+                >
                   Studio raw imagery is curated into bespoke architectural spreads. We provide high-resolution interactive digital soft proofs, pacing each sequence to reflect the genuine emotional cadence of the celebration.
                 </p>
               </div>
-              <div className="space-y-2 pt-6 bg-[#292724]/80 p-4 border-t border-[#494643]">
-                <div className="flex items-center gap-2">
-                  <Check size={14} className="text-[#EAE2D2]" />
-                  <span className="text-[13px] text-[#FFFFFF]">Multi-revision client proofing app</span>
+
+              <div
+                className="space-y-2.5 pt-5 p-4 rounded-xl border border-[#3E3A33]"
+                style={{ backgroundColor: '#1A1815' }}
+              >
+                <div className="flex items-center gap-2.5">
+                  <Check size={14} className="text-[#B99A69] shrink-0" />
+                  <span className="text-[12.5px] font-sans font-medium" style={{ color: '#FAF7F2' }}>Multi-revision client proofing app</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Check size={14} className="text-[#EAE2D2]" />
-                  <span className="text-[13px] text-[#FFFFFF]">Architectural negative whitespace balance</span>
+                <div className="flex items-center gap-2.5">
+                  <Check size={14} className="text-[#B99A69] shrink-0" />
+                  <span className="text-[12.5px] font-sans font-medium" style={{ color: '#FAF7F2' }}>Architectural negative whitespace balance</span>
                 </div>
               </div>
             </div>
 
             {/* Step 2 */}
-            <div className="bg-[#332421]/60 p-8 md:p-10 flex flex-col justify-between relative shadow-sm border border-[#494643]">
+            <div
+              className="rounded-2xl p-6 sm:p-8 md:p-10 flex flex-col justify-between relative shadow-[0_16px_40px_-12px_rgba(0,0,0,0.35)] border border-[#3E3A33] transition-all duration-300 hover:border-[#B99A69]/60 hover:-translate-y-1 group"
+              style={{ backgroundColor: '#24211D' }}
+            >
               <div>
-                <div className="flex items-center justify-between mb-8">
-                  <span className="font-serif text-[36px] text-[#EAE2D2] opacity-40">02</span>
-                  <Layers size={28} className="text-[#EAE2D2]" />
+                <div className="flex items-center justify-between mb-6">
+                  <span className="font-serif text-[38px] md:text-[42px] leading-none" style={{ color: '#B99A69', opacity: 0.55 }}>
+                    02
+                  </span>
+                  <div className="w-10 h-10 rounded-full border border-[#B99A69]/30 flex items-center justify-center bg-[#1A1815]">
+                    <Layers size={20} className="text-[#B99A69]" />
+                  </div>
                 </div>
-                <span className="font-semibold uppercase tracking-widest text-[#EAE2D2] text-[10px] block mb-2">
+
+                <span
+                  className="inline-block px-2.5 py-0.5 rounded-full border border-[#B99A69]/30 text-[9.5px] font-sans font-semibold uppercase tracking-[0.2em] mb-2.5"
+                  style={{ color: '#D4AF37', backgroundColor: 'rgba(185, 154, 105, 0.1)' }}
+                >
                   Stage 02
                 </span>
-                <h3 className="font-serif text-[22px] text-[#FFFFFF] mb-4 font-normal">
+
+                <h3
+                  className="font-serif text-[22px] sm:text-[24px] font-normal leading-snug mb-3.5 group-hover:text-[#B99A69] transition-colors"
+                  style={{ color: '#FAF7F2' }}
+                >
                   Precision Printing &amp; Hand Binding
                 </h3>
-                <p className="text-[15px] text-[#928E89] leading-relaxed mb-6">
+
+                <p
+                  className="font-sans text-[14px] sm:text-[14.5px] leading-[1.7] mb-6 font-normal"
+                  style={{ color: '#D5CDBF' }}
+                >
                   High-definition continuous tone exposure coupled with German binding presses. Core boards are reinforced with climate-controlled, humidity-resistant non-bending archival substrates before leather covers are trimmed by hand.
                 </p>
               </div>
-              <div className="space-y-2 pt-6 bg-[#292724]/80 p-4 border-t border-[#494643]">
-                <div className="flex items-center gap-2">
-                  <Check size={14} className="text-[#EAE2D2]" />
-                  <span className="text-[13px] text-[#FFFFFF]">Anti-warp composite core formulation</span>
+
+              <div
+                className="space-y-2.5 pt-5 p-4 rounded-xl border border-[#3E3A33]"
+                style={{ backgroundColor: '#1A1815' }}
+              >
+                <div className="flex items-center gap-2.5">
+                  <Check size={14} className="text-[#B99A69] shrink-0" />
+                  <span className="text-[12.5px] font-sans font-medium" style={{ color: '#FAF7F2' }}>Anti-warp composite core formulation</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Check size={14} className="text-[#EAE2D2]" />
-                  <span className="text-[13px] text-[#FFFFFF]">Individual hydraulic spine conditioning</span>
+                <div className="flex items-center gap-2.5">
+                  <Check size={14} className="text-[#B99A69] shrink-0" />
+                  <span className="text-[12.5px] font-sans font-medium" style={{ color: '#FAF7F2' }}>Individual hydraulic spine conditioning</span>
                 </div>
               </div>
             </div>
 
             {/* Step 3 */}
-            <div className="bg-[#332421]/60 p-8 md:p-10 flex flex-col justify-between relative shadow-sm border border-[#494643]">
+            <div
+              className="rounded-2xl p-6 sm:p-8 md:p-10 flex flex-col justify-between relative shadow-[0_16px_40px_-12px_rgba(0,0,0,0.35)] border border-[#3E3A33] transition-all duration-300 hover:border-[#B99A69]/60 hover:-translate-y-1 group"
+              style={{ backgroundColor: '#24211D' }}
+            >
               <div>
-                <div className="flex items-center justify-between mb-8">
-                  <span className="font-serif text-[36px] text-[#EAE2D2] opacity-40">03</span>
-                  <Plane size={28} className="text-[#EAE2D2]" />
+                <div className="flex items-center justify-between mb-6">
+                  <span className="font-serif text-[38px] md:text-[42px] leading-none" style={{ color: '#B99A69', opacity: 0.55 }}>
+                    03
+                  </span>
+                  <div className="w-10 h-10 rounded-full border border-[#B99A69]/30 flex items-center justify-center bg-[#1A1815]">
+                    <Plane size={20} className="text-[#B99A69]" />
+                  </div>
                 </div>
-                <span className="font-semibold uppercase tracking-widest text-[#EAE2D2] text-[10px] block mb-2">
+
+                <span
+                  className="inline-block px-2.5 py-0.5 rounded-full border border-[#B99A69]/30 text-[9.5px] font-sans font-semibold uppercase tracking-[0.2em] mb-2.5"
+                  style={{ color: '#D4AF37', backgroundColor: 'rgba(185, 154, 105, 0.1)' }}
+                >
                   Stage 03
                 </span>
-                <h3 className="font-serif text-[22px] text-[#FFFFFF] mb-4 font-normal">
+
+                <h3
+                  className="font-serif text-[22px] sm:text-[24px] font-normal leading-snug mb-3.5 group-hover:text-[#B99A69] transition-colors"
+                  style={{ color: '#FAF7F2' }}
+                >
                   Global White-Glove Dispatch
                 </h3>
-                <p className="text-[15px] text-[#928E89] leading-relaxed mb-6">
+
+                <p
+                  className="font-sans text-[14px] sm:text-[14.5px] leading-[1.7] mb-6 font-normal"
+                  style={{ color: '#D5CDBF' }}
+                >
                   Tightly wrapped in custom anti-humidity velvet sleeves and double-walled impact-absorbing presentation cartons. Priority tracked air transit departs Mumbai daily, landing in London or New York within 72 hours.
                 </p>
               </div>
-              <div className="space-y-2 pt-6 bg-[#292724]/80 p-4 border-t border-[#494643]">
-                <div className="flex items-center gap-2">
-                  <Check size={14} className="text-[#EAE2D2]" />
-                  <span className="text-[13px] text-[#FFFFFF]">Full customs clearance &amp; duty pre-paid</span>
+
+              <div
+                className="space-y-2.5 pt-5 p-4 rounded-xl border border-[#3E3A33]"
+                style={{ backgroundColor: '#1A1815' }}
+              >
+                <div className="flex items-center gap-2.5">
+                  <Check size={14} className="text-[#B99A69] shrink-0" />
+                  <span className="text-[12.5px] font-sans font-medium" style={{ color: '#FAF7F2' }}>Full customs clearance &amp; duty pre-paid</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Check size={14} className="text-[#EAE2D2]" />
-                  <span className="text-[13px] text-[#FFFFFF]">Doorstep white-glove unboxing presentation</span>
+                <div className="flex items-center gap-2.5">
+                  <Check size={14} className="text-[#B99A69] shrink-0" />
+                  <span className="text-[12.5px] font-sans font-medium" style={{ color: '#FAF7F2' }}>Doorstep white-glove unboxing presentation</span>
                 </div>
               </div>
             </div>
-          </div>
+          </StaggerBoxes>
         </div>
       </section>
 

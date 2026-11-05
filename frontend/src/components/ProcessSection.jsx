@@ -1,5 +1,7 @@
 import React from 'react';
 import RevealOnScroll from './motion/RevealOnScroll';
+import TextReveal from './motion/TextReveal';
+import StaggerBoxes from './motion/StaggerBoxes';
 
 const STEPS = [
   {
@@ -28,21 +30,23 @@ export default function ProcessSection() {
   return (
     <section id="process" className="how-we-work-section">
       <div className="section-container">
-        <RevealOnScroll direction="up" className="how-we-work-header-center">
-          <div className="section-eyebrow-chip">
-            <span>STREAMLINED STUDIO METHODOLOGY</span>
-          </div>
-          <h2 className="how-we-work-heading">How We Work?</h2>
-        </RevealOnScroll>
+        <div className="how-we-work-header-center">
+          <RevealOnScroll direction="down" delay={0.05} distance={12} blur={false}>
+            <div className="section-eyebrow-chip">
+              <span>STREAMLINED STUDIO METHODOLOGY</span>
+            </div>
+          </RevealOnScroll>
+          <TextReveal as="h2" className="how-we-work-heading" delay={0.08}>
+            How We Work?
+          </TextReveal>
+        </div>
 
         <div className="how-we-work-timeline-container">
           <div className="horizontal-connector-line" />
-          <div className="how-we-work-four-grid">
-            {STEPS.map((step, index) => (
-              <RevealOnScroll
+          <StaggerBoxes className="how-we-work-four-grid" stagger={0.1}>
+            {STEPS.map((step) => (
+              <div
                 key={step.num}
-                direction="up"
-                delay={index * 0.08}
                 className="step-process-card"
               >
                 <div className="step-badge-circle">
@@ -50,9 +54,9 @@ export default function ProcessSection() {
                 </div>
                 <h3 className="step-title-text">{step.title}</h3>
                 <p className="step-desc-text">{step.desc}</p>
-              </RevealOnScroll>
+              </div>
             ))}
-          </div>
+          </StaggerBoxes>
         </div>
       </div>
     </section>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import RevealOnScroll from '../components/motion/RevealOnScroll';
+import TextReveal from '../components/motion/TextReveal';
 import {
   MapPin,
   Phone,
@@ -59,9 +60,13 @@ export default function ContactPage() {
                   Concierge &amp; Atelier Visits
                 </span>
               </div>
-              <h1 className="font-serif text-[34px] md:text-[48px] text-[#141310] tracking-tight font-normal leading-tight">
+              <TextReveal
+                as="h1"
+                delay={0.08}
+                className="font-serif text-[34px] md:text-[48px] text-[#141310] tracking-tight font-normal leading-tight"
+              >
                 Connect With Our Master Bookbinders &amp; Color Grading Lab
-              </h1>
+              </TextReveal>
               <p className="text-[17px] text-[#4A463F] max-w-2xl pt-2 leading-relaxed">
                 Whether you are an auteur wedding photographer establishing a white-label album partnership or a couple commissioning an heirloom wedding book, our Mumbai atelier concierge is at your service.
               </p>

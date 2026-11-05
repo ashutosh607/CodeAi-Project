@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import RevealOnScroll from '../../components/motion/RevealOnScroll';
+import TextReveal from '../../components/motion/TextReveal';
 import {
   ChevronRight,
   CheckCircle,
@@ -123,9 +124,13 @@ export default function WeddingPhotoAlbumsPage() {
             <span className="font-semibold uppercase tracking-[0.25em] text-[#635E52] text-[11px] block">
               Hand-Bound Physical Heirlooms for Discerning Studios
             </span>
-            <h1 className="font-serif text-[38px] md:text-[56px] text-[#141310] font-normal leading-[1.06] tracking-tight">
+            <TextReveal
+              as="h1"
+              delay={0.08}
+              className="font-serif text-[38px] md:text-[56px] text-[#141310] font-normal leading-[1.06] tracking-tight"
+            >
               Wedding Photo Albums That Outlast Fleeting Digital Screens
-            </h1>
+            </TextReveal>
             <p className="text-[#4A463F] text-[16px] md:text-[18px] max-w-2xl leading-relaxed pt-2">
               A wedding photograph was never intended to live trapped behind glass pixels. We engineer archival tomes using authentic wet-process silver halide printing, hand-sewn spines, and vegetable-tanned Tuscan hides meant to be held by great-grandchildren.
             </p>

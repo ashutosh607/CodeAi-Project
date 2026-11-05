@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import RevealOnScroll from './motion/RevealOnScroll';
+import TextReveal from './motion/TextReveal';
 
 export default function IntroSection() {
   const [imgSrc, setImgSrc] = useState('https://ultraaalbums.com/wp-content/uploads/2022/07/Cover.jpg');
@@ -15,39 +16,47 @@ export default function IntroSection() {
       <div className="section-container">
         <div className="intro-two-column-layout">
           {/* Left Column: Text & Editorial Manifesto */}
-          <RevealOnScroll direction="left" className="intro-text-column">
-            <div className="section-eyebrow-chip">
-              <span>BESPOKE BINDERY &amp; FINE PRINTING</span>
-            </div>
+          <div className="intro-text-column">
+            <RevealOnScroll direction="down" delay={0.05} distance={12} blur={false}>
+              <div className="section-eyebrow-chip">
+                <span>BESPOKE BINDERY &amp; FINE PRINTING</span>
+              </div>
+            </RevealOnScroll>
 
-            <h2 className="intro-main-title">
+            <TextReveal as="h2" className="intro-main-title" delay={0.08}>
               Build Your Wedding Photo Book With Us
               <span className="intro-subtitle-display">Give wings to your imagination.</span>
-            </h2>
+            </TextReveal>
 
-            <div className="intro-body-paragraphs">
-              <p>
-                <strong>Ultraa Albums</strong> is an artisanal bookbindery and bespoke photo lab catering to premier wedding photographers and discerning couples worldwide. Over the past 12 years, our master printmakers have bound over 120,000 heirloom volumes across India, the UK, Europe, and the Middle East.
-              </p>
-              <p>
-                Every photography collection receives meticulous care. From hand-torn deckle edges and genuine full-grain leather cases to custom brass die foil debossing and layflat panoramic double-page spreads, we combine historical bookbinding discipline with modern museum-grade archival chemistry.
-              </p>
-            </div>
+            <RevealOnScroll direction="up" delay={0.18} distance={20}>
+              <div className="intro-body-paragraphs">
+                <p>
+                  <strong>Ultraa Albums</strong> is an artisanal bookbindery and bespoke photo lab catering to premier wedding photographers and discerning couples worldwide. Over the past 12 years, our master printmakers have bound over 120,000 heirloom volumes across India, the UK, Europe, and the Middle East.
+                </p>
+                <p>
+                  Every photography collection receives meticulous care. From hand-torn deckle edges and genuine full-grain leather cases to custom brass die foil debossing and layflat panoramic double-page spreads, we combine historical bookbinding discipline with modern museum-grade archival chemistry.
+                </p>
+              </div>
+            </RevealOnScroll>
 
-            {/* Stylized Quote Callout matching screenshot */}
-            <div className="intro-quote-card">
-              <p className="quote-text-body">
-                “Life brings celebrations. Photo books transform moments into memories, making them an essential part of preserving your special family milestones.”
-              </p>
-            </div>
+            {/* Stylized Quote Callout Box */}
+            <RevealOnScroll direction="up" delay={0.26} distance={24}>
+              <div className="intro-quote-card">
+                <p className="quote-text-body">
+                  “Life brings celebrations. Photo books transform moments into memories, making them an essential part of preserving your special family milestones.”
+                </p>
+              </div>
+            </RevealOnScroll>
 
-            <div className="intro-action-row">
-              <a href="#contact" className="intro-swatch-ring-cta">
-                <span>ORDER A SAMPLE SWATCH RING</span>
-                <ArrowRight size={15} />
-              </a>
-            </div>
-          </RevealOnScroll>
+            <RevealOnScroll direction="up" delay={0.32} distance={18}>
+              <div className="intro-action-row">
+                <a href="#contact" className="intro-swatch-ring-cta">
+                  <span>ORDER A SAMPLE SWATCH RING</span>
+                  <ArrowRight size={15} />
+                </a>
+              </div>
+            </RevealOnScroll>
+          </div>
 
           {/* Right Column: Physical Product Photography Frame */}
           <RevealOnScroll direction="right" className="intro-image-column">
