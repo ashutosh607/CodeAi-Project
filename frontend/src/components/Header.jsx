@@ -281,10 +281,17 @@ export default function Header({ onOpenPayOnline }) {
             {/* Primary Enquire Pill CTA (Champagne Gold Luxury Accent) */}
             <Link
               to="/enquire"
-              className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 rounded-full bg-[#B99A69] text-white font-sans font-medium text-[10px] sm:text-[11px] uppercase tracking-[0.18em] transition-all duration-300 hover:bg-[#201E1B] hover:shadow-md cursor-pointer group"
+              className={`inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 rounded-full font-sans font-medium text-[10px] sm:text-[11px] uppercase tracking-[0.18em] transition-all duration-300 cursor-pointer group shadow-sm hover:shadow-[0_6px_20px_-2px_rgba(185,154,105,0.45)] hover:-translate-y-0.5 active:translate-y-0 ${
+                location.pathname === '/enquire'
+                  ? 'bg-[#A3834E] text-[#FAF7F2] ring-2 ring-[#B99A69] ring-offset-2 ring-offset-[#FAF7F2]'
+                  : 'bg-[#B99A69] hover:bg-[#A3834E] text-[#FAF7F2]'
+              }`}
+              style={{ color: '#FAF7F2', textDecoration: 'none' }}
             >
-              <span>Enquire</span>
-              <ArrowRight size={13} className="text-white transition-transform group-hover:translate-x-0.5" />
+              <span className="!text-[#FAF7F2] font-medium" style={{ color: '#FAF7F2' }}>
+                Enquire
+              </span>
+              <ArrowRight size={13} className="!text-[#FAF7F2] transition-transform duration-300 group-hover:translate-x-1" style={{ color: '#FAF7F2' }} />
             </Link>
 
             {/* Mobile Hamburger */}
@@ -883,7 +890,12 @@ export default function Header({ onOpenPayOnline }) {
             <div className="pt-4 flex flex-col gap-3">
               <Link
                 to="/enquire"
-                className="w-full py-3 text-center bg-[#201E1B] text-[#F7F3EC] font-sans font-medium text-[11px] uppercase tracking-[0.2em] rounded-full hover:bg-[#B99A69] transition-colors"
+                className={`w-full py-3 text-center font-sans font-medium text-[11px] uppercase tracking-[0.2em] rounded-full transition-all shadow-sm ${
+                  location.pathname === '/enquire'
+                    ? 'bg-[#A3834E] text-[#FAF7F2] ring-2 ring-[#B99A69] ring-offset-2 ring-offset-[#FAF7F2]'
+                    : 'bg-[#B99A69] hover:bg-[#A3834E] text-[#FAF7F2]'
+                }`}
+                style={{ color: '#FAF7F2', textDecoration: 'none' }}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Request Studio Quote

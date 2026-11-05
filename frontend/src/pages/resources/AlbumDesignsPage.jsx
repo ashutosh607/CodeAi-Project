@@ -26,7 +26,7 @@ const SPREAD_SPECIMENS = [
     dimensions: '36" × 12" Open (18" × 12" Closed)',
     substrate: 'Fuji Crystal Archive DPII Silk (600gsm)',
     description: 'Continuous zero-split panoramic spread capturing the floating palace at golden hour. Balanced with a formal 12-column architectural grid and asymmetric negative margins.',
-    imgSrc: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCiZp2k4GqU10d7Q2J1oQk7Lz1K1x7a-4x4-x4-x4',
+    imgSrc: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1600&q=85',
     alt: 'Panoramic wedding album spread of an Indian royal palace courtyard with bride and groom during sunset ceremony',
     colorGamut: 'Adobe RGB (1998) 300 DPI',
     safeMargin: '12mm Trim / 0.0mm Gutter'
@@ -242,7 +242,7 @@ export default function AlbumDesignsPage() {
           <div className="relative w-full aspect-[2.4/1] bg-[#141310] overflow-hidden shadow-2xl border border-[#CCC5BC]/40 group">
             {/* Background Spread Image */}
             <img
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiZp2k4GqU10d7Q2J1oQk7Lz1K1x7a-4x4-x4-x4"
+              src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1600&q=85"
               alt="Continuous panoramic wedding album spread laid flat with zero gutter cut"
               className="w-full h-full object-cover opacity-90 transition-transform duration-700 ease-out group-hover:scale-[1.02]"
             />

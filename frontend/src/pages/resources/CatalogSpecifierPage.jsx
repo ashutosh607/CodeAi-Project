@@ -18,7 +18,7 @@ const CATALOG_SPREADS = [
     page: 'Spread 02 / 42',
     title: 'Chapter 01: Flush Mount Master Archetype',
     desc: 'Seamless 1.2mm Archival Substrate Core',
-    imgSrc: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCiZp2k4GqU10d7Q2J1oQk7Lz1K1x7a-4x4-x4-x4',
+    imgSrc: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1600&q=85',
     alt: 'Editorial spread of bespoke luxury album displaying panoramic landscape wedding photograph over seamless binding with zero gutter obstruction'
   },
   {

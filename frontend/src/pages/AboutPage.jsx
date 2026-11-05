@@ -105,7 +105,7 @@ export default function AboutPage() {
       </section>
 
       {/* SECTION 2: HERITAGE & THE EDITORIAL WINE METAPHOR */}
-      <section id="our-story" className="w-full bg-[#F4F4F0] py-16 md:py-28 relative border-y border-[#EAE6DF]">
+      <section id="our-story" className="scroll-mt-24 w-full bg-[#F4F4F0] py-16 md:py-28 relative border-y border-[#EAE6DF]">
         <div className="max-w-[1440px] mx-auto px-4 md:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             <RevealOnScroll direction="left" className="lg:col-span-5 order-2 lg:order-1">
@@ -153,7 +153,7 @@ export default function AboutPage() {
       </section>
 
       {/* SECTION 3: QUALITY CHECKS & MASTER CRAFTSMANSHIP (4 PILLARS) */}
-      <section id="craftsmanship" className="w-full bg-[#FAF9F5] py-16 md:py-28">
+      <section id="craftsmanship" className="scroll-mt-24 w-full bg-[#FAF9F5] py-16 md:py-28">
         <div className="max-w-[1440px] mx-auto px-4 md:px-12">
           <RevealOnScroll direction="up">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
@@ -280,7 +280,7 @@ export default function AboutPage() {
       </section>
 
       {/* SECTION 4: THE 3-STEP WORKING PROCESS (FULL-WIDTH DARK SECTION) */}
-      <section id="how-we-work" className="w-full bg-[#292724] text-[#F4F4F0] py-16 md:py-28 relative">
+      <section id="how-we-work" className="scroll-mt-24 w-full bg-[#292724] text-[#F4F4F0] py-16 md:py-28 relative">
         <div className="max-w-[1440px] mx-auto px-4 md:px-12">
           <div className="max-w-2xl mb-16">
             <span className="font-semibold uppercase tracking-[0.25em] text-[#EAE2D2] text-[11px] block mb-3">
@@ -386,7 +386,7 @@ export default function AboutPage() {
       </section>
 
       {/* SECTION 5: GLOBAL PRESENCE & CARTOGRAPHY MAP */}
-      <section id="global-presence" className="w-full bg-[#FAF9F5] py-16 md:py-28">
+      <section id="global-presence" className="scroll-mt-24 w-full bg-[#FAF9F5] py-16 md:py-28">
         <div className="max-w-[1440px] mx-auto px-4 md:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-5 pr-0 lg:pr-6">
@@ -527,7 +527,7 @@ export default function AboutPage() {
       </section>
 
       {/* SECTION 6: THE MASTER ARTISANS & LAB CURATORS */}
-      <section id="our-team" className="w-full bg-[#F4F4F0] py-16 md:py-28 border-t border-[#EAE6DF]">
+      <section id="our-team" className="scroll-mt-24 w-full bg-[#F4F4F0] py-16 md:py-28 border-t border-[#EAE6DF]">
         <div className="max-w-[1440px] mx-auto px-4 md:px-12">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
             <div>

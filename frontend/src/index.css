@@ -168,14 +168,14 @@ html.lenis, html.lenis body {
    Main Content Layout Offset (Prevent Header Overlap)
    ========================================================================== */
 #main-content {
-  padding-top: 116px;
+  padding-top: 112px;
   position: relative;
   width: 100%;
 }
 
 @media (max-width: 640px) {
   #main-content {
-    padding-top: 110px;
+    padding-top: 104px;
   }
 }
 

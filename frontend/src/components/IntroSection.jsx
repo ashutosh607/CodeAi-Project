@@ -27,10 +27,10 @@ export default function IntroSection() {
 
             <div className="intro-body-paragraphs">
               <p>
-                <strong>Ultraa Albums</strong> (or Ultra Album) is a premier handcrafted photo album manufacturer and design company that caters heavily to professional photographers and discerning wedding clients. Over the past 12 years, our artisanal printmakers have bound over 120,000 heirloom volumes across India, the UK, Europe, and the Middle East.
+                <strong>Ultraa Albums</strong> is an artisanal bookbindery and bespoke photo lab catering to premier wedding photographers and discerning couples worldwide. Over the past 12 years, our master printmakers have bound over 120,000 heirloom volumes across India, the UK, Europe, and the Middle East.
               </p>
               <p>
-                Every photography collection receives meticulous care. From hand-torn deckle edges and true-leather cases to custom brass die foil debossing and layflat panoramic double-page spreads, we combine historical bookbinding techniques with modern museum-grade archival pigments.
+                Every photography collection receives meticulous care. From hand-torn deckle edges and genuine full-grain leather cases to custom brass die foil debossing and layflat panoramic double-page spreads, we combine historical bookbinding discipline with modern museum-grade archival chemistry.
               </p>
             </div>
 

@@ -22,7 +22,7 @@ export const LUXURY_SPREADS = [
     title: 'Golden Hour & Terraced Gardens',
     venue: 'Villa Balbianello, Lake Como',
     left: {
-      image: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1000&q=85',
+      image: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1000&q=85',
       caption: 'Plate 03 • First Steps as Husband & Wife across Cypress Allée'
     },
     right: {
@@ -39,7 +39,7 @@ export const LUXURY_SPREADS = [
       caption: 'Plate 05 • The Grand Dining Hall under Victorian Chandeliers'
     },
     right: {
-      image: 'https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&w=1000&q=85',
+      image: 'https://images.unsplash.com/photo-1519225433281-96db8b3260e5?auto=format&fit=crop&w=1000&q=85',
       caption: 'Plate 06 • Father of the Bride Toast & Emotional Embraces'
     }
   },
@@ -52,7 +52,7 @@ export const LUXURY_SPREADS = [
       caption: 'Plate 07 • Waltzing beneath Starlight & Cascading Florals'
     },
     right: {
-      image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1000&q=85',
+      image: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=1000&q=85',
       caption: 'Plate 08 • Farewell Sparklers & Handcrafted Heirloom Volume'
     }
   }
@@ -65,6 +65,8 @@ export default function HeroBook({
 }) {
   const [currentSpreadIndex, setCurrentSpreadIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [turnDirection, setTurnDirection] = useState(null); // 'next' | 'prev' | null
+  const [targetSpreadIndex, setTargetSpreadIndex] = useState(0);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [displayMaterial, setDisplayMaterial] = useState(material);
 
@@ -72,7 +74,6 @@ export default function HeroBook({
   const stageRef = useRef(null);
   const closedBookRef = useRef(null);
   const openSpreadRef = useRef(null);
-  const openingCoverRef = useRef(null);
   const turnLeafRef = useRef(null);
   const turnFrontShadowRef = useRef(null);
   const turnBackShadowRef = useRef(null);
@@ -82,8 +83,6 @@ export default function HeroBook({
 
   const totalSpreads = LUXURY_SPREADS.length;
   const activeSpread = LUXURY_SPREADS[currentSpreadIndex];
-  const nextSpreadIndex = Math.min(currentSpreadIndex + 1, totalSpreads - 1);
-  const prevSpreadIndex = Math.max(currentSpreadIndex - 1, 0);
 
   // 1. Preload spread images & motion check
   useEffect(() => {
@@ -132,7 +131,6 @@ export default function HeroBook({
   }, [resumeFloating]);
 
   // 3. CINEMATIC ATELIER BOOK "PUSH & SLIDE" SWAP ANIMATION (When material changes)
-  // Incoming specimen pushes the present book out to the left with soft motion blur
   useEffect(() => {
     if (!material || material.id === prevMaterialIdRef.current) return;
     prevMaterialIdRef.current = material.id;
@@ -141,7 +139,6 @@ export default function HeroBook({
       if (floatTweenRef.current) floatTweenRef.current.pause();
       const bookElem = closedBookRef.current;
 
-      // Stage 1: Present book glides out to the left with motion blur
       gsap.to(bookElem, {
         x: -75,
         rotateY: -26,
@@ -150,10 +147,7 @@ export default function HeroBook({
         duration: 0.28,
         ease: 'power2.in',
         onComplete: () => {
-          // Change material state at apex of blur
           setDisplayMaterial(material);
-
-          // Stage 2: Newly crafted book glides in from the right, settling softly
           gsap.fromTo(
             bookElem,
             {
@@ -183,7 +177,7 @@ export default function HeroBook({
     }
   }, [material, isOpen, resumeFloating]);
 
-  // 4. SMOOTH 3D BOOK OPENING ANIMATION (Organic 3D cover flip)
+  // 4. SMOOTH 3D BOOK OPENING ANIMATION
   const handleOpenAlbum = useCallback(() => {
     if (isOpen || isAnimating) return;
     setIsAnimating(true);
@@ -197,7 +191,6 @@ export default function HeroBook({
 
     const closedBook = closedBookRef.current;
     if (closedBook) {
-      // Smooth 3D cover swing: rotates around left spine edge into open spread
       gsap.to(closedBook, {
         rotateY: -65,
         x: -40,
@@ -207,7 +200,6 @@ export default function HeroBook({
         ease: 'power2.in',
         onComplete: () => {
           setIsOpen(true);
-          // When openSpread mounts, give it a soft settling entrance
           setTimeout(() => {
             if (openSpreadRef.current) {
               gsap.fromTo(
@@ -285,18 +277,22 @@ export default function HeroBook({
     }
   }, [isOpen, isAnimating, prefersReducedMotion, setIsOpen, resumeFloating]);
 
-  // 6. SILKY SMOOTH PAGE TURN NEXT (0.78s continuous luxury flip)
+  // 6. SILKY SMOOTH PAGE TURN NEXT (0.76s Luxury Timeline with Zero Previous Photo Artifacts)
   const handleNextPage = useCallback(() => {
     if (!isOpen || isAnimating || currentSpreadIndex >= totalSpreads - 1) return;
+    const targetIdx = currentSpreadIndex + 1;
     setIsAnimating(true);
+    setTurnDirection('next');
+    setTargetSpreadIndex(targetIdx);
 
     const leaf = turnLeafRef.current;
     const frontShadow = turnFrontShadowRef.current;
     const backShadow = turnBackShadowRef.current;
 
     if (prefersReducedMotion || !leaf) {
-      setCurrentSpreadIndex((prev) => prev + 1);
+      setCurrentSpreadIndex(targetIdx);
       setIsAnimating(false);
+      setTurnDirection(null);
       return;
     }
 
@@ -310,9 +306,10 @@ export default function HeroBook({
 
     const tl = gsap.timeline({
       onComplete: () => {
-        setCurrentSpreadIndex((prev) => prev + 1);
+        setCurrentSpreadIndex(targetIdx);
         gsap.set(leaf, { display: 'none', rotateY: 0, skewY: 0 });
         setIsAnimating(false);
+        setTurnDirection(null);
       }
     });
 
@@ -324,24 +321,8 @@ export default function HeroBook({
     });
 
     // Natural paper curl peaking at mid-turn
-    tl.to(
-      leaf,
-      {
-        skewY: -2.4,
-        duration: 0.36,
-        ease: 'power2.in'
-      },
-      0
-    );
-    tl.to(
-      leaf,
-      {
-        skewY: 0,
-        duration: 0.4,
-        ease: 'power2.out'
-      },
-      0.36
-    );
+    tl.to(leaf, { skewY: -2.4, duration: 0.36, ease: 'power2.in' }, 0);
+    tl.to(leaf, { skewY: 0, duration: 0.4, ease: 'power2.out' }, 0.36);
 
     // Front specular shadow sweeps as page lifts
     if (frontShadow) {
@@ -358,15 +339,19 @@ export default function HeroBook({
   // 7. SILKY SMOOTH PAGE TURN PREV (-180deg to 0deg)
   const handlePrevPage = useCallback(() => {
     if (!isOpen || isAnimating || currentSpreadIndex <= 0) return;
+    const targetIdx = currentSpreadIndex - 1;
     setIsAnimating(true);
+    setTurnDirection('prev');
+    setTargetSpreadIndex(targetIdx);
 
     const leaf = turnLeafRef.current;
     const frontShadow = turnFrontShadowRef.current;
     const backShadow = turnBackShadowRef.current;
 
     if (prefersReducedMotion || !leaf) {
-      setCurrentSpreadIndex((prev) => prev - 1);
+      setCurrentSpreadIndex(targetIdx);
       setIsAnimating(false);
+      setTurnDirection(null);
       return;
     }
 
@@ -380,9 +365,10 @@ export default function HeroBook({
 
     const tl = gsap.timeline({
       onComplete: () => {
-        setCurrentSpreadIndex((prev) => prev - 1);
+        setCurrentSpreadIndex(targetIdx);
         gsap.set(leaf, { display: 'none', rotateY: 0, skewY: 0 });
         setIsAnimating(false);
+        setTurnDirection(null);
       }
     });
 
@@ -392,24 +378,8 @@ export default function HeroBook({
       ease: 'power3.inOut'
     });
 
-    tl.to(
-      leaf,
-      {
-        skewY: 2.4,
-        duration: 0.36,
-        ease: 'power2.in'
-      },
-      0
-    );
-    tl.to(
-      leaf,
-      {
-        skewY: 0,
-        duration: 0.4,
-        ease: 'power2.out'
-      },
-      0.36
-    );
+    tl.to(leaf, { skewY: 2.4, duration: 0.36, ease: 'power2.in' }, 0);
+    tl.to(leaf, { skewY: 0, duration: 0.4, ease: 'power2.out' }, 0.36);
 
     if (backShadow) {
       tl.fromTo(backShadow, { opacity: 0 }, { opacity: 0.45, duration: 0.36 }, 0);
@@ -428,8 +398,7 @@ export default function HeroBook({
 
   const handleTouchEnd = (e) => {
     if (touchStartXRef.current === null) return;
-    const touchEndX = e.changedTouches[0].clientX;
-    const diff = touchEndX - touchStartXRef.current;
+    const diff = e.changedTouches[0].clientX - touchStartXRef.current;
 
     if (isOpen) {
       if (diff < -45) handleNextPage();
@@ -455,6 +424,42 @@ export default function HeroBook({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, handleOpenAlbum, handleNextPage, handlePrevPage, handleCloseAlbum]);
+
+  // Determine what each layer renders so that DURING the turn,
+  // the page underneath reveals the TARGET spread, preventing duplicate/previous photo artifacts!
+  const getUnderlyingLeftSpread = () => {
+    if (isAnimating && turnDirection === 'prev') {
+      return LUXURY_SPREADS[targetSpreadIndex]?.left || activeSpread.left;
+    }
+    return activeSpread.left;
+  };
+
+  const getUnderlyingRightSpread = () => {
+    if (isAnimating && turnDirection === 'next') {
+      return LUXURY_SPREADS[targetSpreadIndex]?.right || activeSpread.right;
+    }
+    return activeSpread.right;
+  };
+
+  const getTurningLeafFront = () => {
+    if (turnDirection === 'next') {
+      return activeSpread.right; // Page lifting off the right stack
+    }
+    if (turnDirection === 'prev') {
+      return LUXURY_SPREADS[targetSpreadIndex]?.right || activeSpread.right; // Target right page landing down
+    }
+    return activeSpread.right;
+  };
+
+  const getTurningLeafBack = () => {
+    if (turnDirection === 'next') {
+      return LUXURY_SPREADS[targetSpreadIndex]?.left || activeSpread.left; // Target left page landing down
+    }
+    if (turnDirection === 'prev') {
+      return activeSpread.left; // Page lifting off the left stack
+    }
+    return activeSpread.left;
+  };
 
   return (
     <div
@@ -617,7 +622,7 @@ export default function HeroBook({
                 <div
                   className="w-8 sm:w-10 h-[1.2px] my-2 opacity-80 transition-colors duration-500"
                   style={{ backgroundColor: displayMaterial.accent }}
-                ></div>
+                />
 
                 <p
                   className="font-serif text-[8px] sm:text-[9px] tracking-[0.18em] uppercase m-0 mb-1 opacity-90 transition-colors duration-500"
@@ -675,27 +680,31 @@ export default function HeroBook({
               />
             </div>
 
-            {/* LEFT PAGE (0% to 50%) */}
+            {/* LEFT PAGE (0% to 50%) - Renders underlying page during turn */}
             <div
               className="absolute top-0 left-0 w-1/2 h-full z-10"
               style={{ transformOrigin: 'right center' }}
             >
               <BookPage
-                pageData={activeSpread.left}
-                pageNumber={currentSpreadIndex * 2 + 1}
+                pageData={getUnderlyingLeftSpread()}
+                pageNumber={
+                  (isAnimating && turnDirection === 'prev' ? targetSpreadIndex : currentSpreadIndex) * 2 + 1
+                }
                 side="left"
                 isGutterShadow={true}
               />
             </div>
 
-            {/* RIGHT PAGE (50% to 100%) */}
+            {/* RIGHT PAGE (50% to 100%) - Renders underlying page during turn */}
             <div
               className="absolute top-0 left-1/2 w-1/2 h-full z-10"
               style={{ transformOrigin: 'left center' }}
             >
               <BookPage
-                pageData={activeSpread.right}
-                pageNumber={currentSpreadIndex * 2 + 2}
+                pageData={getUnderlyingRightSpread()}
+                pageNumber={
+                  (isAnimating && turnDirection === 'next' ? targetSpreadIndex : currentSpreadIndex) * 2 + 2
+                }
                 side="right"
                 isGutterShadow={true}
               />
@@ -715,15 +724,13 @@ export default function HeroBook({
                 transformOrigin: 'left center'
               }}
             >
-              {/* Front Face of Turning Leaf (Right Page turning away) */}
+              {/* Front Face of Turning Leaf (Right Page turning away or landing) */}
               <div className="absolute inset-0 backface-hidden overflow-hidden bg-[#FAF7F2] rounded-r-xs shadow-xl">
                 <BookPage
-                  pageData={
-                    isAnimating && currentSpreadIndex < totalSpreads - 1
-                      ? activeSpread.right
-                      : LUXURY_SPREADS[nextSpreadIndex]?.right || activeSpread.right
+                  pageData={getTurningLeafFront()}
+                  pageNumber={
+                    (turnDirection === 'next' ? currentSpreadIndex : targetSpreadIndex) * 2 + 2
                   }
-                  pageNumber={currentSpreadIndex * 2 + 2}
                   side="right"
                   isGutterShadow={true}
                 />
@@ -733,18 +740,16 @@ export default function HeroBook({
                 />
               </div>
 
-              {/* Back Face of Turning Leaf (Next Left Page settling down) */}
+              {/* Back Face of Turning Leaf (Left Page landing or turning away) */}
               <div
                 className="absolute inset-0 backface-hidden overflow-hidden bg-[#FAF7F2] rounded-l-xs shadow-xl"
                 style={{ transform: 'rotateY(180deg)' }}
               >
                 <BookPage
-                  pageData={
-                    isAnimating && currentSpreadIndex < totalSpreads - 1
-                      ? LUXURY_SPREADS[nextSpreadIndex]?.left || activeSpread.left
-                      : activeSpread.left
+                  pageData={getTurningLeafBack()}
+                  pageNumber={
+                    (turnDirection === 'next' ? targetSpreadIndex : currentSpreadIndex) * 2 + 1
                   }
-                  pageNumber={(currentSpreadIndex + 1) * 2 + 1}
                   side="left"
                   isGutterShadow={true}
                 />
@@ -834,7 +839,7 @@ export default function HeroBook({
               <span>Prev</span>
             </button>
 
-            {/* Live Counter: —— 03 / 04 —— */}
+            {/* Live Counter: —— 02 / 04 —— */}
             <div className="flex items-center gap-2 text-[#777066]">
               <span className="w-2.5 sm:w-4 h-[1px] bg-[#DED5C9]" />
               <span className="font-sans text-[10px] sm:text-[12px] font-bold tracking-[0.18em] text-[#201E1B]">

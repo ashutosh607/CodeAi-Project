@@ -137,7 +137,16 @@ export default function ProductDetailPage() {
           ].map((prod) => (
             <div key={prod.slug} style={{ background: '#FFFFFF', border: '1px solid #EAE6DF', display: 'flex', flexDirection: 'column' }}>
               <div style={{ aspectRatio: '16/10', background: '#EFEEEA', overflow: 'hidden' }}>
-                <img src={prod.img} alt={prod.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img
+                  src={prod.img}
+                  alt={prod.name}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  loading="lazy"
+                  onError={(e) => {
+                    const fallback = PRODUCTS_CATALOG.find(p => p.slug === prod.slug)?.image || 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1000&q=85';
+                    e.currentTarget.src = fallback;
+                  }}
+                />
               </div>
               <div style={{ padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div>
