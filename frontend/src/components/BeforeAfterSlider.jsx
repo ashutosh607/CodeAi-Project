@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { Sliders, Sparkles } from 'lucide-react';
+import { Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
 import RevealOnScroll from './motion/RevealOnScroll';
 import TextReveal from './motion/TextReveal';
 import './Showroom.css';
@@ -8,6 +8,7 @@ const COMPARISONS = [
   {
     id: 'outdoor-silhouette',
     title: 'Outdoor Silhouette & Contrast',
+    mobileTitle: 'Silhouette',
     badge: 'Contour & Dynamic Range',
     desc: 'Deep dynamic range recovery, highlight roll-off, and cinematic evening golden-hour separation.',
     beforeImg: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=70',
@@ -17,6 +18,7 @@ const COMPARISONS = [
   {
     id: 'background-tone',
     title: 'Background & Tone',
+    mobileTitle: 'Tone & Color',
     badge: 'Atmospheric Grading',
     desc: 'Fine-art sky gradient harmonization, lush botanical greenery correction, and balanced ambient lighting.',
     beforeImg: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1200&q=70',
@@ -26,6 +28,7 @@ const COMPARISONS = [
   {
     id: 'skin-retouch',
     title: 'High-End Skin Retouching',
+    mobileTitle: 'Skin Retouch',
     badge: 'Micro-Frequency Separation',
     desc: 'Natural pore preservation, gentle micro-frequency skin separation, and even studio color grading.',
     beforeImg: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1200&q=70',
@@ -94,9 +97,9 @@ export default function BeforeAfterSlider() {
           </RevealOnScroll>
         </div>
 
-        {/* 1. SINGLE-LINE CATEGORY SELECTOR DOCK */}
+        {/* 1. LUXURY CATEGORY SELECTOR DOCK - PERFECT MOBILE & DESKTOP FIT */}
         <RevealOnScroll direction="up" delay={0.22} distance={20} className="flex justify-center mb-6 sm:mb-8">
-          <div className="inline-flex items-center gap-1 sm:gap-2 p-1.5 rounded-full bg-[#EEE7DC]/80 border border-[#DED5C9] shadow-xs backdrop-blur-sm max-w-full overflow-x-auto scrollbar-none">
+          <div className="w-full max-w-[680px] p-1 sm:p-1.5 rounded-2xl sm:rounded-full bg-[#EEE7DC]/95 border border-[#DED5C9] shadow-xs backdrop-blur-md grid grid-cols-3 gap-1 sm:gap-2">
             {COMPARISONS.map((cat) => {
               const isActive = activeTab === cat.id;
               return (
@@ -105,14 +108,21 @@ export default function BeforeAfterSlider() {
                   type="button"
                   aria-pressed={isActive}
                   onClick={() => { setActiveTab(cat.id); setSliderPos(50); }}
-                  className={`px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full font-sans text-[11px] sm:text-[12px] uppercase tracking-[0.12em] font-medium transition-all duration-300 cursor-pointer whitespace-nowrap shrink-0 ${
+                  className={`relative px-2 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-full font-sans transition-all duration-300 cursor-pointer flex items-center justify-center text-center ${
                     isActive
-                      ? 'bg-[#201E1B] !text-[#FAF7F2] shadow-sm font-semibold'
-                      : 'text-[#777066] hover:text-[#201E1B] hover:bg-white/60 bg-transparent border-none'
+                      ? 'bg-[#141310] !text-[#FAF7F2] shadow-[0_2px_8px_rgba(20,19,16,0.22)] font-semibold border border-[#141310]'
+                      : 'text-[#6B6357] hover:text-[#141310] hover:bg-white/60 bg-transparent border border-transparent'
                   }`}
                   style={isActive ? { color: '#FAF7F2' } : {}}
                 >
-                  {cat.title}
+                  {/* Full title for desktop / tablet (sm and above) */}
+                  <span className="hidden sm:inline text-[11px] md:text-[12px] uppercase tracking-[0.12em] whitespace-nowrap">
+                    {cat.title}
+                  </span>
+                  {/* Short luxury title for mobile phones */}
+                  <span className="inline sm:hidden text-[10px] xs:text-[11px] uppercase tracking-[0.05em] font-medium leading-tight truncate">
+                    {cat.mobileTitle}
+                  </span>
                 </button>
               );
             })}
@@ -120,27 +130,28 @@ export default function BeforeAfterSlider() {
         </RevealOnScroll>
 
         {/* 2. PROPERLY SIZED, FULLY VISIBLE INTERACTIVE SLIDER VIEWER */}
-        <RevealOnScroll direction="up" delay={0.28} distance={24} className="max-w-[760px] mx-auto">
-          <div className="bg-[#FAF7F2] p-2 sm:p-3 rounded-xl border border-[#DED5C9] shadow-md">
+        <RevealOnScroll direction="up" delay={0.28} distance={24} className="max-w-[820px] mx-auto">
+          <div className="bg-[#FAF7F2] p-1.5 sm:p-3 rounded-2xl border border-[#DED5C9] shadow-md">
             <div
               ref={containerRef}
               onPointerDown={handlePointerDown}
               onPointerMove={handlePointerMove}
               onPointerUp={handlePointerUp}
               onPointerCancel={handlePointerUp}
-              className="relative w-full aspect-[16/10] sm:aspect-[16/10] rounded-lg overflow-hidden select-none cursor-ew-resize bg-[#201E1B] touch-none"
+              className="relative w-full aspect-[4/3] xs:aspect-[16/11] sm:aspect-[16/10] rounded-xl overflow-hidden select-none cursor-ew-resize bg-[#141310] touch-none shadow-inner"
             >
               {/* AFTER Layer (Full Width Background) */}
               <div className="absolute inset-0 w-full h-full">
                 <img
                   src={activeItem.afterImg}
                   alt={`${activeItem.title} Master Retouch`}
-                  className="w-full h-full object-cover block "
+                  className="w-full h-full object-cover block"
                   loading="lazy"
                 />
-                <span className="absolute bottom-3 right-3 px-2.5 py-1 rounded-sm bg-[#201E1B]/85 backdrop-blur-xs text-white text-[9px] sm:text-[10px] font-sans font-semibold uppercase tracking-[0.16em] border border-white/10 pointer-events-none">
-                  AFTER MASTER
-                </span>
+                <div className="absolute bottom-2.5 right-2.5 sm:bottom-3 sm:right-3 px-2.5 py-1 rounded-full bg-[#141310]/85 backdrop-blur-md text-white text-[9px] sm:text-[10px] font-sans font-semibold uppercase tracking-[0.14em] border border-white/20 pointer-events-none flex items-center gap-1.5 shadow-sm">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
+                  <span>AFTER MASTER</span>
+                </div>
               </div>
 
               {/* BEFORE Layer (Clipped Overlay) */}
@@ -151,7 +162,7 @@ export default function BeforeAfterSlider() {
                 <img
                   src={activeItem.beforeImg}
                   alt={`${activeItem.title} RAW Unedited`}
-                  className={`w-full h-full object-cover block  ${
+                  className={`w-full h-full object-cover block ${
                     activeItem.isBW
                       ? 'filter-bw'
                       : activeItem.isTone
@@ -160,23 +171,82 @@ export default function BeforeAfterSlider() {
                   }`}
                   loading="lazy"
                 />
-                <span className="absolute bottom-3 left-3 px-2.5 py-1 rounded-sm bg-black/75 backdrop-blur-xs text-white text-[9px] sm:text-[10px] font-sans font-semibold uppercase tracking-[0.16em] border border-white/10 pointer-events-none">
-                  BEFORE RAW
-                </span>
+                <div className="absolute bottom-2.5 left-2.5 sm:bottom-3 sm:left-3 px-2.5 py-1 rounded-full bg-black/80 backdrop-blur-md text-white text-[9px] sm:text-[10px] font-sans font-semibold uppercase tracking-[0.14em] border border-white/20 pointer-events-none flex items-center gap-1.5 shadow-sm">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#E5A967]" />
+                  <span>BEFORE RAW</span>
+                </div>
               </div>
 
-              <input type="range" min="0" max="100" value={sliderPos} aria-label="Before and after divider" className="comparison-range" onChange={e => setSliderPos(Number(e.target.value))}/>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={sliderPos}
+                aria-label="Before and after divider"
+                className="comparison-range"
+                onChange={e => setSliderPos(Number(e.target.value))}
+              />
+
               {/* Interactive Divider Line with Luxury Knob */}
               <div
                 className="absolute top-0 bottom-0 w-[2px] bg-white pointer-events-none z-20"
                 style={{
                   left: `${sliderPos}%`,
-                  boxShadow: '0 0 10px rgba(0,0,0,0.5)'
+                  boxShadow: '0 0 10px rgba(0,0,0,0.6)'
                 }}
               >
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#201E1B] border-2 border-white shadow-lg flex items-center justify-center text-[#B99A69]">
-                  <Sliders size={13} />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#141310] border-2 border-white shadow-[0_4px_16px_rgba(0,0,0,0.45)] flex items-center justify-center transition-transform active:scale-95">
+                  <div className="flex items-center gap-0.5 text-white">
+                    <ChevronLeft size={13} className="text-[#B99A69]" />
+                    <span className="w-0.5 h-3 bg-white/40 rounded-full" />
+                    <ChevronRight size={13} className="text-[#B99A69]" />
+                  </div>
                 </div>
+              </div>
+            </div>
+
+            {/* Quick View Presets for Mobile & Desktop convenience */}
+            <div className="flex items-center justify-center gap-2 mt-2.5 sm:mt-3">
+              <span className="text-[10px] sm:text-[11px] font-sans uppercase tracking-[0.14em] text-[#8E867A] hidden xs:inline">
+                Quick View:
+              </span>
+              <div className="inline-flex items-center p-1 rounded-full bg-[#EEE7DC]/90 border border-[#DED5C9] text-[10px] sm:text-[11px] font-sans font-medium tracking-[0.06em]">
+                <button
+                  type="button"
+                  onClick={() => setSliderPos(100)}
+                  className={`px-2.5 sm:px-3 py-1 rounded-full transition-all duration-200 cursor-pointer ${
+                    sliderPos === 100
+                      ? 'bg-[#141310] !text-[#FAF7F2] font-semibold shadow-xs'
+                      : 'text-[#6B6357] hover:text-[#141310]'
+                  }`}
+                  style={sliderPos === 100 ? { color: '#FAF7F2' } : {}}
+                >
+                  100% Before
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSliderPos(50)}
+                  className={`px-2.5 sm:px-3 py-1 rounded-full transition-all duration-200 cursor-pointer ${
+                    sliderPos === 50
+                      ? 'bg-[#141310] !text-[#FAF7F2] font-semibold shadow-xs'
+                      : 'text-[#6B6357] hover:text-[#141310]'
+                  }`}
+                  style={sliderPos === 50 ? { color: '#FAF7F2' } : {}}
+                >
+                  50/50 Split
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSliderPos(0)}
+                  className={`px-2.5 sm:px-3 py-1 rounded-full transition-all duration-200 cursor-pointer ${
+                    sliderPos === 0
+                      ? 'bg-[#141310] !text-[#FAF7F2] font-semibold shadow-xs'
+                      : 'text-[#6B6357] hover:text-[#141310]'
+                  }`}
+                  style={sliderPos === 0 ? { color: '#FAF7F2' } : {}}
+                >
+                  100% After
+                </button>
               </div>
             </div>
           </div>
@@ -193,7 +263,7 @@ export default function BeforeAfterSlider() {
             </div>
             <div className="inline-flex items-center gap-1.5 text-[10px] font-sans uppercase tracking-[0.16em] text-[#B99A69] font-medium shrink-0">
               <Sparkles size={11} />
-              <span>Drag handle to inspect</span>
+              <span>Drag handle or tap presets to inspect</span>
             </div>
           </div>
         </RevealOnScroll>
