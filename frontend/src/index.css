@@ -145,50 +145,38 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ==========================================================================
    Universal High-Contrast Rules for Dark Containers, Buttons & Badges
-   Ensures text inside black/dark elements is crisp, high-contrast, and never hidden
+   Ensures text inside black/dark elements is crisp, high-contrast, and never hidden.
+   Uses whole-word matching (~=) so hover:bg-[...] on light buttons is NEVER affected.
    ========================================================================== */
-[class*="bg-[#141310]"],
-[class*="bg-[#201E1B]"],
-[class*="bg-[#292724]"],
-[class*="bg-[#181715]"],
-[class*="bg-[#191919]"],
-[class*="bg-black"],
+[class~="bg-[#141310]"]:not([class*="bg-[#FAF"]):not([class*="bg-[#E9"]):not([class*="bg-[#F4"]):not([class*="bg-white"]):not([class*="bg-transparent"]),
+[class~="bg-[#201E1B]"]:not([class*="bg-[#FAF"]):not([class*="bg-[#E9"]):not([class*="bg-[#F4"]):not([class*="bg-white"]):not([class*="bg-transparent"]),
+[class~="bg-[#292724]"]:not([class*="bg-[#FAF"]):not([class*="bg-[#E9"]):not([class*="bg-[#F4"]):not([class*="bg-white"]):not([class*="bg-transparent"]),
+[class~="bg-[#181715]"]:not([class*="bg-[#FAF"]):not([class*="bg-[#E9"]):not([class*="bg-[#F4"]):not([class*="bg-white"]):not([class*="bg-transparent"]),
+[class~="bg-[#191919]"]:not([class*="bg-[#FAF"]):not([class*="bg-[#E9"]):not([class*="bg-[#F4"]):not([class*="bg-white"]):not([class*="bg-transparent"]),
+[class~="bg-black"]:not([class*="bg-[#FAF"]):not([class*="bg-[#E9"]):not([class*="bg-[#F4"]):not([class*="bg-white"]):not([class*="bg-transparent"]),
+[class*="bg-[#141310]/"]:not([class*="bg-[#FAF"]):not([class*="bg-[#E9"]):not([class*="bg-[#F4"]):not([class*="bg-white"]):not([class*="bg-transparent"]),
 .btn-dark,
 .bg-dark-cta {
-  color: #FAF7F2 !important;
+  color: #FAF7F2;
 }
 
-[class*="bg-[#141310]"] a,
-[class*="bg-[#201E1B]"] a,
-[class*="bg-[#292724]"] a,
-[class*="bg-[#181715]"] a,
-a[class*="bg-[#141310]"],
-a[class*="bg-[#201E1B]"],
-a[class*="bg-[#292724]"],
-a[class*="bg-[#181715]"],
-button[class*="bg-[#141310]"],
-button[class*="bg-[#201E1B]"],
-button[class*="bg-[#292724]"],
-button[class*="bg-[#181715]"],
-a[class*="bg-[#141310]"] *,
-button[class*="bg-[#141310]"] *,
-a[class*="bg-[#292724]"] *,
-button[class*="bg-[#292724]"] * {
-  color: #FAF7F2 !important;
+/* Explicit dark action buttons & links */
+a[class~="bg-[#141310]"],
+a[class~="bg-[#201E1B]"],
+a[class~="bg-[#292724]"],
+button[class~="bg-[#141310]"],
+button[class~="bg-[#201E1B]"],
+button[class~="bg-[#292724]"] {
+  color: #FAF7F2;
 }
 
-[class*="bg-[#141310]"]:hover,
-[class*="bg-[#201E1B]"]:hover,
-[class*="bg-[#292724]"]:hover,
-a[class*="bg-[#141310]"]:hover,
-a[class*="bg-[#201E1B]"]:hover,
-a[class*="bg-[#292724]"]:hover,
-button[class*="bg-[#141310]"]:hover,
-button[class*="bg-[#201E1B]"]:hover,
-button[class*="bg-[#292724]"]:hover,
-a[class*="bg-[#141310]"]:hover *,
-button[class*="bg-[#141310]"]:hover * {
-  color: #FFFFFF !important;
+a[class~="bg-[#141310]"]:hover,
+a[class~="bg-[#201E1B]"]:hover,
+a[class~="bg-[#292724]"]:hover,
+button[class~="bg-[#141310]"]:hover,
+button[class~="bg-[#201E1B]"]:hover,
+button[class~="bg-[#292724]"]:hover {
+  color: #FFFFFF;
 }
 
 /* ==========================================================================

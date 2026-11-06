@@ -176,13 +176,13 @@ export default function ServicesSection() {
                 <div className="p-6 sm:p-7 pt-4 border-t border-[#F2ECE3] mt-auto bg-[#FCFBF8]/90">
                   <Link
                     to={`/services/${item.slug}`}
-                    className="w-full inline-flex items-center justify-between py-2.5 px-4 rounded-xl bg-[#FAF7F2] hover:bg-[#141310] text-[#141310] hover:text-[#FAF7F2] border border-[#E8E1D5] hover:border-[#141310] text-[11px] font-sans uppercase tracking-[0.16em] font-semibold transition-all duration-300 shadow-xs"
+                    className="w-full inline-flex items-center justify-between py-2.5 px-4 rounded-xl bg-[#FAF7F2] hover:bg-[#141310] text-[#141310] hover:text-[#FAF7F2] border border-[#E8E1D5] hover:border-[#141310] text-[11px] font-sans uppercase tracking-[0.16em] font-semibold transition-all duration-300 shadow-xs group/btn"
                     style={{ textDecoration: 'none' }}
                   >
-                    <span>{item.cta}</span>
+                    <span className="text-[#141310] group-hover/btn:text-[#FAF7F2] transition-colors duration-300 font-semibold">{item.cta}</span>
                     <ArrowRight
                       size={14}
-                      className="text-[#9E7D4B] group-hover:text-[#FAF7F2] transition-transform duration-300 group-hover:translate-x-1"
+                      className="text-[#9E7D4B] group-hover/btn:text-[#FAF7F2] transition-all duration-300 group-hover/btn:translate-x-1"
                     />
                   </Link>
                 </div>
